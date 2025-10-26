@@ -3,8 +3,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { LogOut, Home, CreditCard, Layers, DollarSign, Loader2, X, Check, Menu, Edit, Edit3, Trash2, Plus, Search, Minus, ArrowRight, ArrowLeft } from 'lucide-react';
 const primaryGreen = '#55ad85'; // Cor principal do tema
 const darkGreen = '#4a9572'; 
-const API_URL = 'http://localhost:10000'; // URL do seu backend
-const API_BASE_URL = 'https://finapp-analytics-production.up.railway.app';
+const API_URL = 'https://finapp-backend-production-b3e5.up.railway.app'; // URL do seu backend
+const API_BASE_URL = 'https://finapp-backend-production-b3e5.up.railway.app';
 
 // Categorias pré-definidas para novos usuários
 const PREDEFINED_CATEGORIES = [
@@ -2589,7 +2589,7 @@ const AccountsScreen = () => {
       } catch (err) {
           console.error('Erro ao buscar contas:', err);
           const errorMessage = err.message.includes('Failed to fetch') 
-              ? 'Não foi possível conectar ao backend. Verifique se o servidor (http://localhost:10000) está em execução.' 
+              ? 'Não foi possível conectar ao backend. Verifique se o servidor (https://finapp-backend-production-b3e5.up.railway.app) está em execução.' 
               : err.message;
           setError(errorMessage);
       } finally {
