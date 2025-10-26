@@ -1,10 +1,10 @@
 import Logo from "./assets/Logo.png";
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { LogOut, Home, CreditCard, Layers, DollarSign, Loader2, X, Check, Menu, Edit, Edit3, Trash2, Plus, Search, Minus, ArrowRight, ArrowLeft } from 'lucide-react';
+import { API_BASE_URL, API_URL } from './config/api';
+
 const primaryGreen = '#55ad85'; // Cor principal do tema
-const darkGreen = '#4a9572'; 
-const API_URL = 'https://finapp-backend-production-b3e5.up.railway.app'; // URL do seu backend
-const API_BASE_URL = 'https://finapp-backend-production-b3e5.up.railway.app';
+const darkGreen = '#4a9572';
 
 // Categorias pré-definidas para novos usuários
 const PREDEFINED_CATEGORIES = [
@@ -9485,7 +9485,16 @@ const AuthScreen = ({ onAuthSuccess }) => {
                 body: JSON.stringify(payload),
             });
 
-            const data = await response.json();
+            // Verifica se a resposta está vazia
+            const responseText = await response.text();
+            let data;
+            
+            try {
+                data = responseText ? JSON.parse(responseText) : {};
+            } catch (parseError) {
+                console.error('Erro ao fazer parse da resposta:', parseError);
+                throw new Error('Resposta inválida do servidor. Verifique se o backend está rodando.');
+            }
 
             if (!response.ok) {
                 const errorMessage = data.erro || data.mensagem || `Erro de ${isLogin ? 'Login' : 'Registro'} desconhecido.`;
@@ -9502,10 +9511,17 @@ const AuthScreen = ({ onAuthSuccess }) => {
 
         } catch (err) {
             console.error('Erro de autenticação:', err);
+            
             if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
-                setError('Não foi possível conectar ao backend. Verifique se o servidor está em execução.');
+                setError('❌ Não foi possível conectar ao backend local. Verifique se está rodando em http://localhost:10000');
+            } else if (err.message.includes('ECONNREFUSED')) {
+                setError('❌ Conexão recusada. O backend local não está rodando na porta 10000.');
+            } else if (err.message.includes('Resposta inválida')) {
+                setError('❌ ' + err.message);
+            } else if (err.message.includes('500')) {
+                setError('❌ Erro interno do servidor. Verifique os logs do backend local.');
             } else {
-                setError(err.message);
+                setError('❌ ' + err.message);
             }
         } finally {
             setIsLoading(false);
@@ -9759,3 +9775,4 @@ export default function App() {
         </div>
     );
 }
+
