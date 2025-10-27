@@ -190,7 +190,7 @@ const SuccessModal = ({ isOpen, message, onClose, onConfirm }) => {
               <div className="flex flex-col items-center">
                   {/* Ícone de Sucesso */}
                   <Check size={48} className="text-blue-600 mb-4 bg-blue-100 p-2 rounded-full" />
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">Sucesso!</h3>
+                  <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-2">Sucesso!</h3>
                   <p className="text-center text-gray-600 mb-6">{message}</p>
               </div>
               
@@ -214,87 +214,34 @@ const ConfirmationModal = ({ isOpen, onConfirm, onCancel }) => {
   if (!isOpen) return null;
 
   return (
-      // Overlay de Fundo (AGORA COM ESTILO INLINE PARA A TRANSPARÊNCIA)
       <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }} 
       >
-          {/* Corpo do Modal */}
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm transform scale-100 opacity-100">
-              <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Confirmação de Saída</h3>
+              <div className="p-3 sm:p-6">
+                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2">Confirmação de Saída</h3>
                   <p className="text-gray-600 mb-6">
                       Tem certeza de que deseja sair da sua conta e retornar à tela de login?
                   </p>
-                  <div className="flex justify-end space-x-3">
+                  <div className="flex space-x-3">
                       <button
                           onClick={onCancel}
-                          className="px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
+                          className="flex-1 px-4 py-2 text-sm font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
                       >
                           <X className="w-4 h-4 mr-1 inline" /> Cancelar
                       </button>
                       <button
                           onClick={onConfirm}
-                          className="px-4 py-2 text-sm font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors shadow-md"
+                          className="flex-1 px-4 py-2 text-sm font-semibold rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors shadow-md"
                       >
                           <Check className="w-4 h-4 mr-1 inline" /> Sair
                       </button>
                   </div>
-                </div>
-            </div>
-
-            {/* Modal de Confirmação de Exclusão */}
-            {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-                        <div className="flex items-center mb-4">
-                            <div className="flex-shrink-0 w-10 h-10 mx-auto bg-red-100 rounded-full flex items-center justify-center">
-                                <Trash2 className="w-6 h-6 text-red-600" />
-                            </div>
-                        </div>
-                        
-                        <div className="text-center">
-                            <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                Excluir Fatura
-                            </h3>
-                            <p className="text-sm text-gray-500 mb-6">
-                                Tem certeza que deseja excluir esta fatura? Esta ação irá estornar o pagamento e não pode ser desfeita.
-                            </p>
-                            
-                            {faturaToDelete && (
-                                <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
-                                    <div className="text-sm text-gray-600">
-                                        <div className="font-medium mb-2">Detalhes da Fatura:</div>
-                                        <div>• Cartão: {faturaToDelete.cartao}</div>
-                                        <div>• Valor: {getCurrencySymbol(faturaToDelete.moeda)} {parseFloat(faturaToDelete.valor_total_fatura).toFixed(2)}</div>
-                                        <div>• Vencimento: {formatDate(faturaToDelete.parcelas[0]?.data_vencimento)}</div>
-                                        <div>• Status: {getFaturaStatus(faturaToDelete)}</div>
-                                    </div>
-                                </div>
-                            )}
-                            
-                            <div className="flex space-x-3">
-                                <button
-                                    onClick={handleCancelDelete}
-                                    disabled={isDeleting}
-                                    className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
-                                >
-                                    Cancelar
-                                </button>
-                                <button
-                                    onClick={handleConfirmDelete}
-                                    disabled={isDeleting}
-                                    className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
-                                >
-                                    {isDeleting ? 'Excluindo...' : 'Excluir'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
+              </div>
+          </div>
+      </div>
+  );
 };
 
 // Modal Genérico de Resultado (Sucesso/Erro na Transação)
@@ -315,7 +262,7 @@ const GenericResultModal = ({ isOpen, type, message, onConfirm }) => {
           <div className={`bg-white p-6 rounded-xl shadow-2xl w-full max-w-xs border-t-4 ${colorClass}`}>
               <div className="flex items-center mb-4">
                   <Icon size={24} className="mr-3" />
-                  <h3 className="text-xl font-bold text-gray-800">{title}</h3>
+                  <h3 className="text-base sm:text-xl font-bold text-gray-800">{title}</h3>
               </div>
               <p className="text-sm text-gray-600 mb-6">{message}</p>
               <button
@@ -1322,87 +1269,91 @@ const DashboardScreen = () => {
     }, [selectedCurrency, chartType, chartPeriod, selectedYear, categoryChartType, categoryChartPeriod, categoryChartSpecificPeriod, recurrenceChartType, recurrenceChartPeriod, recurrenceChartSpecificPeriod, fetchTotalBalance, fetchMonthlyData, fetchChartData, fetchCategoryChartData, fetchRecurrenceChartData, fetchUpcomingInvoices]);
     
     return (
-        <div className="p-4 space-y-5">
+        <>
+            {/* CSS para ocultar scrollbars */}
+            <style jsx>{`
+                .scrollbar-hide::-webkit-scrollbar {
+                    display: none;
+                }
+            `}</style>
+            
+            <div className="p-2 sm:p-4 space-y-3 sm:space-y-5">
             {/* Header com título e seletores */}
             <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-800">Resumo Financeiro</h2>
+                <h2 className="text-lg sm:text-2xl font-bold text-gray-800">Resumo Financeiro</h2>
                 
                 {/* Seletores */}
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 sm:space-x-4">
                     {/* Seletor de Moeda */}
-                    <div className="flex items-center space-x-2">
-                        <label className="text-xs font-medium text-gray-600">Moeda:</label>
-                        <select
-                            value={selectedCurrency}
-                            onChange={(e) => handleCurrencyChange(e.target.value)}
-                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
-                        >
-                            <option value="BRL">BRL</option>
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                        </select>
-                    </div>
+                    <label className="hidden text-xs font-medium text-gray-600">Moeda:</label>
+                    <select
+                        value={selectedCurrency}
+                        onChange={(e) => handleCurrencyChange(e.target.value)}
+                        className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
+                    >
+                        <option value="BRL">BRL</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
                     
                     {/* Seletor de Tipo */}
-                    <div className="flex items-center space-x-2">
-                        <label className="text-xs font-medium text-gray-600">Tipo:</label>
-                        <select
-                            value={chartType}
-                            onChange={(e) => handleTypeChange(e.target.value)}
-                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
-                        >
-                            <option value="despesas">Despesas</option>
-                            <option value="receitas">Receitas</option>
-                        </select>
-                    </div>
+                    <label className="hidden text-xs font-medium text-gray-600">Tipo:</label>
+                    <select
+                        value={chartType}
+                        onChange={(e) => handleTypeChange(e.target.value)}
+                        className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
+                    >
+                        <option value="despesas">Despesas</option>
+                        <option value="receitas">Receitas</option>
+                    </select>
                 </div>
             </div>
             
-            {/* Card de Saldo Total - Mobile */}
-            <div className="p-5 bg-white shadow-xl rounded-2xl border-l-4 border-l-green-500">
-                <p className="text-sm font-medium text-gray-500 mb-1">Seu Saldo Total</p>
+            {/* Card de Saldo Total */}
+            <div className="p-3 sm:p-5 bg-white shadow-xl rounded-2xl border-l-4 border-l-green-500">
+                <p className="text-xs sm:text-sm font-medium text-gray-500 mb-1">Seu Saldo Total</p>
                 {isLoadingBalance ? (
                     <div className="flex items-center space-x-2">
-                        <Loader2 className="w-6 h-6 animate-spin text-green-500" />
-                        <span className="text-lg text-gray-500">Carregando...</span>
+                        <Loader2 className="w-4 h-4 sm:w-6 sm:h-6 animate-spin text-green-500" />
+                        <span className="text-sm sm:text-lg text-gray-500">Carregando...</span>
                     </div>
                 ) : balanceError ? (
-                    <p className="text-lg text-red-500">{balanceError}</p>
+                    <p className="text-sm sm:text-lg text-red-500">{balanceError}</p>
                 ) : (
-                    <p className="text-3xl font-extrabold text-gray-900">
+                    <p className="text-xl sm:text-3xl font-extrabold text-gray-900">
                         {getCurrencySymbol(selectedCurrency)} {totalBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </p>
                 )}
             </div>
 
             {/* Cards de Resumo Rápido */}
-            <div className="grid grid-cols-2 gap-3">
-                <div className="p-4 bg-white shadow-lg rounded-xl border border-gray-100">
-                    <p className="text-sm font-medium text-gray-500">Receitas (Mês Atual)</p>
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="p-3 sm:p-4 bg-white shadow-lg rounded-xl border border-gray-100">
+                    <p className="text-xs sm:text-sm font-medium text-gray-500">Receitas (Mês Atual)</p>
                     {isLoadingMonthly ? (
                         <div className="flex items-center space-x-2 mt-1">
-                            <Loader2 className="w-4 h-4 animate-spin text-green-500" />
-                            <span className="text-sm text-gray-500">Carregando...</span>
+                            <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin text-green-500" />
+                            <span className="text-xs sm:text-sm text-gray-500">Carregando...</span>
                         </div>
                     ) : monthlyError ? (
-                        <p className="text-sm text-red-500 mt-1">{monthlyError}</p>
+                        <p className="text-xs sm:text-sm text-red-500 mt-1">{monthlyError}</p>
                     ) : (
-                        <p className="text-xl font-bold text-green-600 mt-1">
+                        <p className="text-lg sm:text-xl font-bold text-green-600 mt-1">
                             {getCurrencySymbol(selectedCurrency)} {monthlyIncome.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </p>
                     )}
                 </div>
-                <div className="p-4 bg-white shadow-lg rounded-xl border border-gray-100">
-                    <p className="text-sm font-medium text-gray-500">Despesas (Mês Atual)</p>
+                <div className="p-3 sm:p-4 bg-white shadow-lg rounded-xl border border-gray-100">
+                    <p className="text-xs sm:text-sm font-medium text-gray-500">Despesas (Mês Atual)</p>
                     {isLoadingMonthly ? (
                         <div className="flex items-center space-x-2 mt-1">
-                            <Loader2 className="w-4 h-4 animate-spin text-red-500" />
-                            <span className="text-sm text-gray-500">Carregando...</span>
+                            <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin text-red-500" />
+                            <span className="text-xs sm:text-sm text-gray-500">Carregando...</span>
                         </div>
                     ) : monthlyError ? (
-                        <p className="text-sm text-red-500 mt-1">{monthlyError}</p>
+                        <p className="text-xs sm:text-sm text-red-500 mt-1">{monthlyError}</p>
                     ) : (
-                        <p className="text-xl font-bold text-red-600 mt-1">
+                        <p className="text-lg sm:text-xl font-bold text-red-600 mt-1">
                             {getCurrencySymbol(selectedCurrency)} {monthlyExpenses.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </p>
                     )}
@@ -1410,12 +1361,23 @@ const DashboardScreen = () => {
             </div>
 
             {/* Gráfico de Barras */}
-            <div className="bg-white rounded-xl shadow-lg p-4">
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-800">Análise por Período</h3>
+            <div className="bg-white rounded-xl shadow-lg p-3 sm:p-4">
+                <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 mb-2 sm:mb-4">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-800">Análise por Período</h3>
                     
                     {/* Controles do Gráfico */}
-                    <div className="flex space-x-2">
+                    <div className="flex items-center space-x-2">
+                        {/* Seletor de Ano - Primeiro */}
+                        <select
+                            value={selectedYear}
+                            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
+                        >
+                            {Array.from({length: new Date().getFullYear() - 2024}, (_, i) => 2025 + i).map(year => (
+                                <option key={year} value={year}>{year}</option>
+                            ))}
+                        </select>
+                        
                         {/* Seletor de Período */}
                         <select
                             value={chartPeriod}
@@ -1428,22 +1390,11 @@ const DashboardScreen = () => {
                             <option value="trimestral">Trimestral</option>
                             <option value="mensal">Mensal</option>
                         </select>
-                        
-                        {/* Seletor de Ano */}
-                        <select
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
-                        >
-                            {Array.from({length: new Date().getFullYear() - 2024}, (_, i) => 2025 + i).map(year => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                        </select>
                     </div>
                 </div>
                 
                 {/* Área do Gráfico */}
-                <div className="h-80 p-4">
+                <div className="h-60 sm:h-80 p-2 sm:p-4">
                     {isLoadingChart ? (
                         <div className="flex items-center justify-center h-full">
                             <Loader2 className="w-8 h-8 animate-spin text-green-500" />
@@ -1459,8 +1410,8 @@ const DashboardScreen = () => {
                         </div>
                     ) : (
                         <div className="relative h-full">
-                            {/* Eixo Y com valores */}
-                            <div className="absolute left-0 top-8 bottom-4 w-16 flex flex-col justify-between text-xs text-gray-500">
+                            {/* Eixo Y com valores - oculto em mobile */}
+                            <div className="hidden sm:flex absolute left-0 top-8 bottom-4 w-16 flex-col justify-between text-xs text-gray-500">
                                 {(() => {
                                     const maxValue = Math.max(...chartData.map(d => d.valor || 0));
                                     const levels = 5;
@@ -1476,59 +1427,116 @@ const DashboardScreen = () => {
                                 })()}
                             </div>
                             
-                            {/* Linhas pontilhadas horizontais */}
-                            <div className="absolute left-16 right-0 top-8 bottom-4">
-                                {(() => {
-                                    const levels = 5;
-                                    return Array.from({ length: levels + 1 }, (_, i) => (
-                                        <div
-                                            key={i}
-                                            className="absolute w-full border-t border-gray-200 border-dashed opacity-30"
-                                            style={{ top: `${(i / levels) * 100}%` }}
-                                        />
-                                    ));
-                                })()}
-                            </div>
-                            
-                            {/* Barras do gráfico */}
-                            <div className="absolute left-16 right-0 top-8 bottom-4 flex items-end pl-4 justify-evenly">
-                                {chartData.map((item, index) => {
-                                    const maxValue = Math.max(...chartData.map(d => d.valor || 0));
-                                    const color = chartType === 'despesas' ? '#ef4444' : '#10b981';
-                                    
-                                    // Calcular altura proporcional - ajustar para a nova área do gráfico
-                                    const chartHeight = 240; // Altura aumentada para corresponder à nova área (bottom-4)
-                                    const heightInPixels = ((item.valor || 0) / maxValue) * chartHeight;
-                                    
-                                    return (
-                                        <div key={index} className="flex flex-col items-center relative">
-                                            {/* Barra */}
+                            {/* Layout para Desktop */}
+                            <div className="hidden sm:block">
+                                {/* Linhas pontilhadas horizontais */}
+                                <div className="absolute left-16 right-0 top-8 bottom-4">
+                                    {(() => {
+                                        const levels = 5;
+                                        return Array.from({ length: levels + 1 }, (_, i) => (
                                             <div
-                                                className="w-6 rounded-t transition-all duration-300 hover:opacity-80 relative"
-                                                style={{
-                                                    height: `${heightInPixels}px`,
-                                                    backgroundColor: color,
-                                                    minHeight: '4px'
-                                                }}
-                                                title={`${item.periodo}: ${getCurrencySymbol(selectedCurrency)} ${(item.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
-                                            >
-                                                {/* Rótulo do valor na barra - posicionado no topo da barra */}
-                                                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[9px] font-semibold text-gray-700 whitespace-nowrap">
-                                                    {getCurrencySymbol(selectedCurrency)} {Math.round(item.valor || 0).toLocaleString('pt-BR')}
+                                                key={i}
+                                                className="absolute w-full border-t border-gray-200 border-dashed opacity-30"
+                                                style={{ top: `${(i / levels) * 100}%` }}
+                                            />
+                                        ));
+                                    })()}
+                                </div>
+                                
+                                {/* Barras do gráfico */}
+                                <div className="absolute left-16 right-0 top-8 bottom-4 flex items-end pl-4 justify-evenly">
+                                    {chartData.map((item, index) => {
+                                        const maxValue = Math.max(...chartData.map(d => d.valor || 0));
+                                        const color = chartType === 'despesas' ? '#ef4444' : '#10b981';
+                                        
+                                        const chartHeight = 240;
+                                        const heightInPixels = ((item.valor || 0) / maxValue) * chartHeight;
+                                        
+                                        return (
+                                            <div key={index} className="flex flex-col items-center relative">
+                                                <div
+                                                    className="w-6 rounded-t transition-all duration-300 hover:opacity-80 relative"
+                                                    style={{
+                                                        height: `${heightInPixels}px`,
+                                                        backgroundColor: color,
+                                                        minHeight: '4px'
+                                                    }}
+                                                    title={`${item.periodo}: ${getCurrencySymbol(selectedCurrency)} ${(item.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                                                >
+                                                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[9px] font-semibold text-gray-700 whitespace-nowrap">
+                                                        {getCurrencySymbol(selectedCurrency)} {Math.round(item.valor || 0).toLocaleString('pt-BR')}
+                                                    </div>
                                                 </div>
                                             </div>
+                                        );
+                                    })}
+                                </div>
+                                
+                                {/* Labels dos períodos */}
+                                <div className="absolute left-16 right-0 bottom-0 h-4 flex items-center pl-4 justify-evenly">
+                                    {chartData.map((item, index) => (
+                                        <div key={index} className="text-xs font-medium text-gray-600 text-center w-6">
+                                            {item.periodo}
                                         </div>
-                                    );
-                                })}
+                                    ))}
+                                </div>
                             </div>
-                            
-                            {/* Labels dos períodos - posicionados abaixo da área do gráfico */}
-                            <div className="absolute left-16 right-0 bottom-0 h-4 flex items-center pl-4 justify-evenly">
-                                {chartData.map((item, index) => (
-                                    <div key={index} className="text-xs font-medium text-gray-600 text-center w-6">
-                                        {item.periodo}
+
+                            {/* Layout para Mobile com Scroll Horizontal */}
+                            <div className="block sm:hidden">
+                                {/* Container com scroll horizontal */}
+                                <div 
+                                    className="absolute left-0 right-0 top-8 bottom-0 overflow-x-auto overflow-y-hidden"
+                                    style={{
+                                        scrollbarWidth: 'none', /* Firefox */
+                                        msOverflowStyle: 'none', /* IE and Edge */
+                                    }}
+                                    onWheel={(e) => {
+                                        e.preventDefault();
+                                        e.currentTarget.scrollLeft += e.deltaY;
+                                    }}
+                                >
+                                    <div className="relative" style={{ minWidth: `${chartData.length * 50}px`, height: '100%' }}>
+                                        {/* Barras do gráfico */}
+                                        <div className="flex items-end h-full" style={{ height: 'calc(100% - 16px)', paddingBottom: '16px', paddingTop: '20px' }}>
+                                            {chartData.map((item, index) => {
+                                                const maxValue = Math.max(...chartData.map(d => d.valor || 0));
+                                                const color = chartType === 'despesas' ? '#ef4444' : '#10b981';
+                                                
+                                                const chartHeight = 140; // Altura significativamente reduzida para mobile
+                                                const heightInPixels = ((item.valor || 0) / maxValue) * chartHeight * 1.0; // 100% da altura
+                                                
+                                                return (
+                                                    <div key={index} className="flex flex-col items-center relative mx-2" style={{ width: '46px' }}>
+                                                        <div
+                                                            className="w-6 rounded-t transition-all duration-300 hover:opacity-80 relative"
+                                                            style={{
+                                                                height: `${heightInPixels}px`,
+                                                                backgroundColor: color,
+                                                                minHeight: '4px'
+                                                            }}
+                                                            title={`${item.periodo}: ${getCurrencySymbol(selectedCurrency)} ${(item.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                                                        >
+                                                            {/* Rótulo posicionado no topo da barra */}
+                                                            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[9px] font-semibold text-gray-700 whitespace-nowrap z-10">
+                                                                {getCurrencySymbol(selectedCurrency)} {Math.round(item.valor || 0).toLocaleString('pt-BR')}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                        
+                                        {/* Labels dos períodos */}
+                                        <div className="absolute bottom-0 left-0 right-0 h-4 flex items-center">
+                                            {chartData.map((item, index) => (
+                                                <div key={index} className="text-xs font-medium text-gray-600 text-center mx-2" style={{ width: '46px' }}>
+                                                    {item.periodo}
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                ))}
+                                </div>
                             </div>
                         </div>
                     )}
@@ -1536,11 +1544,21 @@ const DashboardScreen = () => {
             </div>
 
             {/* Segundo gráfico - Análise por Categoria */}
-            <div className="bg-white rounded-xl shadow-lg p-4">
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-800">Análise por Categoria</h3>
+            <div className="bg-white rounded-xl shadow-lg p-3 sm:p-4">
+                <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 mb-4">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-800">Análise por Categoria</h3>
                     
-                    <div className="flex space-x-2">
+                    <div className="flex items-center space-x-2">
+                        {/* Seletor de Ano - Primeiro */}
+                        <select
+                            value={selectedYear}
+                            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
+                        >
+                            {Array.from({length: new Date().getFullYear() - 2024}, (_, i) => 2025 + i).map(year => (
+                                <option key={year} value={year}>{year}</option>
+                            ))}
+                        </select>
                         <select 
                             value={categoryChartPeriod} 
                             onChange={(e) => handlePeriodChange(e.target.value)}
@@ -1562,19 +1580,10 @@ const DashboardScreen = () => {
                                 </option>
                             ))}
                         </select>
-                        <select
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
-                        >
-                            {Array.from({length: new Date().getFullYear() - 2024}, (_, i) => 2025 + i).map(year => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                        </select>
                     </div>
                 </div>
                 
-                <div className="h-80 p-4 overflow-y-auto">
+                <div className="h-60 sm:h-80 p-4 overflow-y-auto">
                     {isLoadingCategoryChart ? (
                         <div className="flex items-center justify-center h-full">
                             <Loader2 className="w-8 h-8 animate-spin text-green-500" />
@@ -1591,7 +1600,7 @@ const DashboardScreen = () => {
                     ) : (
                         <div className="relative h-full">
                             {/* Labels das categorias - fora da zona do gráfico */}
-                            <div className="absolute left-0 top-0 bottom-8 w-32 flex flex-col justify-evenly text-[10px] font-medium text-gray-600">
+                            <div className="absolute left-0 sm:left-0 top-0 bottom-0 sm:bottom-8 w-24 sm:w-32 flex flex-col justify-evenly text-[10px] font-medium text-gray-600">
                                 {categoryChartData.map((item, index) => (
                                     <div key={index} className="text-right pr-2 h-8 flex items-center justify-end overflow-hidden">
                                         <span className="truncate">
@@ -1601,8 +1610,8 @@ const DashboardScreen = () => {
                                 ))}
                             </div>
                             
-                            {/* Eixo X com valores - agora na parte inferior */}
-                            <div className="absolute left-32 right-0 bottom-0 h-8 flex justify-between items-center text-xs text-gray-500">
+                            {/* Eixo X com valores - oculto em mobile */}
+                            <div className="hidden sm:flex absolute left-32 right-0 bottom-0 h-8 justify-between items-center text-xs text-gray-500">
                                 {(() => {
                                     const maxValue = Math.max(...categoryChartData.map(d => d.valor || 0));
                                     const levels = 5;
@@ -1618,22 +1627,8 @@ const DashboardScreen = () => {
                                 })()}
                             </div>
                             
-                            {/* Linhas pontilhadas verticais */}
-                            <div className="absolute left-32 right-0 top-0 bottom-8">
-                                {(() => {
-                                    const levels = 5;
-                                    return Array.from({ length: levels + 1 }, (_, i) => (
-                                        <div
-                                            key={i}
-                                            className="absolute h-full border-l border-gray-200 border-dashed opacity-30"
-                                            style={{ left: `${(i / levels) * 100}%` }}
-                                        />
-                                    ));
-                                })()}
-                            </div>
-                            
                             {/* Barras horizontais do gráfico */}
-                            <div className="absolute left-32 right-0 top-0 bottom-8 flex flex-col justify-evenly">
+                            <div className="absolute left-0 sm:left-32 right-0 top-0 bottom-0 sm:bottom-8 flex flex-col justify-evenly">
                                 {categoryChartData.map((item, index) => {
                                     const maxValue = Math.max(...categoryChartData.map(d => d.valor || 0));
                                     const color = categoryChartType === 'despesas' ? '#ef4444' : '#10b981';
@@ -1681,11 +1676,21 @@ const DashboardScreen = () => {
             </div>
 
             {/* Terceiro gráfico - Análise por Recorrência (Gráfico de Rosca) */}
-            <div className="bg-white rounded-xl shadow-lg p-4">
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-800">Análise por Recorrência</h3>
+            <div className="bg-white rounded-xl shadow-lg p-3 sm:p-4">
+                <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 mb-4">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-800">Análise por Recorrência</h3>
                     
-                    <div className="flex space-x-2">
+                    <div className="flex items-center space-x-2">
+                        {/* Seletor de Ano - Primeiro */}
+                        <select
+                            value={selectedYear}
+                            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
+                        >
+                            {Array.from({length: new Date().getFullYear() - 2024}, (_, i) => 2025 + i).map(year => (
+                                <option key={year} value={year}>{year}</option>
+                            ))}
+                        </select>
                         <select 
                             value={recurrenceChartPeriod} 
                             onChange={(e) => handlePeriodChange(e.target.value)}
@@ -1707,19 +1712,10 @@ const DashboardScreen = () => {
                                 </option>
                             ))}
                         </select>
-                        <select
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
-                        >
-                            {Array.from({length: new Date().getFullYear() - 2024}, (_, i) => 2025 + i).map(year => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                        </select>
                     </div>
                 </div>
                 
-                <div className="h-80 p-4">
+                <div className="h-60 sm:h-80 p-4">
                     {isLoadingRecurrenceChart ? (
                         <div className="flex items-center justify-center h-full">
                             <Loader2 className="w-8 h-8 animate-spin text-green-500" />
@@ -1800,48 +1796,48 @@ const DashboardScreen = () => {
             </div>
 
             {/* Próximas Faturas */}
-            <div className="bg-white rounded-xl shadow-lg p-4">
-                <h3 className="text-lg font-bold mb-4 text-gray-800 border-b pb-2">Próximas Faturas</h3>
-                <div className="space-y-3">
+            <div className="bg-white rounded-xl shadow-lg p-3 sm:p-4">
+                <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 text-gray-800 border-b pb-2">Próximas Faturas</h3>
+                <div className="space-y-2 sm:space-y-3">
                     {isLoadingUpcomingInvoices ? (
                         <div className="flex items-center justify-center py-8">
-                            <Loader2 className="w-6 h-6 animate-spin text-green-500" />
-                            <span className="ml-2 text-gray-500">Carregando faturas...</span>
+                            <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin text-green-500" />
+                            <span className="ml-2 text-xs sm:text-sm text-gray-500">Carregando faturas...</span>
                         </div>
                     ) : upcomingInvoicesError ? (
                         <div className="flex items-center justify-center py-8">
-                            <p className="text-red-500">{upcomingInvoicesError}</p>
+                            <p className="text-xs sm:text-sm text-red-500">{upcomingInvoicesError}</p>
                         </div>
                     ) : upcomingInvoices.length === 0 ? (
                         <div className="flex items-center justify-center py-8">
-                            <p className="text-gray-500">Nenhuma fatura pendente</p>
+                            <p className="text-xs sm:text-sm text-gray-500">Nenhuma fatura pendente</p>
                         </div>
                     ) : (
                         upcomingInvoices.map((fatura, index) => (
                             <div 
                                 key={`${fatura.id_cartao}-${fatura.fatura_referencia}`} 
-                                className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+                                className="flex justify-between items-center p-2 sm:p-3 bg-gray-50 rounded-lg"
                             >
                                 <div className="flex flex-col">
                                     <div className="flex items-center space-x-2 mb-1">
-                                        <span className="text-sm font-medium text-gray-600">
+                                        <span className="text-xs sm:text-sm font-medium text-gray-600">
                                             Vencimento: {fatura.data_vencimento.toLocaleDateString('pt-BR')}
                                         </span>
                                         {fatura.isOverdue ? (
-                                            <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">
+                                            <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 text-[10px] sm:text-xs font-medium bg-red-100 text-red-800 rounded-full">
                                                 Atrasada
                                             </span>
                                         ) : (
-                                            <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                                            <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 text-[10px] sm:text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
                                                 Pendente
                                             </span>
                                         )}
                                     </div>
-                                    <span className="text-sm text-gray-500">
+                                    <span className="text-xs sm:text-sm text-gray-500">
                                         Cartão de crédito: {fatura.cartao}
                                     </span>
                                 </div>
-                                <span className="font-bold text-lg text-gray-800">
+                                <span className="font-bold text-sm sm:text-lg text-gray-800">
                                     {getCurrencySymbol(fatura.moeda)} {fatura.valor_total_fatura.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                 </span>
                             </div>
@@ -1850,13 +1846,8 @@ const DashboardScreen = () => {
                 </div>
             </div>
 
-            <button 
-                className="w-full text-center py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-colors cursor-pointer"
-                style={{ backgroundColor: primaryGreen, color: 'white' }}
-            >
-                Ver Relatórios Detalhados
-            </button>
         </div>
+        </>
     );
 };
 
@@ -2031,11 +2022,11 @@ const CreditCardsScreen = () => {
   };
 
   return (
-      <div className="p-4"> 
+      <div className="p-2 sm:p-4"> 
           
           {/* Cabeçalho com Título e Botão de Adição */}
           <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">Meus Cartões de Crédito</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Meus Cartões de Crédito</h2>
               
               <button 
                   onClick={() => setShowAddModal(true)} 
@@ -2090,22 +2081,22 @@ const CreditCardsScreen = () => {
                   style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
               >
                   <div className="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
-                      <h3 className="text-xl font-bold text-red-600 mb-4">Confirmar Exclusão</h3>
+                      <h3 className="text-base sm:text-xl font-bold text-red-600 mb-4">Confirmar Exclusão</h3>
                       <p className="text-gray-700 mb-6">
                           Tem certeza de que deseja excluir permanentemente o cartão <span className="font-semibold">"{cardToDelete.nome_cartao}"</span>? 
                           Esta ação não pode ser desfeita.
                       </p>
-                      <div className="flex justify-end space-x-3">
+                      <div className="flex space-x-3">
                           <button
                               onClick={cancelDelete}
-                              className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150 font-medium"
+                              className="flex-1 px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150 font-medium"
                               disabled={isDeleting}
                           >
                               Cancelar
                           </button>
                           <button
                               onClick={deleteCard}
-                              className={`px-4 py-2 text-white rounded-lg transition duration-150 font-medium cursor-pointer ${
+                              className={`flex-1 px-4 py-2 text-white rounded-lg transition duration-150 font-medium cursor-pointer ${
                                   isDeleting 
                                       ? 'bg-red-400 cursor-not-allowed flex items-center' 
                                       : 'bg-red-600 hover:bg-red-700'
@@ -2114,7 +2105,7 @@ const CreditCardsScreen = () => {
                           >
                               {isDeleting ? (
                                   <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Excluindo...</>
-                              ) : 'Excluir Permanentemente'}
+                              ) : 'Excluir'}
                           </button>
                       </div>
                   </div>
@@ -2166,7 +2157,7 @@ const ContaItem = ({ conta, onEdit, onDelete }) => {
       <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-lg border-l-4 border-r-4 border-opacity-70" style={{ borderColor: primaryGreen }}>
           {/* Informações da Conta */}
           <div className="flex-1 min-w-0 mr-4">
-              <h4 className="text-xl font-bold truncate text-gray-900">{conta.nome}</h4>
+              <h4 className="text-base sm:text-xl font-bold truncate text-gray-900">{conta.nome}</h4>
               <p className="text-lg font-extrabold mt-1" style={{ color: darkGreen }}>
                   {formattedSaldo}
                   <span className="ml-2 text-sm text-gray-500 font-medium">({conta.moeda})</span>
@@ -2224,10 +2215,10 @@ const EditAccountModal = ({ conta, onSave, onCancel, isSaving }) => {
       >
           {/* Corpo do Modal */}
           <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Editar Conta: {conta.nome}</h3>
+              <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-4">Editar Conta: {conta.nome}</h3>
               
               <form onSubmit={handleSubmit}>
-                  <div className="mb-6">
+                  <div className="mb-4 sm:mb-6">
                       <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="novoNome">
                           Novo Nome da Conta
                       </label>
@@ -2305,10 +2296,10 @@ const AddCategoryModal = ({ onSave, onCancel, isSaving }) => {
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
         >
             <div className="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Adicionar Nova Categoria</h3>
+                <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-4">Adicionar Nova Categoria</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="nome">
+                        <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2" htmlFor="nome">
                             Nome da Categoria
                         </label>
                         <input
@@ -2324,7 +2315,7 @@ const AddCategoryModal = ({ onSave, onCancel, isSaving }) => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="tipo">
+                        <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2" htmlFor="tipo">
                             Tipo da Categoria
                         </label>
                         <select
@@ -2439,7 +2430,7 @@ const AddAccountModal = ({ onSave, onCancel, isSaving }) => {
       >
           {/* Corpo do Modal */}
           <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Registrar Nova Conta</h3>
+              <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-4">Registrar Nova Conta</h3>
               
               <form onSubmit={handleSubmit}>
                   
@@ -2480,7 +2471,7 @@ const AddAccountModal = ({ onSave, onCancel, isSaving }) => {
                   </div>
 
                   {/* Campo 3: Saldo Inicial (Máscara e Ícone Dinâmico) */}
-                  <div className="mb-6">
+                  <div className="mb-4 sm:mb-6">
                       <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="saldoInicial">
                           Saldo Inicial
                       </label>
@@ -2725,11 +2716,11 @@ const AccountsScreen = () => {
   return (
       // O contêiner principal não precisa de "space-y-4" se o conteúdo for gerenciado por um scroll interno
       // Mas para manter a simplicidade do layout externo, mantemos o p-4.
-      <div className="p-4"> 
+      <div className="p-2 sm:p-4"> 
           
           {/* NOVO BLOCO DO CABEÇALHO: Contém o Título e o Botão + */}
           <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">Minhas Contas Bancárias</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Minhas Contas Bancárias</h2>
               
               {/* Botão Circular de Adicionar Nova Conta */}
               <button 
@@ -2790,22 +2781,22 @@ const AccountsScreen = () => {
                   style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
               >
                   <div className="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
-                      <h3 className="text-xl font-bold text-red-600 mb-4">Confirmar Exclusão</h3>
+                      <h3 className="text-base sm:text-xl font-bold text-red-600 mb-4">Confirmar Exclusão</h3>
                       <p className="text-gray-700 mb-6">
                           Tem certeza de que deseja excluir permanentemente a conta <span className="font-semibold">"{accountToDelete.nome}"</span>? 
                           Esta ação não pode ser desfeita.
                       </p>
-                      <div className="flex justify-end space-x-3">
+                      <div className="flex space-x-3">
                           <button
                               onClick={cancelDelete}
-                              className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150 font-medium"
+                              className="flex-1 px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150 font-medium"
                               disabled={isDeleting}
                           >
                               Cancelar
                           </button>
                           <button
                               onClick={deleteAccount}
-                              className={`px-4 py-2 text-white rounded-lg transition duration-150 font-medium cursor-pointer ${
+                              className={`flex-1 px-4 py-2 text-white rounded-lg transition duration-150 font-medium cursor-pointer ${
                                   isDeleting 
                                       ? 'bg-red-400 cursor-not-allowed flex items-center' 
                                       : 'bg-red-600 hover:bg-red-700'
@@ -2814,7 +2805,7 @@ const AccountsScreen = () => {
                           >
                               {isDeleting ? (
                                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Excluindo...</>
-                              ) : 'Excluir Permanentemente'}
+                              ) : 'Excluir'}
                           </button>
                       </div>
                   </div>
@@ -2857,7 +2848,7 @@ const CardItem = ({ card, onEdit, onDelete }) => {
   return (
       <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-lg border-l-4 border-r-4 border-opacity-70" style={{ borderColor: '#3b82f6' /* Cor azul para cartão */ }}>
           <div className="flex-1 min-w-0 mr-4">
-              <h4 className="text-xl font-bold truncate text-gray-900">{card.nome_cartao}</h4>
+              <h4 className="text-base sm:text-xl font-bold truncate text-gray-900">{card.nome_cartao}</h4>
               <p className="text-lg font-extrabold mt-1 text-blue-600">
                   {formatCurrency(limiteDisponivel, card.moeda)}
               </p>
@@ -2946,7 +2937,7 @@ const [nome_cartao, setNomeCartao] = useState('');
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
       >
           <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Registrar Novo Cartão</h3>
+              <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-4">Registrar Novo Cartão</h3>
               
               <form onSubmit={handleSubmit}>
                   
@@ -2966,7 +2957,7 @@ const [nome_cartao, setNomeCartao] = useState('');
                   </div>
 
                   {/* Moeda e Limite Inicial */}
-                  <div className="flex space-x-4 mb-4">
+                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mb-3 sm:mb-4">
                       <div className="flex-1">
                           <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="moedaCartao">Moeda</label>
                           <select
@@ -2980,21 +2971,21 @@ const [nome_cartao, setNomeCartao] = useState('');
                               required
                               disabled={isSaving}
                           >
-                              <option value="BRL">BRL</option>
-                              <option value="USD">USD</option>
-                              <option value="EUR">EUR</option>
+                              <option value="BRL">Real</option>
+                              <option value="USD">Dólar</option>
+                              <option value="EUR">Euro</option>
                           </select>
                       </div>
                       <div className="flex-1">
                           <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="limiteInicial">Limite Inicial</label>
-                          <div className="flex items-center border border-gray-300 rounded-lg focus-within:ring-green-500 focus-within:border-green-500">
+                          <div className="flex items-center w-full border border-gray-300 rounded-lg focus-within:ring-green-500 focus-within:border-green-500">
                               <span className="px-3 text-lg font-bold text-gray-600">{currencySymbol}</span>
                               <input
                                   id="limiteInicial"
                                   type="text"
                                   value={limite_inicial_input}
                                   onChange={handleValueChange}
-                                  className="flex-1 px-2 py-2 border-l border-gray-300 rounded-r-lg outline-none text-right"
+                                  className="flex-1 px-2 py-2 border-l border-gray-300 rounded-r-lg outline-none text-right w-full"
                                   placeholder="0,00"
                                   inputMode="decimal"
                                   required
@@ -3122,7 +3113,7 @@ const EditCardModal = ({ card, onSave, onCancel, isSaving }) => {
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
       >
           <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">Editar Cartão: {card.nome_cartao}</h3>
+              <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-4">Editar Cartão: {card.nome_cartao}</h3>
               <p className="text-sm text-gray-500 mb-4">Moeda do Cartão: <span className="font-semibold">{card.moeda}</span></p>
 
               <form onSubmit={handleSubmit}>
@@ -3240,7 +3231,7 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
     const [isSavingAccount, setIsSavingAccount] = useState(false);
 
     const [formData, setFormData] = useState({
-      tipo: '',
+      tipo: 'despesa',
       data_transacao: new Date().toISOString().substring(0, 10),
       valor_total: '',
       descricao: '',
@@ -3291,6 +3282,20 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
     useEffect(() => {
       fetchData();
     }, [fetchData]);
+
+    // Definir categoria e conta pré-selecionadas quando os dados carregarem
+    useEffect(() => {
+      if (categorias.length > 0 && !formData.id_categoria) {
+        const categoriaDespesa = categorias.find(cat => cat.tipo === 'despesa');
+        if (categoriaDespesa) {
+          setFormData(prev => ({ ...prev, id_categoria: categoriaDespesa.id }));
+        }
+      }
+      
+      if (contas.length > 0 && !formData.id_conta) {
+        setFormData(prev => ({ ...prev, id_conta: contas[0].id }));
+      }
+    }, [categorias, contas]);
 
     // Função para salvar nova categoria
     const saveNewCategory = async (categoryData) => {
@@ -3470,29 +3475,29 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
     }
 
   return (
-      <div className="p-4">
+      <div className="p-2 sm:p-4">
         <div className={`bg-white rounded-xl shadow-xl border-t-4 ${formData.tipo === 'receita' ? 'border-t-green-500' : 'border-t-red-500'} overflow-hidden`}>
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
               <button 
                   onClick={() => setTransactionSubView('debit_transactions_list')}
-                  className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                  className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                   aria-label="Voltar"
                 >
-                  <X size={24} />
+                  <X size={20} className="sm:size-[24]" />
               </button>
                 <div>
-                                <h2 className="text-xl font-bold text-gray-800">Registrar Transação</h2>
-                                <p className="text-gray-600 text-sm">Registre suas despesas e receitas</p>
+                                <h2 className="text-base sm:text-xl font-bold text-gray-800">Registrar Transação</h2>
+                                <p className="text-gray-600 text-xs sm:text-sm">Registre suas despesas e receitas</p>
                 </div>
               </div>
             </div>
           </div>
           
           {/* Form */}
-          <div className="p-6">
+          <div className="p-3 sm:p-6">
             <form onSubmit={handleSubmit}>
               {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-4" role="alert">
@@ -3500,83 +3505,134 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
                 </div>
               )}
 
+              {/* Data */}
+              <div className="mb-3 sm:mb-4">
+                <label htmlFor="data_transacao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Data:</label>
+                <input
+                  type="date"
+                  id="data_transacao"
+                  name="data_transacao"
+                  value={formData.data_transacao}
+                  onChange={handleChange}
+                  className={`w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg ${formData.tipo === 'receita' ? 'focus:ring-green-500 focus:border-green-500' : 'focus:ring-red-500 focus:border-red-500'} shadow-sm`}
+                  disabled={isSubmitting || showSuccessModal}
+                  required
+                />
+              </div>
+
               {/* Tipo */}
-              <div className="mb-4">
-                <label htmlFor="tipo" className="block text-sm font-semibold text-gray-700 mb-1">Tipo:</label>
+              <div className="mb-3 sm:mb-4">
+                <label htmlFor="tipo" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Tipo:</label>
                 <select
                   id="tipo"
                   name="tipo"
                   value={formData.tipo}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border-gray-300 rounded-lg ${formData.tipo === 'receita' ? 'focus:ring-green-500 focus:border-green-500' : 'focus:ring-red-500 focus:border-red-500'} shadow-sm`}
+                  className={`w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg ${formData.tipo === 'receita' ? 'focus:ring-green-500 focus:border-green-500' : 'focus:ring-red-500 focus:border-red-500'} shadow-sm`}
                   disabled={isSubmitting || showSuccessModal}
                   required
                 >
-                  <option value="">Selecione o tipo</option>
                   <option value="despesa">Despesa</option>
                   <option value="receita">Receita</option>
                 </select>
               </div>
 
-              {/* Data e Valor */}
-              <div className="flex space-x-3 mb-4">
-                <div className="flex-1">
-                  <label htmlFor="data_transacao" className="block text-sm font-semibold text-gray-700 mb-1">Data:</label>
+              {/* Categoria */}
+              <div className="mb-3 sm:mb-4">
+                <label htmlFor="id_categoria" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Categoria:</label>
+                <select
+                  id="id_categoria"
+                  name="id_categoria"
+                  value={formData.id_categoria}
+                  onChange={handleCategoryChange}
+                  className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 focus:ring-red-500 focus:border-red-500 rounded-lg shadow-sm"
+                  disabled={isSubmitting || showSuccessModal}
+                  required
+                >
+                  {categorias
+                    .filter(categoria => categoria.tipo === formData.tipo)
+                    .map(categoria => (
+                    <option key={categoria.id} value={categoria.id}>{categoria.nome}</option>
+                  ))}
+                  <option
+                    value="add_new_category"
+                    className="font-semibold text-red-600 bg-red-50"
+                  >
+                    + Adicionar Nova Categoria
+                  </option>
+                </select>
+              </div>
+
+              {/* Conta */}
+              <div className="mb-3 sm:mb-4">
+                <label htmlFor="id_conta" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta:</label>
+                <select
+                  id="id_conta"
+                  name="id_conta"
+                  value={formData.id_conta}
+                  onChange={handleAccountChange}
+                  className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 focus:ring-red-500 focus:border-red-500 rounded-lg shadow-sm"
+                  disabled={isSubmitting || showSuccessModal}
+                  required={contas.length > 0}
+                >
+                  <option value="">
+                    Selecione uma Conta
+                  </option>
+                  {contas.map(conta => (
+                    <option key={conta.id} value={conta.id}>{conta.nome} ({conta.moeda})</option>
+                  ))}
+                  <option
+                    value="add_new_account"
+                    className="font-semibold text-red-600 bg-red-50"
+                  >
+                    + Adicionar Nova Conta
+                  </option>
+                </select>
+              </div>
+
+              {/* Valor */}
+              <div className="mb-3 sm:mb-4">
+                <label htmlFor="valor_total" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor:</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-xs sm:text-sm text-gray-500">
+                      {(() => {
+                        const contaSelecionada = contas.find(conta => conta.id === parseInt(formData.id_conta));
+                        if (contaSelecionada) {
+                          switch (contaSelecionada.moeda) {
+                            case 'BRL': return 'R$';
+                            case 'USD': return '$';
+                            case 'EUR': return '€';
+                            default: return contaSelecionada.moeda;
+                          }
+                        }
+                        return 'R$';
+                      })()}
+                    </span>
+                  </div>
                   <input
-                    type="date"
-                    id="data_transacao"
-                    name="data_transacao"
-                    value={formData.data_transacao}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border-gray-300 rounded-lg ${formData.tipo === 'receita' ? 'focus:ring-green-500 focus:border-green-500' : 'focus:ring-red-500 focus:border-red-500'} shadow-sm`}
+                    type="text"
+                    id="valor_total"
+                    name="valor_total"
+                    value={formData.valor_total}
+                    onChange={handleValueChange}
+                    placeholder="0,00"
+                    className="w-full pl-10 pr-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
                     disabled={isSubmitting || showSuccessModal}
                     required
                   />
                 </div>
-
-                <div className="flex-1">
-                  <label htmlFor="valor_total" className="block text-sm font-semibold text-gray-700 mb-1">Valor:</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span className="text-gray-500 sm:text-sm">
-                        {(() => {
-                          const contaSelecionada = contas.find(conta => conta.id === formData.id_conta);
-                          if (contaSelecionada) {
-                            switch (contaSelecionada.moeda) {
-                              case 'BRL': return 'R$';
-                              case 'USD': return '$';
-                              case 'EUR': return '€';
-                              default: return contaSelecionada.moeda;
-                            }
-                          }
-                          return 'R$';
-                        })()}
-                      </span>
-                    </div>
-                    <input
-                      type="text"
-                      id="valor_total"
-                      name="valor_total"
-                      value={formData.valor_total}
-                      onChange={handleValueChange}
-                      placeholder="0,00"
-                      className="w-full pl-10 pr-3 py-2 border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
-                      disabled={isSubmitting || showSuccessModal}
-                      required
-                />
-          </div>
-      </div>
               </div>
 
               {/* Recorrência */}
-              <div className="mb-4">
-                <label htmlFor="recorrencia" className="block text-sm font-semibold text-gray-700 mb-1">Recorrência:</label>
+              <div className="mb-3 sm:mb-4">
+                <label htmlFor="recorrencia" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Recorrência:</label>
                 <select
                   id="recorrencia"
                   name="recorrencia"
                   value={formData.recorrencia}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-gray-300 focus:ring-red-500 focus:border-red-500 rounded-lg shadow-sm"
+                  className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 focus:ring-red-500 focus:border-red-500 rounded-lg shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
                   required
                 >
@@ -3585,92 +3641,39 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
                 </select>
               </div>
 
-              {/* Conta e Categoria */}
-              <div className="flex space-x-4 mb-4">
-                <div className="flex-1">
-                  <label htmlFor="id_conta" className="block text-sm font-semibold text-gray-700 mb-1">Conta:</label>
-                  <select
-                    id="id_conta"
-                    name="id_conta"
-                    value={formData.id_conta}
-                    onChange={handleAccountChange}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-red-500 focus:border-red-500 rounded-lg shadow-sm"
-                    disabled={isSubmitting || showSuccessModal}
-                    required={contas.length > 0}
-                  >
-                    <option value="">Selecione uma conta</option>
-                    {contas.map(conta => (
-                      <option key={conta.id} value={conta.id}>{conta.nome}</option>
-                    ))}
-                    <option
-                      value="add_new_account"
-                      className="font-semibold text-red-600 bg-red-50"
-                    >
-                      + Adicionar Nova Conta
-                    </option>
-                  </select>
-                </div>
-
-                <div className="flex-1">
-                  <label htmlFor="id_categoria" className="block text-sm font-semibold text-gray-700 mb-1">Categoria:</label>
-                  <select
-                    id="id_categoria"
-                    name="id_categoria"
-                    value={formData.id_categoria}
-                    onChange={handleCategoryChange}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-red-500 focus:border-red-500 rounded-lg shadow-sm"
-                    disabled={isSubmitting || showSuccessModal}
-                    required
-                  >
-                    <option value="">Selecione uma categoria</option>
-                    {categorias
-                      .filter(categoria => categoria.tipo === formData.tipo)
-                      .map(categoria => (
-                      <option key={categoria.id} value={categoria.id}>{categoria.nome}</option>
-                    ))}
-                    <option
-                      value="add_new_category"
-                      className="font-semibold text-red-600 bg-red-50"
-                    >
-                      + Adicionar Nova Categoria
-                    </option>
-                  </select>
-                </div>
-          </div>
-          
               {/* Descrição */}
-              <div className="mb-6">
-                <label htmlFor="descricao" className="block text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
+              <div className="mb-4 sm:mb-6">
+                <label htmlFor="descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
                 <textarea
                   id="descricao"
                   name="descricao"
                   value={formData.descricao}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
+                  className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
-                  placeholder="Descreva sua transação..."
+                  placeholder="Ex: Uber"
                   required
                 />
               </div>
 
               {/* Botões */}
-              <div className="flex space-x-3">
+              <div className="flex space-x-2 sm:space-x-3">
                 <button
                   type="button"
                   onClick={() => setTransactionSubView('debit_transactions_list')}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-2 text-xs sm:text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                   disabled={isSubmitting || showSuccessModal}
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className={`flex-1 px-4 py-2 ${formData.tipo === 'receita' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+                  className={`flex-1 px-4 py-2 text-xs sm:text-sm ${formData.tipo === 'receita' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium`}
                   disabled={isSubmitting || showSuccessModal}
                 >
                   {isSubmitting ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Registrando...</>
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin inline" /> Registrando...</>
                   ) : formData.tipo === 'receita' ? 'Registrar Receita' : 'Registrar Despesa'}
                 </button>
               </div>
@@ -3955,7 +3958,7 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
     }
 
     return (
-      <div className="p-4">
+      <div className="p-2 sm:p-4">
         <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-green-500 overflow-hidden">
           {/* Header */}
           <div className="px-6 py-4 border-b border-gray-200">
@@ -3963,21 +3966,21 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
               <div className="flex items-center">
                 <button 
                   onClick={goToMenu}
-                  className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                  className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                   aria-label="Voltar"
                 >
                   <X size={24} />
                 </button>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-800">Registrar Receita</h2>
-                  <p className="text-gray-600 text-sm">Registre seus ganhos e receitas</p>
+                  <h2 className="text-base sm:text-xl font-bold text-gray-800">Registrar Receita</h2>
+                  <p className="text-gray-600 text-xs sm:text-sm">Registre seus ganhos e receitas</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Form */}
-          <div className="p-6">
+          <div className="p-3 sm:p-6">
             <form onSubmit={handleSubmit}>
               {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-4" role="alert">
@@ -3986,23 +3989,23 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
               )}
 
               {/* Data e Valor */}
-              <div className="flex space-x-3 mb-4">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 mb-3 sm:mb-4">
                 <div className="flex-1">
-                  <label htmlFor="data_transacao" className="block text-sm font-semibold text-gray-700 mb-1">Data:</label>
+                  <label htmlFor="data_transacao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Data:</label>
                   <input
                     type="date"
                     id="data_transacao"
                     name="data_transacao"
                     value={formData.data_transacao}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 shadow-sm"
+                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 shadow-sm"
                     disabled={isSubmitting || showSuccessModal}
                     required
                   />
                 </div>
 
                 <div className="flex-1">
-                  <label htmlFor="valor_total" className="block text-sm font-semibold text-gray-700 mb-1">Valor:</label>
+                  <label htmlFor="valor_total" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor:</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <span className="text-gray-500 sm:text-sm">R$</span>
@@ -4024,13 +4027,13 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
 
               {/* Recorrência */}
               <div className="mb-4">
-                <label htmlFor="recorrencia" className="block text-sm font-semibold text-gray-700 mb-1">Recorrência:</label>
+                <label htmlFor="recorrencia" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Recorrência:</label>
                 <select
                   id="recorrencia"
                   name="recorrencia"
                   value={formData.recorrencia}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm"
+                  className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
                   required
                 >
@@ -4040,15 +4043,15 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
               </div>
 
               {/* Conta e Categoria */}
-              <div className="flex space-x-4 mb-4">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mb-3 sm:mb-4">
                 <div className="flex-1">
-                  <label htmlFor="id_conta" className="block text-sm font-semibold text-gray-700 mb-1">Conta:</label>
+                  <label htmlFor="id_conta" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta:</label>
                   <select
                     id="id_conta"
                     name="id_conta"
                     value={formData.id_conta}
                     onChange={handleAccountChange}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm"
+                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm"
                     disabled={isSubmitting || showSuccessModal}
                     required={contas.length > 0}
                   >
@@ -4066,13 +4069,13 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
                 </div>
 
                 <div className="flex-1">
-                  <label htmlFor="id_categoria" className="block text-sm font-semibold text-gray-700 mb-1">Categoria:</label>
+                  <label htmlFor="id_categoria" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Categoria:</label>
                   <select
                     id="id_categoria"
                     name="id_categoria"
                     value={formData.id_categoria}
                     onChange={handleCategoryChange}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm"
+                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-green-500 focus:border-green-500 rounded-lg shadow-sm"
                     disabled={isSubmitting || showSuccessModal}
                     required
                   >
@@ -4091,15 +4094,15 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
               </div>
 
               {/* Descrição */}
-              <div className="mb-6">
-                <label htmlFor="descricao" className="block text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
+              <div className="mb-4 sm:mb-6">
+                <label htmlFor="descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
                 <textarea
                   id="descricao"
                   name="descricao"
                   value={formData.descricao}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 shadow-sm"
+                  className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
                   placeholder="Descreva sua receita..."
                   required
@@ -4213,6 +4216,8 @@ const TransferTransactionScreen = ({ goToMenu }) => {
     useEffect(() => {
       fetchData();
     }, [fetchData]);
+
+
 
     // Função para filtrar contas destino baseado na moeda da conta origem
     const filterContasDestino = (contaOrigemId) => {
@@ -4389,29 +4394,29 @@ const TransferTransactionScreen = ({ goToMenu }) => {
     }
 
     return (
-      <div className="p-4">
-        <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-blue-500 overflow-hidden">
+      <div className="p-2 sm:p-4">
+        <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-yellow-500 overflow-hidden">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <button 
                   onClick={goToMenu}
-                  className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                  className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                   aria-label="Voltar"
                 >
-                  <X size={24} />
+                  <X size={20} className="sm:size-[24]" />
                 </button>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-800">Registrar Transferência</h2>
-                  <p className="text-gray-600 text-sm">Transfira valores entre suas contas</p>
+                  <h2 className="text-base sm:text-xl font-bold text-gray-800">Registrar Transferência</h2>
+                  <p className="text-gray-600 text-xs sm:text-sm">Transfira valores entre suas contas</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Form */}
-          <div className="p-6">
+          <div className="p-3 sm:p-6">
             <form onSubmit={handleSubmit}>
               {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-4" role="alert">
@@ -4419,53 +4424,31 @@ const TransferTransactionScreen = ({ goToMenu }) => {
                 </div>
               )}
 
-              {/* Data e Valor */}
-              <div className="flex space-x-3 mb-4">
-                <div className="flex-1">
-                  <label htmlFor="data_transacao" className="block text-sm font-semibold text-gray-700 mb-1">Data:</label>
-                  <input
-                    type="date"
-                    id="data_transacao"
-                    name="data_transacao"
-                    value={formData.data_transacao}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                    disabled={isSubmitting || showSuccessModal}
-                    required
-                  />
-                </div>
-
-                <div className="flex-1">
-                  <label htmlFor="valor_total" className="block text-sm font-semibold text-gray-700 mb-1">Valor:</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <span className="text-gray-500 sm:text-sm">R$</span>
-                    </div>
-                    <input
-                      type="text"
-                      id="valor_total"
-                      name="valor_total"
-                      value={formData.valor_total}
-                      onChange={handleValueChange}
-                      placeholder="0,00"
-                      className="w-full pl-10 pr-3 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                      disabled={isSubmitting || showSuccessModal}
-                      required
-                    />
-                  </div>
-                </div>
+              {/* Data */}
+              <div className="mb-3 sm:mb-4">
+                <label htmlFor="data_transacao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Data:</label>
+                <input
+                  type="date"
+                  id="data_transacao"
+                  name="data_transacao"
+                  value={formData.data_transacao}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  disabled={isSubmitting || showSuccessModal}
+                  required
+                />
               </div>
 
               {/* Conta Origem e Conta Destino */}
-              <div className="flex space-x-4 mb-4">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mb-3 sm:mb-4">
                 <div className="flex-1">
-                  <label htmlFor="id_conta_origem" className="block text-sm font-semibold text-gray-700 mb-1">Conta de Origem:</label>
+                  <label htmlFor="id_conta_origem" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta de Origem:</label>
                   <select
                     id="id_conta_origem"
                     name="id_conta_origem"
                     value={formData.id_conta_origem}
                     onChange={handleContaOrigemChange}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
+                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
                     disabled={isSubmitting || showSuccessModal}
                     required={contas.length > 0}
                   >
@@ -4483,17 +4466,17 @@ const TransferTransactionScreen = ({ goToMenu }) => {
                 </div>
 
                 <div className="flex-1">
-                  <label htmlFor="id_conta_destino" className="block text-sm font-semibold text-gray-700 mb-1">Conta de Destino:</label>
+                  <label htmlFor="id_conta_destino" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta de Destino:</label>
                   <select
                     id="id_conta_destino"
                     name="id_conta_destino"
                     value={formData.id_conta_destino}
                     onChange={handleContaDestinoChange}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
+                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
                     disabled={isSubmitting || showSuccessModal || !formData.id_conta_origem}
                     required
                   >
-                    <option value="">{formData.id_conta_origem ? 'Selecione a conta de destino' : 'Selecione primeiro a conta de origem'}</option>
+                    <option value="">{formData.id_conta_origem ? 'Selecione a conta de destino' : 'Selecione a conta de destino'}</option>
                     {contasDestino.map(conta => (
                       <option key={conta.id} value={conta.id}>{conta.nome} ({conta.moeda})</option>
                     ))}
@@ -4507,39 +4490,73 @@ const TransferTransactionScreen = ({ goToMenu }) => {
                 </div>
               </div>
 
+              {/* Valor */}
+              <div className="mb-3 sm:mb-4">
+                <label htmlFor="valor_total" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor:</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="text-xs sm:text-sm text-gray-500">
+                      {(() => {
+                        const contaOrigem = contas.find(c => c.id === parseInt(formData.id_conta_origem));
+                        if (contaOrigem) {
+                          switch (contaOrigem.moeda) {
+                            case 'BRL': return 'R$';
+                            case 'USD': return '$';
+                            case 'EUR': return '€';
+                            default: return contaOrigem.moeda;
+                          }
+                        }
+                        return 'R$';
+                      })()}
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    id="valor_total"
+                    name="valor_total"
+                    value={formData.valor_total}
+                    onChange={handleValueChange}
+                    placeholder="0,00"
+                    className="w-full pl-10 pr-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                    disabled={isSubmitting || showSuccessModal}
+                    required
+                  />
+                </div>
+              </div>
+
               {/* Descrição */}
-              <div className="mb-6">
-                <label htmlFor="descricao" className="block text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
+              <div className="mb-4 sm:mb-6">
+                <label htmlFor="descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
                 <textarea
                   id="descricao"
                   name="descricao"
                   value={formData.descricao}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
-                  placeholder="Descreva a transferência..."
+                  placeholder="Ex: Transferência"
                   required
                 />
               </div>
 
               {/* Botões */}
-              <div className="flex space-x-3">
+              <div className="flex space-x-2 sm:space-x-3">
                 <button
                   type="button"
                   onClick={goToMenu}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                   disabled={isSubmitting || showSuccessModal}
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isSubmitting || showSuccessModal}
                 >
                   {isSubmitting ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Transferindo...</>
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin inline" /> Transferindo...</>
                   ) : 'Registrar Transferência'}
                 </button>
               </div>
@@ -4835,7 +4852,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
     }
 
     return (
-      <div className="p-4">
+      <div className="p-2 sm:p-4">
         <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-purple-500 overflow-hidden">
           {/* Header */}
           <div className="px-6 py-4 border-b border-gray-200">
@@ -4843,21 +4860,21 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
               <div className="flex items-center">
                 <button 
                   onClick={goToMenu}
-                  className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                  className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                   aria-label="Voltar"
                 >
                   <X size={24} />
                 </button>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-800">Registrar Conversão</h2>
-                  <p className="text-gray-600 text-sm">Converta valores entre diferentes moedas</p>
+                  <h2 className="text-base sm:text-xl font-bold text-gray-800">Registrar Conversão</h2>
+                  <p className="text-gray-600 text-xs sm:text-sm">Converta valores entre diferentes moedas</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Form */}
-          <div className="p-6">
+          <div className="p-3 sm:p-6">
             <form onSubmit={handleSubmit}>
               {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-4" role="alert">
@@ -4867,29 +4884,29 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
 
               {/* Data */}
               <div className="mb-4">
-                <label htmlFor="data_transacao" className="block text-sm font-semibold text-gray-700 mb-1">Data:</label>
+                <label htmlFor="data_transacao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Data:</label>
                 <input
                   type="date"
                   id="data_transacao"
                   name="data_transacao"
                   value={formData.data_transacao}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
+                  className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
                   required
                 />
               </div>
 
               {/* Conta Origem e Conta Destino */}
-              <div className="flex space-x-4 mb-4">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mb-3 sm:mb-4">
                 <div className="flex-1">
-                  <label htmlFor="id_conta_origem" className="block text-sm font-semibold text-gray-700 mb-1">Conta de Origem:</label>
+                  <label htmlFor="id_conta_origem" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta de Origem:</label>
                   <select
                     id="id_conta_origem"
                     name="id_conta_origem"
                     value={formData.id_conta_origem}
                     onChange={handleContaOrigemChange}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg shadow-sm"
+                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg shadow-sm"
                     disabled={isSubmitting || showSuccessModal}
                     required={contas.length > 0}
                   >
@@ -4907,13 +4924,13 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
                 </div>
 
                 <div className="flex-1">
-                  <label htmlFor="id_conta_destino" className="block text-sm font-semibold text-gray-700 mb-1">Conta de Destino:</label>
+                  <label htmlFor="id_conta_destino" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta de Destino:</label>
                   <select
                     id="id_conta_destino"
                     name="id_conta_destino"
                     value={formData.id_conta_destino}
                     onChange={handleContaDestinoChange}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg shadow-sm"
+                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg shadow-sm"
                     disabled={isSubmitting || showSuccessModal || !formData.id_conta_origem}
                     required
                   >
@@ -4932,9 +4949,9 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
               </div>
 
               {/* Valores */}
-              <div className="flex space-x-3 mb-4">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 mb-3 sm:mb-4">
                 <div className="flex-1">
-                  <label htmlFor="valor_origem" className="block text-sm font-semibold text-gray-700 mb-1">Valor de Origem:</label>
+                  <label htmlFor="valor_origem" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor de Origem:</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <span className="text-gray-500 sm:text-sm">{simboloOrigem}</span>
@@ -4954,7 +4971,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
                 </div>
 
                 <div className="flex-1">
-                  <label htmlFor="valor_destino" className="block text-sm font-semibold text-gray-700 mb-1">Valor de Destino:</label>
+                  <label htmlFor="valor_destino" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor de Destino:</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <span className="text-gray-500 sm:text-sm">{simboloDestino}</span>
@@ -4976,7 +4993,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
 
               {/* Taxa de Câmbio */}
               <div className="mb-4">
-                <label htmlFor="taxa_cambio" className="block text-sm font-semibold text-gray-700 mb-1">Taxa de Câmbio:</label>
+                <label htmlFor="taxa_cambio" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Taxa de Câmbio:</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <span className="text-gray-500 sm:text-sm">{simboloOrigem}</span>
@@ -4996,15 +5013,15 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
               </div>
 
               {/* Descrição */}
-              <div className="mb-6">
-                <label htmlFor="descricao" className="block text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
+              <div className="mb-4 sm:mb-6">
+                <label htmlFor="descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
                 <textarea
                   id="descricao"
                   name="descricao"
                   value={formData.descricao}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
+                  className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
                   placeholder="Descreva a conversão..."
                   required
@@ -5819,7 +5836,7 @@ const FaturasListScreen = ({ goToMenu }) => {
 
     if (isLoading) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="flex items-center justify-center h-64">
                     <LoadingSpinner />
                 </div>
@@ -5829,12 +5846,12 @@ const FaturasListScreen = ({ goToMenu }) => {
 
     if (error) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="text-center py-8">
                     <p className="text-red-500 mb-4">{error}</p>
                     <button
                         onClick={fetchData}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                        className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
                     >
                         Tentar Novamente
                     </button>
@@ -5846,7 +5863,7 @@ const FaturasListScreen = ({ goToMenu }) => {
     // Renderizar modal de pagamento
     if (currentView === 'payment') {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 {/* Modal de Pagamento */}
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
@@ -5861,14 +5878,14 @@ const FaturasListScreen = ({ goToMenu }) => {
                                     <X size={24} />
                                 </button>
                                 <div>
-                                    <h2 className="text-xl font-bold text-gray-900">Pagar Fatura</h2>
+                                    <h2 className="text-base sm:text-xl font-bold text-gray-900">Pagar Fatura</h2>
                                     <p className="text-sm text-gray-600">Confirme os detalhes antes de pagar</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Conteúdo do Modal */}
-                        <div className="p-6">
+                        <div className="p-3 sm:p-6">
                             {isLoadingPayment ? (
                                 <div className="flex justify-center items-center py-12">
                                     <LoadingSpinner />
@@ -5876,7 +5893,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                             ) : faturaToPay ? (
                                 <>
                                     {/* Informações da Fatura */}
-                                    <div className="mb-6">
+                                    <div className="mb-4 sm:mb-6">
                                         <h3 className="text-lg font-semibold text-gray-900 mb-2">
                                             {faturaToPay.cartao} - {faturaToPay.fatura_referencia}
                                         </h3>
@@ -5886,7 +5903,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                                     <div className="space-y-3 mb-6">
                                         <h4 className="text-md font-medium text-gray-700">Parcelas a Pagar:</h4>
                                         {parcelas.map((parcela, index) => (
-                                            <div key={index} className="bg-gray-50 rounded-lg p-4 border">
+                                            <div key={index} className="bg-gray-50 rounded-lg p-3 sm:p-4 border">
                                                 <div className="flex justify-between items-center">
                                                     <div className="flex-1">
                                                         <div className="font-medium text-gray-900 mb-1">
@@ -5983,7 +6000,7 @@ const FaturasListScreen = ({ goToMenu }) => {
 
                             {/* Detalhes da Fatura */}
                             {faturaToPay && (
-                                <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                                <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-6">
                                     <div className="text-sm text-gray-600 space-y-1">
                                         <div className="font-medium text-gray-800 mb-2">Detalhes da Fatura:</div>
                                         <div>• Cartão: {faturaToPay.cartao}</div>
@@ -5995,7 +6012,7 @@ const FaturasListScreen = ({ goToMenu }) => {
 
                             {/* Dropdown de Contas */}
                             {faturaToPay && (
-                                <div className="mb-6">
+                                <div className="mb-4 sm:mb-6">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Conta de Pagamento ({faturaToPay.moeda}):
                                     </label>
@@ -6008,7 +6025,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                                                 setSelectedPaymentAccount(e.target.value);
                                             }
                                         }}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
                                         <option value="">Selecione uma conta</option>
                                         {Object.values(contasInfo)
@@ -6070,23 +6087,23 @@ const FaturasListScreen = ({ goToMenu }) => {
                                         <X size={24} />
                                     </button>
                                     <div>
-                                        <h2 className="text-xl font-bold text-gray-900">Adicionar Juros</h2>
+                                        <h2 className="text-base sm:text-xl font-bold text-gray-900">Adicionar Juros</h2>
                                         <p className="text-sm text-gray-600">Informe o valor dos juros para esta fatura</p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Conteúdo do Modal */}
-                            <div className="p-6">
+                            <div className="p-3 sm:p-6">
                                 {/* Informações da Fatura */}
-                                <div className="mb-6">
+                                <div className="mb-4 sm:mb-6">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                                         {faturaToPay?.cartao} - {faturaToPay?.fatura_referencia}
                                     </h3>
                                 </div>
                                 
                                 {/* Campo de Valor */}
-                                <div className="mb-6">
+                                <div className="mb-4 sm:mb-6">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Valor dos Juros
                                     </label>
@@ -6146,7 +6163,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                                 </p>
                                 
                                 {jurosToDelete && (
-                                    <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                                    <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-6 text-left">
                                         <div className="text-sm text-gray-600">
                                             <div className="font-medium mb-2">Detalhes dos Juros:</div>
                                             <div>• Descrição: {jurosToDelete.descricao_compra}</div>
@@ -6191,16 +6208,16 @@ const FaturasListScreen = ({ goToMenu }) => {
                                         <X size={24} />
                                     </button>
                                     <div>
-                                        <h2 className="text-xl font-bold text-gray-900">Editar Parcela</h2>
+                                        <h2 className="text-base sm:text-xl font-bold text-gray-900">Editar Parcela</h2>
                                         <p className="text-sm text-gray-600">Altere o valor da parcela e visualize o impacto</p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Conteúdo do Modal */}
-                            <div className="p-6">
+                            <div className="p-3 sm:p-6">
                                 {/* Informações da Parcela */}
-                                <div className="mb-6">
+                                <div className="mb-4 sm:mb-6">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                                         {parcelaToEdit?.descricao_compra} - Parcela {parcelaToEdit?.parcela_referencia}
                                     </h3>
@@ -6210,7 +6227,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                                 </div>
                                 
                                 {/* Campo de Novo Valor */}
-                                <div className="mb-6">
+                                <div className="mb-4 sm:mb-6">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Novo Valor da Parcela
                                     </label>
@@ -6242,7 +6259,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                                     <button
                                         onClick={handleConfirmEditParcela}
                                         disabled={isEditingParcela || !novoValorParcela}
-                                        className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                                        className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-yellow-500 border border-transparent rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
                                     >
                                         {isEditingParcela ? 'Salvando...' : 'Confirmar Alteração'}
                                     </button>
@@ -6258,7 +6275,7 @@ const FaturasListScreen = ({ goToMenu }) => {
 
     // Renderizar lista de faturas (view padrão)
     return (
-        <div className="p-4">
+        <div className="p-2 sm:p-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
@@ -6411,7 +6428,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                             </p>
                             
                             {faturaToDelete && (
-                                <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                                <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-6 text-left">
                                     <div className="text-sm text-gray-600">
                                         <div className="font-medium mb-2">Detalhes da Fatura:</div>
                                         <div>• Cartão: {faturaToDelete.cartao}</div>
@@ -6468,12 +6485,12 @@ const ManageTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
     const SelectionCard = ({ title, icon: Icon, color, description, action }) => (
         <button
             onClick={action}
-            className={`flex flex-col items-center justify-center p-6 h-36 rounded-xl shadow-lg transition-transform duration-150 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer w-full text-center`}
+            className={`flex flex-col items-center justify-center p-3 sm:p-6 h-24 sm:h-36 rounded-xl shadow-lg transition-transform duration-150 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer w-full text-center`}
             style={{ backgroundColor: `${color}10`, border: `1px solid ${color}` }}
         >
-            <Icon size={40} className={`mb-3`} style={{ color }} />
-            <span className="text-xl font-bold text-gray-800">{title}</span>
-            <p className="text-sm text-gray-500 mt-1">
+            <Icon size={28} className={`sm:size-[40] mb-2 sm:mb-3`} style={{ color }} />
+            <span className="text-base sm:text-xl font-bold text-gray-800">{title}</span>
+            <p className="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1">
                 {description}
             </p>
         </button>
@@ -6553,25 +6570,25 @@ const ManageTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
                 return (
                     <>
                         <div className="flex items-center mb-6">
-                            <h2 className="text-2xl font-bold text-gray-800">Gerenciar Transações</h2>
+                            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Gerenciar Transações</h2>
                         </div>
                         
-                        <p className="text-gray-600 mb-6">Selecione o tipo de transação que deseja gerenciar:</p>
+                        <p className="text-sm sm:text-base text-gray-600 mb-6">Selecione o tipo de transação que deseja gerenciar:</p>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             
                             <SelectionCard
                                 title="Transação no Débito"
                                 icon={DollarSign}
                                 color="#ef4444" // Vermelho para Débito
-                                description="Gerenciar transações de débito"
+                                description="Gerenciar transações no débito"
                                 action={() => setCurrentView('debit_transactions_list')}
                             />
                             
                             <SelectionCard
                                 title="Transação no Crédito"
                                 icon={CreditCard}
-                                color="#f59e0b" // Laranja para Crédito
+                                color="#3b82f6" // Azul para Crédito
                                 description="Gerenciar transações de crédito"
                                 action={() => setCurrentView('credit_transactions_list')}
                             />
@@ -6579,7 +6596,7 @@ const ManageTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
                             <SelectionCard
                                 title="Transferência"
                                 icon={Layers}
-                                color="#3b82f6" // Azul para Transferência
+                                color="#f59e0b" // Amarelo para Transferência
                                 description="Gerenciar transferências"
                                 action={() => setCurrentView('transfer_transactions_list')}
                             />
@@ -6607,7 +6624,7 @@ const ManageTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
     };
 
     return (
-        <div className="p-4">
+        <div className="p-2 sm:p-4">
             {renderSubView()}
         </div>
     );
@@ -6632,6 +6649,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
     const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
     const [showAddAccountModal, setShowAddAccountModal] = useState(false);
     const [editFormData, setEditFormData] = useState({
+        data_transacao: '',
         tipo: '',
         id_categoria: '',
         id_conta: '',
@@ -6645,6 +6663,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
     const handleEditClick = (transacao) => {
         setTransactionToEdit(transacao);
         setEditFormData({
+            data_transacao: transacao.data_transacao ? transacao.data_transacao.substring(0, 10) : '',
             tipo: transacao.tipo,
             id_categoria: transacao.id_categoria,
             id_conta: transacao.id_conta,
@@ -6668,6 +6687,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         setShowEditModal(false);
         setTransactionToEdit(null);
         setEditFormData({
+            data_transacao: '',
             tipo: '',
             id_categoria: '',
             id_conta: '',
@@ -6896,7 +6916,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
     if (isLoading) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="flex justify-center items-center h-64">
                     <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
                 </div>
@@ -6905,38 +6925,38 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
     }
 
     return (
-        <div className="p-4">
+        <div className="p-2 sm:p-4">
             <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-red-500 overflow-hidden">
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <button 
                                 onClick={goToMenu}
-                                className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                                 aria-label="Voltar"
                             >
-                                <X size={24} />
+                                <X size={20} className="sm:size-[24]" />
                             </button>
                             <div>
-                                <h2 className="text-xl font-bold text-gray-800">Transações de Débito</h2>
-                                <p className="text-gray-600 text-sm">Gerencie suas transações de débito</p>
+                                <h2 className="text-base sm:text-xl font-bold text-gray-800">Transações no Débito</h2>
+                                <p className="text-gray-600 text-xs sm:text-sm">Gerencie suas transações de débito</p>
                             </div>
                         </div>
                         <button
                             onClick={() => setTransactionSubView('register_expense')}
-                            className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                            className="p-2 sm:p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
                             aria-label="Adicionar nova transação"
                         >
-                            <Plus size={24} />
+                            <Plus size={20} className="sm:size-[24]" />
                         </button>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-3 sm:p-6">
                     {error && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-4" role="alert">
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-xs sm:text-sm font-medium mb-4" role="alert">
                             {error}
                         </div>
                     )}
@@ -6944,57 +6964,57 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
                     {transacoes.length === 0 ? (
                         <div className="text-center py-12">
                             <CreditCard className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium text-gray-900 mb-2">Nenhuma transação encontrada</h3>
-                            <p className="text-gray-500">Você ainda não possui transações de débito registradas.</p>
+                            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Nenhuma transação encontrada</h3>
+                            <p className="text-sm sm:text-base text-gray-500">Você ainda não possui transações de débito registradas.</p>
                         </div>
                     ) : (
-                        <div className="space-y-3">
+                        <div className="space-y-2 sm:space-y-3">
                             {transacoes.map((transacao) => (
-                                <div key={transacao.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                                <div key={transacao.id} className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors">
                                     <div className="flex items-center justify-between">
-                                        <div className="flex-1">
-                                            <div className="flex items-center space-x-3 mb-2">
-                                                <span className="text-sm text-gray-500">
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex flex-wrap items-center gap-2 sm:space-x-3 mb-2">
+                                                <span className="text-xs sm:text-sm text-gray-500">
                                                     {formatDate(transacao.data_transacao)}
                                                 </span>
-                                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeBgColor(transacao.tipo)} ${getTypeColor(transacao.tipo)}`}>
+                                                <span className={`px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium ${getTypeBgColor(transacao.tipo)} ${getTypeColor(transacao.tipo)}`}>
                                                     {transacao.tipo === 'receita' ? 'Receita' : 'Despesa'}
                                                 </span>
-                                                <span className="text-sm text-gray-500">
+                                                <span className="text-xs sm:text-sm text-gray-500">
                                                     {transacao.recorrencia}
                                                 </span>
                                             </div>
                                             
-                                            <p className="text-gray-800 font-medium mb-1">
+                                            <p className="text-sm sm:text-base text-gray-800 font-medium mb-1 truncate">
                                                 {truncateDescription(transacao.descricao)}
                                             </p>
                                             
-                                            <div className="flex items-center space-x-4 text-sm text-gray-600">
-                                                <span className="flex items-center">
+                                            <div className="flex flex-wrap items-center gap-x-2 sm:space-x-4 text-xs sm:text-sm text-gray-600">
+                                                <span className="flex items-center whitespace-nowrap">
                                                     <span className="mr-1">{getCurrencyIcon(transacao.moeda)}</span>
                                                     {transacao.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                                 </span>
-                                                <span>•</span>
-                                                <span>{transacao.nome_conta}</span>
-                                                <span>•</span>
-                                                <span>{transacao.nome_categoria}</span>
+                                                <span className="hidden sm:inline">•</span>
+                                                <span className="truncate">{transacao.nome_conta}</span>
+                                                <span className="hidden sm:inline">•</span>
+                                                <span className="truncate">{transacao.nome_categoria}</span>
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-center space-x-2 ml-4">
+                                        <div className="flex items-center space-x-1 sm:space-x-2 ml-2 sm:ml-4 flex-shrink-0">
                                             <button
                                                 onClick={() => handleEditClick(transacao)}
-                                                className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
+                                                className="p-1.5 sm:p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
                                                 aria-label="Editar transação"
                                             >
-                                                <Edit size={18} />
+                                                <Edit size={16} className="sm:size-[18]" />
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteClick(transacao)}
-                                                className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
+                                                className="p-1.5 sm:p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
                                                 aria-label="Excluir transação"
                                             >
-                                                <Trash2 size={18} />
+                                                <Trash2 size={16} className="sm:size-[18]" />
                                             </button>
                                         </div>
                                     </div>
@@ -7007,39 +7027,47 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
             {/* Modal de Edição de Transação */}
             {showEditModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-xl shadow-xl overflow-hidden w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
-                        {/* Header */}
-                        <div className="px-6 py-4 border-b border-gray-200">
-                            <div className="flex items-center">
-                                <button 
-                                    onClick={handleCloseEditModal}
-                                    className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
-                                    aria-label="Fechar"
-                                >
-                                    <X size={24} />
-                                </button>
-                                <div>
-                                    <h2 className="text-xl font-bold text-gray-800">Editar Transação</h2>
-                                    <p className="text-gray-600 text-sm">Modifique os dados da transação</p>
-                                </div>
+                <div 
+                    className="fixed inset-0 flex items-start justify-center z-50 pt-8 sm:pt-12"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                >
+                    <div className={`bg-white rounded-lg border-t-4 p-3 sm:p-6 max-w-md w-full mx-4 max-h-[calc(100vh-2rem)] sm:max-h-[90vh] overflow-y-auto ${editFormData.tipo === 'receita' ? 'border-t-green-500' : 'border-t-red-500'}`}>
+                        <div className="flex items-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
+                            <div className={`w-8 h-8 sm:w-10 sm:h-10 ${editFormData.tipo === 'receita' ? 'bg-green-100' : 'bg-red-100'} rounded-full flex items-center justify-center`}>
+                                <Edit className={`h-4 w-4 sm:h-5 sm:w-5 ${editFormData.tipo === 'receita' ? 'text-green-600' : 'text-red-600'}`} />
+                            </div>
+                            <div>
+                                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Editar Transação</h3>
+                                <p className="text-sm sm:text-base text-gray-600">Altere os dados da transação</p>
                             </div>
                         </div>
-
-                        {/* Formulário */}
-                        <div className="p-6">
                         
-                        <form onSubmit={(e) => { e.preventDefault(); handleConfirmEdit(); }} className="space-y-4">
+                        <form onSubmit={(e) => { e.preventDefault(); handleConfirmEdit(); }}>
+                            {/* Data */}
+                            <div className="mb-3 sm:mb-4">
+                                <label htmlFor="edit_data_transacao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Data:</label>
+                                <input
+                                    type="date"
+                                    id="edit_data_transacao"
+                                    value={editFormData.data_transacao || ''}
+                                    onChange={(e) => setEditFormData(prev => ({ ...prev, data_transacao: e.target.value }))}
+                                    className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
+                                    required
+                                    disabled={isEditing}
+                                />
+                            </div>
+
                             {/* Tipo */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Tipo
+                            <div className="mb-3 sm:mb-4">
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
+                                    Tipo:
                                 </label>
                                 <select
                                     value={editFormData.tipo}
                                     onChange={(e) => handleEditFormChange('tipo', e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
                                     required
+                                    disabled={isEditing}
                                 >
                                     <option value="">Selecione o tipo</option>
                                     <option value="receita">Receita</option>
@@ -7048,9 +7076,9 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
                             </div>
 
                             {/* Categoria */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Categoria
+                            <div className="mb-3 sm:mb-4">
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
+                                    Categoria:
                                 </label>
                                 <select
                                     value={editFormData.id_categoria}
@@ -7061,8 +7089,9 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
                                             handleEditFormChange('id_categoria', e.target.value);
                                         }
                                     }}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
                                     required
+                                    disabled={isEditing}
                                 >
                                     <option value="">Selecione uma categoria</option>
                                     {categorias
@@ -7073,16 +7102,16 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
                                             </option>
                                         ))
                                     }
-                                    <option value="add_new" className="text-blue-600 font-medium">
+                                    <option value="add_new" className="text-red-600 font-medium">
                                         + Adicionar Nova Categoria
                                     </option>
                                 </select>
                             </div>
 
                             {/* Conta */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Conta
+                            <div className="mb-3 sm:mb-4">
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
+                                    Conta:
                                 </label>
                                 <select
                                     value={editFormData.id_conta}
@@ -7093,102 +7122,121 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
                                             handleEditFormChange('id_conta', e.target.value);
                                         }
                                     }}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
                                     required
+                                    disabled={isEditing}
                                 >
                                     <option value="">Selecione uma conta</option>
                                     {contas.map(conta => (
                                         <option key={conta.id} value={conta.id}>
-                                            {conta.nome}
+                                            {conta.nome} ({conta.moeda})
                                         </option>
                                     ))}
-                                    <option value="add_new_account" className="text-blue-600 font-medium">
+                                    <option value="add_new_account" className="text-red-600 font-medium">
                                         + Adicionar Nova Conta
                                     </option>
                                 </select>
                             </div>
 
                             {/* Valor */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Valor
+                            <div className="mb-3 sm:mb-4">
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
+                                    Valor:
                                 </label>
-                                <input
-                                    type="text"
-                                    value={editFormData.valor}
-                                    onChange={handleValueChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    placeholder="0,00"
-                                    required
-                                />
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span className="text-xs sm:text-sm text-gray-500">
+                                            {(() => {
+                                                if (!editFormData.id_conta) return 'R$';
+                                                const contaSelecionada = contas.find(c => c.id === parseInt(editFormData.id_conta));
+                                                if (contaSelecionada) {
+                                                    switch (contaSelecionada.moeda) {
+                                                        case 'BRL': return 'R$';
+                                                        case 'USD': return '$';
+                                                        case 'EUR': return '€';
+                                                        default: return contaSelecionada.moeda;
+                                                    }
+                                                }
+                                                return 'R$';
+                                            })()}
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={editFormData.valor}
+                                        onChange={handleValueChange}
+                                        placeholder="0,00"
+                                        className="w-full pl-10 pr-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
+                                        required
+                                        disabled={isEditing}
+                                    />
+                                </div>
                             </div>
 
                             {/* Descrição */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Descrição
+                            <div className="mb-3 sm:mb-4">
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
+                                    Descrição:
                                 </label>
                                 <textarea
                                     value={editFormData.descricao}
                                     onChange={(e) => handleEditFormChange('descricao', e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    rows="3"
+                                    className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
+                                    rows={3}
                                     placeholder="Descreva a transação"
                                     required
+                                    disabled={isEditing}
                                 />
                             </div>
 
                             {/* Recorrência */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Recorrência
+                            <div className="mb-4 sm:mb-6">
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
+                                    Recorrência:
                                 </label>
                                 <select
                                     value={editFormData.recorrencia}
                                     onChange={(e) => handleEditFormChange('recorrencia', e.target.value)}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm"
                                     required
+                                    disabled={isEditing}
                                 >
-                                    <option value="">Selecione a recorrência</option>
-                                    <option value="Fixo">Fixo</option>
                                     <option value="Esporadico">Esporádico</option>
+                                    <option value="Fixo">Fixo</option>
                                 </select>
                             </div>
 
                             {/* Botões */}
-                            <div className="flex space-x-3 pt-4">
+                            <div className="flex space-x-2 sm:space-x-3">
                                 <button
                                     type="button"
                                     onClick={handleCloseEditModal}
                                     disabled={isEditing}
-                                    className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 disabled:opacity-50"
+                                    className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={isEditing}
-                                    className="flex-1 px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200 disabled:opacity-50 flex items-center justify-center"
+                                    className={`flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm ${editFormData.tipo === 'receita' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium`}
                                 >
                                     {isEditing ? (
-                                        <>
-                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                            Salvando...
-                                        </>
-                                    ) : (
-                                        'Salvar'
-                                    )}
+                                        <><Loader2 className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin inline" /> Salvando...</>
+                                    ) : 'Salvar'}
                                 </button>
                             </div>
                         </form>
-                        </div>
                     </div>
                 </div>
             )}
 
             {/* Modal de Confirmação de Exclusão */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div 
+                    className="fixed inset-0 flex items-center justify-center z-50"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                >
                     <div className="bg-white rounded-xl p-6 w-96 mx-4 shadow-2xl">
                         <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
                             <Trash2 className="w-6 h-6 text-red-600" />
@@ -7198,7 +7246,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
                             Excluir Transação
                         </h3>
                         
-                        <p className="text-gray-600 text-center mb-6">
+                        <p className="text-xs sm:text-base text-gray-600 text-center mb-6">
                             Tem certeza que deseja excluir esta transação? Esta ação não pode ser desfeita.
                         </p>
                         
@@ -7435,7 +7483,7 @@ const CreditTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
     if (isLoading) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="flex items-center justify-center h-64">
                     <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
                 </div>
@@ -7445,7 +7493,7 @@ const CreditTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
     if (error) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium">
                     {error}
                 </div>
@@ -7454,84 +7502,84 @@ const CreditTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
     }
 
     return (
-        <div className="p-4">
-            <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-blue-500 overflow-hidden">
+        <div className="p-2 sm:p-4">
+            <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-yellow-500 overflow-hidden">
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <button 
                                 onClick={goToMenu}
-                                className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                                 aria-label="Voltar"
                             >
-                                <X size={24} />
+                                <X size={20} className="sm:size-[24]" />
                             </button>
                             <div>
-                                <h2 className="text-xl font-bold text-gray-800">Transações de Crédito</h2>
-                                <p className="text-gray-600 text-sm">Gerencie suas transações de crédito</p>
+                                <h2 className="text-base sm:text-xl font-bold text-gray-800">Transações no Crédito</h2>
+                                <p className="text-gray-600 text-xs sm:text-sm">Gerencie suas transações de crédito</p>
                             </div>
                         </div>
                         <button
                             onClick={() => setTransactionSubView('register_credit')}
-                            className="p-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors shadow-lg"
+                            className="p-2 sm:p-3 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors shadow-lg"
                             aria-label="Adicionar nova transação"
                         >
-                            <Plus size={24} />
+                            <Plus size={20} className="sm:size-[24]" />
                         </button>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-3 sm:p-6">
                     {transacoes.length === 0 ? (
                         <div className="text-center py-8">
-                            <p className="text-gray-500">Nenhuma transação de crédito encontrada</p>
+                            <p className="text-sm sm:text-base text-gray-500">Nenhuma transação de crédito encontrada</p>
                         </div>
                     ) : (
-                        <div className="space-y-4">
+                        <div className="space-y-2 sm:space-y-4">
                             {transacoes.map((transacao) => (
-                                <div key={transacao.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <div key={transacao.id} className="bg-gray-50 rounded-lg p-3 sm:p-4 border border-gray-200">
                                     <div className="flex items-center justify-between">
-                                        <div className="flex-1">
+                                        <div className="flex-1 min-w-0">
                                             {/* Linha 1: Data, Recorrência, Parcelas */}
-                                            <div className="flex items-center space-x-2 mb-2">
-                                                <span className="text-sm text-gray-500">
+                                            <div className="flex flex-wrap items-center gap-2 sm:space-x-2 mb-2">
+                                                <span className="text-xs sm:text-sm text-gray-500">
                                                     {formatDate(transacao.data_transacao)}
                                                 </span>
-                                                <span className="text-sm text-gray-500">•</span>
-                                                <span className="text-sm text-gray-500">
+                                                <span className="hidden sm:inline text-xs sm:text-sm text-gray-500">•</span>
+                                                <span className="text-xs sm:text-sm text-gray-500">
                                                     {transacao.recorrencia || 'Esporadico'}
                                                 </span>
-                                                <span className="text-sm text-gray-500">•</span>
-                                                <span className="text-sm text-gray-500">
+                                                <span className="hidden sm:inline text-xs sm:text-sm text-gray-500">•</span>
+                                                <span className="text-xs sm:text-sm text-gray-500">
                                                     {transacao.parcelas_pagas || 0}/{transacao.total_parcelas || 0}
                                                 </span>
                                             </div>
                                             
                                             {/* Linha 2: Descrição e Botão Excluir */}
                                             <div className="flex items-center justify-between mb-2">
-                                                <p className="font-medium text-gray-800 flex-1">
+                                                <p className="text-sm sm:text-base font-medium text-gray-800 truncate flex-1">
                                                     {truncateDescription(transacao.descricao)}
                                                 </p>
                                                 <button
                                                     onClick={() => handleDeleteClick(transacao)}
-                                                    className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors ml-4"
+                                                    className="p-1.5 sm:p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors ml-2 sm:ml-4 flex-shrink-0"
                                                     aria-label="Excluir transação"
                                                 >
-                                                    <Trash2 size={20} />
+                                                    <Trash2 size={16} className="sm:size-[20]" />
                                                 </button>
                                             </div>
                                             
                                             {/* Linha 3: Valor, Cartão, Categoria */}
-                                            <div className="flex items-center space-x-2 text-sm text-gray-600">
-                                                <span className="font-bold text-gray-800">
+                                            <div className="flex flex-wrap items-center gap-x-2 sm:space-x-2 text-xs sm:text-sm text-gray-600">
+                                                <span className="font-bold text-gray-800 whitespace-nowrap">
                                                     {getCurrencyIcon(transacao.moeda)} {formatCurrency(transacao.valor_total_compra || 0)}
                                                 </span>
-                                                <span>•</span>
-                                                <span>{transacao.nome_cartao || getCartaoNome(transacao.id_cartao)}</span>
-                                                <span>•</span>
-                                                <span>{getCategoriaNome(transacao.id_categoria)}</span>
+                                                <span className="hidden sm:inline">•</span>
+                                                <span className="truncate">{transacao.nome_cartao || getCartaoNome(transacao.id_cartao)}</span>
+                                                <span className="hidden sm:inline">•</span>
+                                                <span className="truncate">{getCategoriaNome(transacao.id_categoria)}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -7544,28 +7592,64 @@ const CreditTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
             {/* Modal de Confirmação de Exclusão */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4">Confirmar Exclusão</h3>
-                        <p className="text-gray-600 mb-6">
-                            Tem certeza que deseja excluir esta transação de crédito? Esta ação não pode ser desfeita.
+                <div 
+                    className="fixed inset-0 flex items-center justify-center z-50"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                >
+                    <div className="bg-white rounded-xl p-6 w-96 mx-4 shadow-2xl">
+                        <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+                            <Trash2 className="w-6 h-6 text-red-600" />
+                        </div>
+                        
+                        <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+                            Excluir Transação
+                        </h3>
+                        
+                        <p className="text-xs sm:text-base text-gray-600 text-center mb-6">
+                            Tem certeza que deseja excluir esta transação? Esta ação não pode ser desfeita.
                         </p>
+                        
+                        {transactionToDelete && (
+                            <div className="bg-gray-50 rounded-lg p-3 mb-6">
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Descrição:</span> {transactionToDelete.descricao}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Valor:</span> {getCurrencyIcon(transactionToDelete.moeda)} {formatCurrency(transactionToDelete.valor_total_compra || 0)}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Cartão:</span> {transactionToDelete.nome_cartao || getCartaoNome(transactionToDelete.id_cartao)}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Data:</span> {formatDate(transactionToDelete.data_transacao)}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Parcelas:</span> {transactionToDelete.total_parcelas || 0}
+                                </p>
+                            </div>
+                        )}
+                        
                         <div className="flex space-x-3">
                             <button
                                 onClick={handleCloseDeleteModal}
-                                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                                 disabled={isDeleting}
+                                className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 disabled:opacity-50"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={handleConfirmDelete}
-                                className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 disabled={isDeleting}
+                                className="flex-1 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 disabled:opacity-50 flex items-center justify-center"
                             >
                                 {isDeleting ? (
-                                    <><Loader2 className="mr-2 h-4 w-4 animate-spin inline" /> Excluindo...</>
-                                ) : 'Excluir'}
+                                    <>
+                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                        Excluindo...
+                                    </>
+                                ) : (
+                                    'Excluir'
+                                )}
                             </button>
                         </div>
                     </div>
@@ -7888,7 +7972,7 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
 
     if (isLoading) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                 </div>
@@ -7898,7 +7982,7 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
 
     if (error) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                     <p className="text-red-600">{error}</p>
                     <button
@@ -7913,36 +7997,36 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
     }
 
     return (
-        <div className="p-4">
-            <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-blue-500 overflow-hidden">
+        <div className="p-2 sm:p-4">
+            <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-yellow-500 overflow-hidden">
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <button 
                                 onClick={goToMenu}
-                                className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                                 aria-label="Voltar"
                             >
-                                <X size={24} />
+                                <X size={20} className="sm:size-[24]" />
                             </button>
                             <div>
-                                <h2 className="text-xl font-bold text-gray-800">Transferências</h2>
-                                <p className="text-gray-600 text-sm">Gerencie suas transferências entre contas</p>
+                                <h2 className="text-base sm:text-xl font-bold text-gray-800">Transferências</h2>
+                                <p className="text-gray-600 text-xs sm:text-sm">Gerencie suas transferências</p>
                             </div>
                         </div>
                         <button
                             onClick={() => setTransactionSubView('register_transfer')}
-                            className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors shadow-lg"
+                            className="p-2 sm:p-3 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors shadow-lg"
                             aria-label="Adicionar nova transferência"
                         >
-                            <Plus size={24} />
+                            <Plus size={20} className="sm:size-[24]" />
                         </button>
                     </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-3 sm:p-6">
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-4" role="alert">
                             {error}
@@ -7958,23 +8042,23 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
                     ) : (
                         <div className="space-y-3">
                             {transferencias.map((transferencia) => (
-                                <div key={transferencia.id_grupo_operacao} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                                <div key={transferencia.id_grupo_operacao} className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors">
                                     <div className="flex items-center justify-between">
                                         <div className="flex-1">
                                             <div className="flex items-center space-x-3 mb-2">
-                                                <span className="text-sm text-gray-500">
+                                                <span className="text-xs sm:text-sm text-gray-500">
                                                     {formatDate(transferencia.data_transacao)}
                                                 </span>
-                                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600">
+                                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-600">
                                                     Transferência
                                                 </span>
                                             </div>
                                             
-                                            <p className="text-gray-800 font-medium mb-1">
+                                            <p className="text-sm sm:text-base text-gray-800 font-medium mb-1">
                                                 {truncateDescription(transferencia.descricao)}
                                             </p>
                                             
-                                            <div className="flex items-center space-x-4 text-sm text-gray-600">
+                                            <div className="flex items-center flex-wrap gap-x-2 sm:space-x-4 text-[10px] sm:text-sm text-gray-600">
                                                 <span className="flex items-center">
                                                     <span className="mr-1">{getCurrencySymbol(transferencia.moeda)}</span>
                                                     {parseFloat(transferencia.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
@@ -8015,22 +8099,42 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
 
             {/* Modal de Confirmação de Exclusão */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-                        <div className="flex items-center space-x-3 mb-4">
-                            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                                <Trash2 className="h-5 w-5 text-red-600" />
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-900">Excluir Transferência</h3>
-                                <p className="text-gray-600">Esta ação não pode ser desfeita.</p>
-                            </div>
+                <div 
+                    className="fixed inset-0 flex items-center justify-center z-50"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                >
+                    <div className="bg-white rounded-xl p-6 w-96 mx-4 shadow-2xl">
+                        <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+                            <Trash2 className="w-6 h-6 text-red-600" />
                         </div>
                         
-                        <p className="text-gray-700 mb-6">
-                            Tem certeza que deseja excluir esta transferência? 
-                            Esta ação irá reverter o saldo das contas envolvidas.
+                        <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+                            Excluir Transferência
+                        </h3>
+                        
+                        <p className="text-xs sm:text-base text-gray-600 text-center mb-6">
+                            Tem certeza que deseja excluir esta transferência? Esta ação não pode ser desfeita.
                         </p>
+                        
+                        {transferToDelete && (
+                            <div className="bg-gray-50 rounded-lg p-3 mb-6">
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Descrição:</span> {transferToDelete.descricao}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Valor:</span> {getCurrencySymbol(transferToDelete.moeda)} {transferToDelete.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Conta Origem:</span> {getContaNome(transferToDelete.conta_origem)}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Conta Destino:</span> {getContaNome(transferToDelete.conta_destino)}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Data:</span> {formatDate(transferToDelete.data_transacao)}
+                                </p>
+                            </div>
+                        )}
                         
                         <div className="flex space-x-3">
                             <button
@@ -8038,17 +8142,24 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
                                     setShowDeleteModal(false);
                                     setTransferToDelete(null);
                                 }}
-                                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                                 disabled={isDeleting}
+                                className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 disabled:opacity-50"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={handleDeleteTransfer}
                                 disabled={isDeleting}
-                                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                                className="flex-1 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 disabled:opacity-50 flex items-center justify-center"
                             >
-                                {isDeleting ? 'Excluindo...' : 'Excluir'}
+                                {isDeleting ? (
+                                    <>
+                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                        Excluindo...
+                                    </>
+                                ) : (
+                                    'Excluir'
+                                )}
                             </button>
                         </div>
                     </div>
@@ -8057,61 +8168,41 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
 
             {/* Modal de Edição */}
             {showEditModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-                        <div className="flex items-center space-x-3 mb-4">
-                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <Edit className="h-5 w-5 text-blue-600" />
+                <div className="fixed inset-0 flex items-start justify-center z-50 pt-8 sm:pt-12" style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}>
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[calc(100vh-2rem)] sm:max-h-[90vh] overflow-y-auto border-t-4 border-t-yellow-500">
+                        <div className="flex items-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <Edit className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900">Editar Transferência</h3>
-                                <p className="text-gray-600">Altere os dados da transferência</p>
+                                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Editar Transferência</h3>
+                                <p className="text-sm sm:text-base text-gray-600">Altere os dados da transferência</p>
                             </div>
                         </div>
                         
                         <form onSubmit={(e) => { e.preventDefault(); handleConfirmEdit(); }}>
                             {/* Data */}
-                            <div className="mb-4">
-                                <label htmlFor="edit_data_transacao" className="block text-sm font-semibold text-gray-700 mb-1">Data:</label>
+                            <div className="mb-3 sm:mb-4">
+                                <label htmlFor="edit_data_transacao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Data:</label>
                                 <input
                                     type="date"
                                     id="edit_data_transacao"
                                     value={editFormData.data_transacao}
                                     onChange={(e) => setEditFormData(prev => ({ ...prev, data_transacao: e.target.value }))}
-                                    className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                     required
                                     disabled={isEditing}
                                 />
                             </div>
 
-                            {/* Valor */}
-                            <div className="mb-4">
-                                <label htmlFor="edit_valor" className="block text-sm font-semibold text-gray-700 mb-1">Valor:</label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span className="text-gray-500 sm:text-sm">{getCurrencySymbolForEdit()}</span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        id="edit_valor"
-                                        value={editFormData.valor}
-                                        onChange={handleValueChange}
-                                        placeholder="0,00"
-                                        className="w-full pl-10 pr-3 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
-                                        required
-                                        disabled={isEditing}
-                                    />
-                                </div>
-                            </div>
-
                             {/* Conta de Origem */}
-                            <div className="mb-4">
-                                <label htmlFor="edit_id_conta_origem" className="block text-sm font-semibold text-gray-700 mb-1">Conta de Origem:</label>
+                            <div className="mb-3 sm:mb-4">
+                                <label htmlFor="edit_id_conta_origem" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta de Origem:</label>
                                 <select
                                     id="edit_id_conta_origem"
                                     value={editFormData.id_conta_origem}
                                     onChange={handleContaOrigemChange}
-                                    className="w-full px-3 py-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
+                                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
                                     required
                                     disabled={isEditing}
                                 >
@@ -8129,13 +8220,13 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
                             </div>
 
                             {/* Conta de Destino */}
-                            <div className="mb-4">
-                                <label htmlFor="edit_id_conta_destino" className="block text-sm font-semibold text-gray-700 mb-1">Conta de Destino:</label>
+                            <div className="mb-3 sm:mb-4">
+                                <label htmlFor="edit_id_conta_destino" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta de Destino:</label>
                                 <select
                                     id="edit_id_conta_destino"
                                     value={editFormData.id_conta_destino}
                                     onChange={handleContaDestinoChange}
-                                    className="w-full px-3 py-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
+                                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
                                     required
                                     disabled={isEditing || !editFormData.id_conta_origem}
                                 >
@@ -8154,15 +8245,35 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
                                 </select>
                             </div>
 
+                            {/* Valor */}
+                            <div className="mb-3 sm:mb-4">
+                                <label htmlFor="edit_valor" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor:</label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span className="text-xs sm:text-sm text-gray-500">{getCurrencySymbolForEdit()}</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="edit_valor"
+                                        value={editFormData.valor}
+                                        onChange={handleValueChange}
+                                        placeholder="0,00"
+                                        className="w-full pl-10 pr-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                        required
+                                        disabled={isEditing}
+                                    />
+                                </div>
+                            </div>
+
                             {/* Descrição */}
-                            <div className="mb-6">
-                                <label htmlFor="edit_descricao" className="block text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
+                            <div className="mb-4 sm:mb-6">
+                                <label htmlFor="edit_descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
                                 <textarea
                                     id="edit_descricao"
                                     value={editFormData.descricao}
                                     onChange={(e) => setEditFormData(prev => ({ ...prev, descricao: e.target.value }))}
                                     rows={3}
-                                    className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                     placeholder="Descreva a transferência..."
                                     disabled={isEditing}
                                     required
@@ -8170,23 +8281,23 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
                             </div>
 
                             {/* Botões */}
-                            <div className="flex space-x-3">
+                            <div className="flex space-x-2 sm:space-x-3">
                                 <button
                                     type="button"
                                     onClick={handleCloseEditModal}
-                                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                                     disabled={isEditing}
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                                     disabled={isEditing}
                                 >
                                     {isEditing ? (
-                                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Editando...</>
-                                    ) : 'Salvar Alterações'}
+                                        <><Loader2 className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin inline" /> Editando...</>
+                                    ) : 'Salvar'}
                                 </button>
                             </div>
                         </form>
@@ -8566,7 +8677,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
     if (isLoading) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
                 </div>
@@ -8576,7 +8687,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
     if (error) {
         return (
-            <div className="p-4">
+            <div className="p-2 sm:p-4">
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                     <p className="text-red-600">{error}</p>
                     <button
@@ -8591,7 +8702,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
     }
 
     return (
-        <div className="p-4">
+        <div className="p-2 sm:p-4">
             <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-purple-500 overflow-hidden">
                 {/* Header */}
                 <div className="px-6 py-4 border-b border-gray-200">
@@ -8599,14 +8710,14 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                         <div className="flex items-center">
                             <button 
                                 onClick={goToMenu}
-                                className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                                 aria-label="Voltar"
                             >
                                 <X size={24} />
                             </button>
                             <div>
-                                <h2 className="text-xl font-bold text-gray-800">Conversões</h2>
-                                <p className="text-gray-600 text-sm">Gerencie suas conversões de moeda</p>
+                                <h2 className="text-base sm:text-xl font-bold text-gray-800">Conversões</h2>
+                                <p className="text-gray-600 text-xs sm:text-sm">Gerencie suas conversões de moeda</p>
                             </div>
                         </div>
                         <button
@@ -8620,7 +8731,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-3 sm:p-6">
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-4" role="alert">
                             {error}
@@ -8636,11 +8747,11 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                     ) : (
                         <div className="space-y-3">
                             {conversoes.map((conversao) => (
-                                <div key={conversao.id_grupo_operacao} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                                <div key={conversao.id_grupo_operacao} className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors">
                                     <div className="flex items-center justify-between">
                                         <div className="flex-1">
                                             <div className="flex items-center space-x-3 mb-2">
-                                                <span className="text-sm text-gray-500">
+                                                <span className="text-xs sm:text-sm text-gray-500">
                                                     {formatDate(conversao.data_transacao)}
                                                 </span>
                                                 <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-600">
@@ -8761,13 +8872,13 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                         <form onSubmit={(e) => { e.preventDefault(); handleConfirmEdit(); }}>
                             {/* Data */}
                             <div className="mb-4">
-                                <label htmlFor="edit_data_transacao" className="block text-sm font-semibold text-gray-700 mb-1">Data:</label>
+                                <label htmlFor="edit_data_transacao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Data:</label>
                                 <input
                                     type="date"
                                     id="edit_data_transacao"
                                     value={editFormData.data_transacao}
                                     onChange={(e) => setEditFormData(prev => ({ ...prev, data_transacao: e.target.value }))}
-                                    className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
+                                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
                                     required
                                     disabled={isEditing}
                                 />
@@ -8775,12 +8886,12 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
                             {/* Conta de Origem */}
                             <div className="mb-4">
-                                <label htmlFor="edit_id_conta_origem" className="block text-sm font-semibold text-gray-700 mb-1">Conta de Origem:</label>
+                                <label htmlFor="edit_id_conta_origem" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta de Origem:</label>
                                 <select
                                     id="edit_id_conta_origem"
                                     value={editFormData.id_conta_origem}
                                     onChange={handleContaOrigemChange}
-                                    className="w-full px-3 py-2 border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg shadow-sm"
+                                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg shadow-sm"
                                     required
                                     disabled={isEditing}
                                 >
@@ -8799,12 +8910,12 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
                             {/* Conta de Destino */}
                             <div className="mb-4">
-                                <label htmlFor="edit_id_conta_destino" className="block text-sm font-semibold text-gray-700 mb-1">Conta de Destino:</label>
+                                <label htmlFor="edit_id_conta_destino" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Conta de Destino:</label>
                                 <select
                                     id="edit_id_conta_destino"
                                     value={editFormData.id_conta_destino}
                                     onChange={handleContaDestinoChange}
-                                    className="w-full px-3 py-2 border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg shadow-sm"
+                                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 focus:ring-purple-500 focus:border-purple-500 rounded-lg shadow-sm"
                                     required
                                     disabled={isEditing || !editFormData.id_conta_origem}
                                 >
@@ -8825,7 +8936,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
                             {/* Valor Origem */}
                             <div className="mb-4">
-                                <label htmlFor="edit_valor_origem" className="block text-sm font-semibold text-gray-700 mb-1">Valor Origem:</label>
+                                <label htmlFor="edit_valor_origem" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor Origem:</label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span className="text-gray-500 sm:text-sm">{getCurrencySymbolForOrigem()}</span>
@@ -8845,7 +8956,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
                             {/* Valor Destino */}
                             <div className="mb-4">
-                                <label htmlFor="edit_valor_destino" className="block text-sm font-semibold text-gray-700 mb-1">Valor Destino:</label>
+                                <label htmlFor="edit_valor_destino" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor Destino:</label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span className="text-gray-500 sm:text-sm">{getCurrencySymbolForDestino()}</span>
@@ -8865,7 +8976,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
                             {/* Taxa */}
                             <div className="mb-4">
-                                <label htmlFor="edit_taxa_cambio" className="block text-sm font-semibold text-gray-700 mb-1">Taxa:</label>
+                                <label htmlFor="edit_taxa_cambio" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Taxa:</label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span className="text-gray-500 sm:text-sm">{getCurrencySymbolForOrigem()}</span>
@@ -8884,14 +8995,14 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                             </div>
 
                             {/* Descrição */}
-                            <div className="mb-6">
-                                <label htmlFor="edit_descricao" className="block text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
+                            <div className="mb-4 sm:mb-6">
+                                <label htmlFor="edit_descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
                                 <textarea
                                     id="edit_descricao"
                                     value={editFormData.descricao}
                                     onChange={(e) => setEditFormData(prev => ({ ...prev, descricao: e.target.value }))}
                                     rows={3}
-                                    className="w-full px-3 py-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
+                                    className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
                                     placeholder="Descreva a conversão..."
                                     disabled={isEditing}
                                     required
@@ -8954,18 +9065,18 @@ const QuickTransactionTypeSelectionScreen = ({ goToMenu, setTransactionSubView }
     );
 
     return (
-        <div className="p-4">
+        <div className="p-2 sm:p-4">
             <div className="flex items-center mb-6">
                 <button 
                     onClick={goToMenu}
-                    className="mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                    className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                     aria-label="Voltar"
                 >
                     <X size={24} />
                 </button>
                 <div>
-                    <h2 className="text-xl font-bold text-gray-800">Adicionar Transação</h2>
-                    <p className="text-gray-600 text-sm">Selecione o tipo de transação que deseja registrar</p>
+                    <h2 className="text-base sm:text-xl font-bold text-gray-800">Adicionar Transação</h2>
+                    <p className="text-gray-600 text-xs sm:text-sm">Selecione o tipo de transação que deseja registrar</p>
                 </div>
             </div>
 
@@ -9228,50 +9339,125 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
     const currencySymbol = getCurrencySymbol(selectedCurrency);
   
     return (
-      <div className="p-4">
-        <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-blue-500 overflow-hidden">
+      <div className="p-2 sm:p-4">
+        <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-yellow-500 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center p-4 border-b border-gray-100 bg-gray-50">
-            <CreditCard size={24} className="text-blue-600 mr-3" />
-            <h2 className="text-xl font-bold text-gray-800 flex-grow">Nova Transação de Crédito</h2>
-            <button
-              onClick={() => setTransactionSubView('credit_transactions_list')}
-              className="p-1 text-gray-500 hover:text-gray-800 transition-colors rounded-full"
-              disabled={isSubmitting || showSuccessModal}
-            >
-              <X size={20} />
-            </button>
+          <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <button 
+                  onClick={() => setTransactionSubView('credit_transactions_list')}
+                  className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="Voltar"
+                  disabled={isSubmitting || showSuccessModal}
+                >
+                  <X size={20} className="sm:size-[24]" />
+                </button>
+                <div>
+                  <h2 className="text-base sm:text-xl font-bold text-gray-800">Registrar Transação</h2>
+                  <p className="text-gray-600 text-xs sm:text-sm">Registre suas transações de crédito</p>
+                </div>
+              </div>
+            </div>
           </div>
   
           {/* Formulário */}
-          <form onSubmit={handleSubmit} className="p-4 space-y-5">
+          <form onSubmit={handleSubmit} className="p-3 sm:p-6 space-y-3 sm:space-y-5">
             {error && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium" role="alert">
                 {error}
               </div>
             )}
   
-            {/* Data / Valor / Parcelas */}
-            <div className="flex space-x-3">
-              <div className="flex-1">
-                <label htmlFor="data_transacao" className="block text-sm font-semibold text-gray-700 mb-1">Data:</label>
-                <input
-                  type="date"
-                  id="data_transacao"
-                  name="data_transacao"
-                  value={formData.data_transacao}
-                  onChange={handleChange}
-                  className="w-full px-2 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+            {/* Data */}
+            <div className="mb-3 sm:mb-4">
+              <label htmlFor="data_transacao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Data:</label>
+              <input
+                type="date"
+                id="data_transacao"
+                name="data_transacao"
+                value={formData.data_transacao}
+                onChange={handleChange}
+                className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                disabled={isSubmitting || showSuccessModal}
+                required
+              />
+            </div>
+
+            {/* Categoria */}
+            <div className="mb-3 sm:mb-4">
+              <label htmlFor="id_categoria" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Categoria:</label>
+              <select
+                  id="id_categoria"
+                  name="id_categoria"
+                  value={formData.id_categoria}
+                  onChange={(e) => {
+                      const selectedValue = e.target.value;
+
+                      // Se a opção for "Adicionar Nova Categoria", abre o modal
+                      if (selectedValue === 'add_new_category') {
+                      setShowAddCategoryModal(true);
+                      } else {
+                          // Atualiza o estado com a categoria selecionada
+                          setFormData(prev => ({ ...prev, id_categoria: selectedValue }));
+                      }
+                  }}
+                  className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
                   required
-                />
-              </div>
+                  >
+                  {categorias.map(categoria => (
+                      <option key={categoria.id} value={categoria.id}>{categoria.nome}</option>
+                  ))}
+                  <option
+                      value="add_new_category"
+                      className="font-semibold text-blue-600 bg-blue-50"
+                  >
+                      + Adicionar Nova Categoria
+                  </option>
+                  </select>
+            </div>
+
+            {/* Cartão */}
+            <div className="mb-3 sm:mb-4">
+              <label htmlFor="id_cartao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Cartão:</label>
+              <select
+                id="id_cartao"
+                name="id_cartao"
+                value={formData.id_cartao}
+                onChange={handleCardChange}
+                className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
+                disabled={isSubmitting || showSuccessModal}
+                required={cartoes.length > 0}
+              >
+                <option value="">
+                  Selecione um Cartão
+                </option>
   
+                {cartoes.map(card => (
+                  <option key={card.id} value={card.id}>
+                    {card.nome_cartao} ({card.moeda || 'BRL'})
+                  </option>
+                ))}
+  
+                {/* opção para abrir modal */}
+                <option value="add_new_card" className="font-semibold text-blue-600 bg-blue-50">
+                  + Adicionar Cartão de Crédito
+                </option>
+              </select>
+  
+              {cartoes.length === 0 && (
+                <p className="mt-1 text-xs text-red-600">Necessário adicionar um cartão para registrar a transação.</p>
+              )}
+            </div>
+
+            {/* Valor e Parcelas */}
+            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 mb-3 sm:mb-4">
               <div className="flex-1">
-                <label htmlFor="valor_total" className="block text-sm font-semibold text-gray-700 mb-1">Valor:</label>
+                <label htmlFor="valor_total" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Valor:</label>
                 <div className="relative rounded-lg shadow-sm">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-gray-500 sm:text-sm font-medium">{currencySymbol}</span>
+                    <span className="text-xs sm:text-sm text-gray-500 font-medium">{currencySymbol}</span>
                   </div>
                   <input
                     type="text"
@@ -9281,21 +9467,21 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
                     placeholder="0,00"
                     value={formData.valor_total.replace('.', ',')}
                     onChange={handleValueChange}
-                    className="block w-full pl-8 pr-3 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-right"
+                    className="block w-full pl-10 pr-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                     disabled={isSubmitting || showSuccessModal}
                     required
                   />
                 </div>
               </div>
   
-              <div className="w-1/4">
-                <label htmlFor="parcelas_total" className="block text-sm font-semibold text-gray-700 mb-1">Parcelas:</label>
+              <div className="w-full sm:w-1/4">
+                <label htmlFor="parcelas_total" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Parcelas:</label>
                 <select
                   id="parcelas_total"
                   name="parcelas_total"
                   value={formData.parcelas_total}
                   onChange={handleChange}
-                  className="w-full px-2 py-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                  className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
                   required
                 >
@@ -9307,14 +9493,14 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
             </div>
 
             {/* Recorrência */}
-            <div className="mb-4">
-              <label htmlFor="recorrencia" className="block text-sm font-semibold text-gray-700 mb-1">Recorrência:</label>
+            <div className="mb-3 sm:mb-4">
+              <label htmlFor="recorrencia" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Recorrência:</label>
               <select
                 id="recorrencia"
                 name="recorrencia"
                 value={formData.recorrencia}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
+                className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
                 disabled={isSubmitting || showSuccessModal}
                 required
               >
@@ -9323,107 +9509,42 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
               </select>
             </div>
   
-            {/* Cartão e Categoria */}
-            <div className="flex space-x-4">
-              <div className="flex-1">
-                <label htmlFor="id_cartao" className="block text-sm font-semibold text-gray-700 mb-1">Cartão:</label>
-                <select
-                  id="id_cartao"
-                  name="id_cartao"
-                  value={formData.id_cartao}
-                  onChange={handleCardChange}
-                  className="w-full px-3 py-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
-                  disabled={isSubmitting || showSuccessModal}
-                  required={cartoes.length > 0}
-                >
-                  <option value="" disabled={formData.id_cartao !== '' || cartoes.length > 0}>
-                    {cartoes.length === 0 ? 'Cadastre um cartão abaixo' : ''}
-                  </option>
-  
-                  {cartoes.map(card => (
-                    <option key={card.id} value={card.id}>
-                      {card.nome_cartao} ({card.moeda || 'BRL'})
-                    </option>
-                  ))}
-  
-                  {/* opção para abrir modal */}
-                  <option value="add_new_card" className="font-semibold text-blue-600 bg-blue-50">
-                    + Adicionar Cartão de Crédito
-                  </option>
-                </select>
-  
-                {cartoes.length === 0 && (
-                  <p className="mt-1 text-xs text-red-600">Necessário adicionar um cartão para registrar a transação.</p>
-                )}
-              </div>
-  
-              <div className="flex-1">
-                <label htmlFor="id_categoria" className="block text-sm font-semibold text-gray-700 mb-1">Categoria:</label>
-                <select
-                    id="id_categoria"
-                    name="id_categoria"
-                    value={formData.id_categoria}
-                    onChange={(e) => {
-                        const selectedValue = e.target.value;
-
-                        // Se a opção for "Adicionar Nova Categoria", abre o modal
-                        if (selectedValue === 'add_new_category') {
-                        setShowAddCategoryModal(true);
-                        } else {
-                            // Atualiza o estado com a categoria selecionada
-                            setFormData(prev => ({ ...prev, id_categoria: selectedValue }));
-                        }
-                    }}
-                    className="w-full px-3 py-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg shadow-sm"
-                    disabled={isSubmitting || showSuccessModal}  // Apenas desabilita quando necessário
-                    required
-                    >
-                    {categorias.map(categoria => (
-                        <option key={categoria.id} value={categoria.id}>{categoria.nome}</option>
-                    ))}
-                    <option
-                        value="add_new_category"
-                        className="font-semibold text-blue-600 bg-blue-50"
-                    >
-                        + Adicionar Nova Categoria
-                    </option>
-                    </select>
-
-              </div>
-            </div>
-  
             {/* Descrição */}
-            <div>
-              <label htmlFor="descricao" className="block text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
+            <div className="mb-3 sm:mb-4">
+              <label htmlFor="descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
               <textarea
                 id="descricao"
                 name="descricao"
-                rows="2"
+                rows={3}
                 value={formData.descricao}
                 onChange={handleChange}
-                placeholder="Ex: Compra de teclado novo"
-                className="w-full px-3 py-2 shadow-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Ex: Televisão"
+                className="w-full px-3 py-2 text-sm sm:text-base text-sm sm:text-base shadow-sm border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 disabled={isSubmitting || showSuccessModal}
                 required
               />
             </div>
   
-            <button
-              type="submit"
-              className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-bold text-white transition-colors ${
-                isSubmitting || showSuccessModal
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-              }`}
-              disabled={isSubmitting || showSuccessModal}
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 size={20} className="animate-spin mr-2" />
-                  Registrando...
-                </>
-              ) : 'Registrar Transação'}
-            </button>
+            {/* Botões */}
+            <div className="flex space-x-2 sm:space-x-3">
+              <button
+                type="button"
+                onClick={() => setTransactionSubView('credit_transactions_list')}
+                className="flex-1 px-4 py-2 text-xs sm:text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                disabled={isSubmitting || showSuccessModal}
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                className={`flex-1 px-4 py-2 text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium`}
+                disabled={isSubmitting || showSuccessModal}
+              >
+                {isSubmitting ? (
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin inline" /> Registrando...</>
+                ) : 'Registrar Transação'}
+              </button>
+            </div>
           </form>
         </div>
   
@@ -9716,7 +9837,7 @@ const DashboardLayout = ({ onLogout }) => {
       <div className="min-h-screen bg-gray-50 flex flex-col mx-auto max-w-xl w-full" style={{position: 'relative', minHeight: '100vh'}}> 
           
           {/* Cabeçalho Fixo Simples para Mobile */}
-          <header className="sticky top-0 z-10 bg-white border-b border-gray-100 p-4 shadow-sm flex justify-between items-center">
+          <header className="hidden sticky top-0 z-10 bg-white border-b border-gray-100 p-4 shadow-sm flex justify-between items-center">
               <img 
                   src={Logo} 
                   alt="FinApp Analytics Logo" 
