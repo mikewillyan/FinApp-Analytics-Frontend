@@ -1384,7 +1384,6 @@ const DashboardScreen = () => {
                             onChange={(e) => handlePeriodChange(e.target.value)}
                             className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
                         >
-                            <option value="geral">Geral</option>
                             <option value="anual">Anual</option>
                             <option value="semestral">Semestral</option>
                             <option value="trimestral">Trimestral</option>
@@ -1496,44 +1495,46 @@ const DashboardScreen = () => {
                                         e.currentTarget.scrollLeft += e.deltaY;
                                     }}
                                 >
-                                    <div className="relative" style={{ minWidth: `${chartData.length * 50}px`, height: '100%' }}>
-                                        {/* Barras do gráfico */}
-                                        <div className="flex items-end h-full" style={{ height: 'calc(100% - 16px)', paddingBottom: '16px', paddingTop: '20px' }}>
-                                            {chartData.map((item, index) => {
-                                                const maxValue = Math.max(...chartData.map(d => d.valor || 0));
-                                                const color = chartType === 'despesas' ? '#ef4444' : '#10b981';
-                                                
-                                                const chartHeight = 140; // Altura significativamente reduzida para mobile
-                                                const heightInPixels = ((item.valor || 0) / maxValue) * chartHeight * 1.0; // 100% da altura
-                                                
-                                                return (
-                                                    <div key={index} className="flex flex-col items-center relative mx-2" style={{ width: '46px' }}>
-                                                        <div
-                                                            className="w-6 rounded-t transition-all duration-300 hover:opacity-80 relative"
-                                                            style={{
-                                                                height: `${heightInPixels}px`,
-                                                                backgroundColor: color,
-                                                                minHeight: '4px'
-                                                            }}
-                                                            title={`${item.periodo}: ${getCurrencySymbol(selectedCurrency)} ${(item.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
-                                                        >
-                                                            {/* Rótulo posicionado no topo da barra */}
-                                                            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[9px] font-semibold text-gray-700 whitespace-nowrap z-10">
-                                                                {getCurrencySymbol(selectedCurrency)} {Math.round(item.valor || 0).toLocaleString('pt-BR')}
+                                    <div className="relative w-full h-full flex justify-center" style={{ padding: '0 24px' }}>
+                                        <div className="relative" style={{ minWidth: `${chartData.length * 50}px`, height: '100%', maxWidth: '100%' }}>
+                                            {/* Barras do gráfico */}
+                                            <div className="flex items-end h-full justify-around" style={{ height: 'calc(100% - 16px)', paddingBottom: '16px', paddingTop: '20px', paddingLeft: '16px', paddingRight: '16px' }}>
+                                                {chartData.map((item, index) => {
+                                                    const maxValue = Math.max(...chartData.map(d => d.valor || 0));
+                                                    const color = chartType === 'despesas' ? '#ef4444' : '#10b981';
+                                                    
+                                                    const chartHeight = 140; // Altura significativamente reduzida para mobile
+                                                    const heightInPixels = ((item.valor || 0) / maxValue) * chartHeight * 1.0; // 100% da altura
+                                                    
+                                                    return (
+                                                        <div key={index} className="flex flex-col items-center relative" style={{ width: '46px' }}>
+                                                            <div
+                                                                className="w-6 rounded-t transition-all duration-300 hover:opacity-80 relative"
+                                                                style={{
+                                                                    height: `${heightInPixels}px`,
+                                                                    backgroundColor: color,
+                                                                    minHeight: '4px'
+                                                                }}
+                                                                title={`${item.periodo}: ${getCurrencySymbol(selectedCurrency)} ${(item.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                                                            >
+                                                                {/* Rótulo posicionado no topo da barra */}
+                                                                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[9px] font-semibold text-gray-700 whitespace-nowrap z-10">
+                                                                    {getCurrencySymbol(selectedCurrency)} {Math.round(item.valor || 0).toLocaleString('pt-BR')}
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                    );
+                                                })}
+                                            </div>
+                                            
+                                            {/* Labels dos períodos */}
+                                            <div className="absolute bottom-0 left-0 right-0 h-4 flex items-center justify-around" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
+                                                {chartData.map((item, index) => (
+                                                    <div key={index} className="text-xs font-medium text-gray-600 text-center" style={{ width: '46px' }}>
+                                                        {item.periodo}
                                                     </div>
-                                                );
-                                            })}
-                                        </div>
-                                        
-                                        {/* Labels dos períodos */}
-                                        <div className="absolute bottom-0 left-0 right-0 h-4 flex items-center">
-                                            {chartData.map((item, index) => (
-                                                <div key={index} className="text-xs font-medium text-gray-600 text-center mx-2" style={{ width: '46px' }}>
-                                                    {item.periodo}
-                                                </div>
-                                            ))}
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1569,17 +1570,19 @@ const DashboardScreen = () => {
                             <option value="trimestral">Trimestral</option>
                             <option value="mensal">Mensal</option>
                         </select>
-                        <select 
-                            value={categoryChartSpecificPeriod} 
-                            onChange={(e) => handleSpecificPeriodChange(e.target.value)}
-                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
-                        >
-                            {getSpecificPeriodOptions(categoryChartPeriod).map(option => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
+                        {categoryChartPeriod !== 'anual' && (
+                            <select 
+                                value={categoryChartSpecificPeriod} 
+                                onChange={(e) => handleSpecificPeriodChange(e.target.value)}
+                                className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
+                            >
+                                {getSpecificPeriodOptions(categoryChartPeriod).map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
                     </div>
                 </div>
                 
@@ -1598,9 +1601,9 @@ const DashboardScreen = () => {
                             <p className="text-gray-500">Nenhum dado disponível</p>
                         </div>
                     ) : (
-                        <div className="relative h-full">
-                            {/* Labels das categorias - fora da zona do gráfico */}
-                            <div className="absolute left-0 sm:left-0 top-0 bottom-0 sm:bottom-8 w-24 sm:w-32 flex flex-col justify-evenly text-[10px] font-medium text-gray-600">
+                        <div className="relative h-full px-4 sm:px-0 overflow-hidden" style={{ paddingRight: '80px' }}>
+                            {/* Labels das categorias - à esquerda */}
+                            <div className="absolute left-0 sm:left-4 top-0 bottom-0 sm:bottom-8 w-16 sm:w-20 flex flex-col justify-evenly text-[10px] font-medium text-gray-600">
                                 {categoryChartData.map((item, index) => (
                                     <div key={index} className="text-right pr-2 h-8 flex items-center justify-end overflow-hidden">
                                         <span className="truncate">
@@ -1610,8 +1613,80 @@ const DashboardScreen = () => {
                                 ))}
                             </div>
                             
-                            {/* Eixo X com valores - oculto em mobile */}
-                            <div className="hidden sm:flex absolute left-32 right-0 bottom-0 h-8 justify-between items-center text-xs text-gray-500">
+                            {/* Linhas pontilhadas verticais de referência - apenas desktop */}
+                            <div className="hidden sm:block absolute left-24 top-0 bottom-8" style={{ right: '80px' }}>
+                                <div className="relative h-full w-full">
+                                    {(() => {
+                                        const maxValue = Math.max(...categoryChartData.map(d => d.valor || 0));
+                                        const levels = 5;
+                                        const step = maxValue / levels;
+                                        return Array.from({ length: levels + 1 }, (_, i) => {
+                                            const value = (i * step);
+                                            const percentage = (value / maxValue) * 100;
+                                            return (
+                                                <div 
+                                                    key={i} 
+                                                    className="absolute top-0 bottom-0 border-r border-dashed border-gray-200 opacity-30"
+                                                    style={{ 
+                                                        left: `${percentage}%`
+                                                    }}
+                                                />
+                                            );
+                                        });
+                                    })()}
+                                </div>
+                            </div>
+                            
+                            {/* Barras horizontais do gráfico - apenas as barras */}
+                            <div className="absolute left-16 sm:left-24 top-0 bottom-0 sm:bottom-8 flex flex-col justify-evenly" style={{ right: '80px' }}>
+                                {categoryChartData.map((item, index) => {
+                                    const maxValue = Math.max(...categoryChartData.map(d => d.valor || 0));
+                                    const color = categoryChartType === 'despesas' ? '#ef4444' : '#10b981';
+                                    
+                                    const widthPercentage = ((item.valor || 0) / maxValue) * 100;
+                                    
+                                    return (
+                                        <div key={index} className="h-8 flex items-center">
+                                            {/* Barra horizontal */}
+                                            <div className="h-4 rounded-r transition-all duration-300 hover:opacity-80"
+                                                style={{
+                                                    width: `${widthPercentage}%`,
+                                                    backgroundColor: color,
+                                                    minWidth: '4px'
+                                                }}
+                                                title={`${item.categoria}: ${getCurrencySymbol(selectedCurrency)} ${(item.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            
+                            {/* Rótulos de dados - posicionados absolutamente */}
+                            <div className="absolute left-16 sm:left-24 top-0 bottom-0 sm:bottom-8 flex flex-col justify-evenly" style={{ right: '80px' }}>
+                                {categoryChartData.map((item, index) => {
+                                    const maxValue = Math.max(...categoryChartData.map(d => d.valor || 0));
+                                    const widthPercentage = ((item.valor || 0) / maxValue) * 100;
+                                    const labelText = `${getCurrencySymbol(selectedCurrency)} ${Math.round(item.valor || 0).toLocaleString('pt-BR')}`;
+                                    
+                                    return (
+                                        <div 
+                                            key={index} 
+                                            className="h-8 flex items-center relative"
+                                            style={{
+                                                left: `${widthPercentage}%`,
+                                                marginLeft: '8px'
+                                            }}
+                                        >
+                                            <div className="text-[10px] font-semibold text-gray-700 whitespace-nowrap">
+                                                {labelText}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            
+                            {/* Eixo X com valores - apenas para desktop */}
+                            <div className="hidden sm:flex absolute left-24 bottom-0 h-8 justify-between items-center text-xs text-gray-500 px-2" style={{ right: '80px' }}>
                                 {(() => {
                                     const maxValue = Math.max(...categoryChartData.map(d => d.valor || 0));
                                     const levels = 5;
@@ -1625,50 +1700,6 @@ const DashboardScreen = () => {
                                         );
                                     });
                                 })()}
-                            </div>
-                            
-                            {/* Barras horizontais do gráfico */}
-                            <div className="absolute left-0 sm:left-32 right-0 top-0 bottom-0 sm:bottom-8 flex flex-col justify-evenly">
-                                {categoryChartData.map((item, index) => {
-                                    const maxValue = Math.max(...categoryChartData.map(d => d.valor || 0));
-                                    const color = categoryChartType === 'despesas' ? '#ef4444' : '#10b981';
-                                    
-                                    // Calcular largura proporcional ao espaço disponível (100% da área)
-                                    const availableWidth = 100; // 100% da largura disponível
-                                    const widthInPixels = ((item.valor || 0) / maxValue) * availableWidth;
-                                    
-                                    // Determinar se o rótulo cabe dentro da barra (assumindo ~80px para o texto)
-                                    const labelText = `${getCurrencySymbol(selectedCurrency)} ${Math.round(item.valor || 0).toLocaleString('pt-BR')}`;
-                                    const labelFitsInside = widthInPixels > 20; // Se a barra tem mais de 20% de largura
-                                    
-                                    return (
-                                        <div key={index} className="flex items-center relative h-8">
-                                            {/* Barra horizontal */}
-                                            <div className="h-4 rounded-r transition-all duration-300 hover:opacity-80 relative"
-                                                style={{
-                                                    width: `${widthInPixels}%`,
-                                                    backgroundColor: color,
-                                                    minWidth: '4px'
-                                                }}
-                                                title={`${item.categoria}: ${getCurrencySymbol(selectedCurrency)} ${(item.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
-                                            >
-                                                {/* Label do valor - dentro da barra se couber */}
-                                                {labelFitsInside && (
-                                                    <div className="absolute right-1 top-1/2 transform -translate-y-1/2 text-xs font-semibold text-white whitespace-nowrap">
-                                                        {labelText}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            
-                                            {/* Label do valor - fora da barra se não couber */}
-                                            {!labelFitsInside && (
-                                                <div className="ml-2 text-xs font-semibold text-gray-700 whitespace-nowrap">
-                                                    {labelText}
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
                             </div>
                         </div>
                     )}
@@ -1701,17 +1732,19 @@ const DashboardScreen = () => {
                             <option value="trimestral">Trimestral</option>
                             <option value="mensal">Mensal</option>
                         </select>
-                        <select 
-                            value={recurrenceChartSpecificPeriod} 
-                            onChange={(e) => handleSpecificPeriodChange(e.target.value)}
-                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
-                        >
-                            {getSpecificPeriodOptions(recurrenceChartPeriod).map(option => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
+                        {recurrenceChartPeriod !== 'anual' && (
+                            <select 
+                                value={recurrenceChartSpecificPeriod} 
+                                onChange={(e) => handleSpecificPeriodChange(e.target.value)}
+                                className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-transparent bg-white"
+                            >
+                                {getSpecificPeriodOptions(recurrenceChartPeriod).map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
                     </div>
                 </div>
                 
@@ -2247,11 +2280,11 @@ const EditAccountModal = ({ conta, onSave, onCancel, isSaving }) => {
                             type="submit"
                             className={`px-4 py-2 rounded-lg transition duration-150 font-medium cursor-pointer ${
                                 isSaving 
-                                    ? 'bg-indigo-400 cursor-not-allowed flex items-center text-white' 
+                                    ? 'cursor-not-allowed flex items-center text-white' 
                                     : 'text-white'
                             }`}
                             style={{ 
-                                backgroundColor: isSaving ? undefined : primaryGreen,
+                                backgroundColor: primaryGreen,
                                 '--hover-bg': darkGreen 
                             }}
                             onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = darkGreen)}
@@ -2345,7 +2378,7 @@ const AddCategoryModal = ({ onSave, onCancel, isSaving }) => {
                             type="submit"
                             className={`px-4 py-2 text-white rounded-lg transition duration-150 font-medium cursor-pointer ${
                                 isSaving
-                                    ? 'bg-gray-400 cursor-not-allowed flex items-center'
+                                    ? 'bg-blue-600 cursor-not-allowed flex items-center'
                                     : 'bg-blue-600 hover:bg-blue-700'
                             }`}
                             disabled={isSaving}
@@ -2508,13 +2541,13 @@ const AddAccountModal = ({ onSave, onCancel, isSaving }) => {
                           type="submit"
                           className={`px-4 py-2 text-white rounded-lg transition duration-150 font-medium cursor-pointer ${
                               isSaving 
-                                  ? 'bg-indigo-400 cursor-not-allowed flex items-center' 
+                                  ? 'cursor-not-allowed flex items-center' 
                                   : 'text-white'
                           }`}
                           style={{ 
-                              backgroundColor: isSaving ? undefined : primaryGreen,
+                              backgroundColor: primaryGreen,
                           }}
-                          onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = darkGreen)}
+                          onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = primaryGreen)}
                           onMouseLeave={(e) => !isSaving && (e.currentTarget.style.backgroundColor = primaryGreen)}
                           disabled={isSaving}
                       >
@@ -3039,7 +3072,7 @@ const [nome_cartao, setNomeCartao] = useState('');
                           type="submit"
                           className={`px-4 py-2 text-white rounded-lg transition duration-150 font-medium cursor-pointer ${
                               isSaving 
-                                  ? 'bg-gray-400 cursor-not-allowed flex items-center' 
+                                  ? 'bg-blue-600 cursor-not-allowed flex items-center' 
                                   : 'bg-blue-600 hover:bg-blue-700'
                           }`}
                           disabled={isSaving}
@@ -3114,7 +3147,6 @@ const EditCardModal = ({ card, onSave, onCancel, isSaving }) => {
       >
           <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-sm">
               <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-4">Editar Cartão: {card.nome_cartao}</h3>
-              <p className="text-sm text-gray-500 mb-4">Moeda do Cartão: <span className="font-semibold">{card.moeda}</span></p>
 
               <form onSubmit={handleSubmit}>
                   
@@ -3182,27 +3214,30 @@ const EditCardModal = ({ card, onSave, onCancel, isSaving }) => {
                       </div>
                   </div>
 
-                  <div className="flex justify-end space-x-3">
+                  <div className="flex space-x-3">
                       <button
                           type="button"
                           onClick={onCancel}
-                          className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150 font-medium"
+                          className="flex-1 px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150 font-medium"
                           disabled={isSaving}
                       >
                           Cancelar
                       </button>
                       <button
                           type="submit"
-                          className={`px-4 py-2 text-white rounded-lg transition duration-150 font-medium cursor-pointer ${
+                          className={`flex-1 px-4 py-2 text-white rounded-lg transition duration-150 font-medium ${
                               isSaving 
-                                  ? 'bg-gray-400 cursor-not-allowed flex items-center' 
+                                  ? 'bg-blue-600 cursor-not-allowed flex items-center justify-center' 
                                   : 'bg-blue-600 hover:bg-blue-700'
                           }`}
                           disabled={isSaving}
                       >
                           {isSaving ? (
-                              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Salvando...</>
-                          ) : 'Salvar Alterações'}
+                              <span className="flex items-center justify-center">
+                                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
+                                  Salvando...
+                              </span>
+                          ) : 'Salvar'}
                       </button>
                   </div>
               </form>
@@ -4855,7 +4890,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
       <div className="p-2 sm:p-4">
         <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-purple-500 overflow-hidden">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <button 
@@ -4863,7 +4898,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
                   className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                   aria-label="Voltar"
                 >
-                  <X size={24} />
+                  <X size={20} className="sm:size-[24]" />
                 </button>
                 <div>
                   <h2 className="text-base sm:text-xl font-bold text-gray-800">Registrar Conversão</h2>
@@ -5013,7 +5048,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
               </div>
 
               {/* Descrição */}
-              <div className="mb-4 sm:mb-6">
+              <div className="mb-3 sm:mb-4">
                 <label htmlFor="descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
                 <textarea
                   id="descricao"
@@ -5023,28 +5058,31 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
                   rows={3}
                   className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
                   disabled={isSubmitting || showSuccessModal}
-                  placeholder="Descreva a conversão..."
+                  placeholder="Ex: Conversão"
                   required
                 />
               </div>
 
               {/* Botões */}
-              <div className="flex space-x-3">
+              <div className="flex space-x-2 sm:space-x-3">
                 <button
                   type="button"
                   onClick={goToMenu}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                   disabled={isSubmitting || showSuccessModal}
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                   disabled={isSubmitting || showSuccessModal}
                 >
                   {isSubmitting ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Convertendo...</>
+                    <span className="flex items-center justify-center">
+                      <Loader2 className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" /> 
+                      Convertendo...
+                    </span>
                   ) : 'Registrar Conversão'}
                 </button>
               </div>
@@ -6276,137 +6314,123 @@ const FaturasListScreen = ({ goToMenu }) => {
     // Renderizar lista de faturas (view padrão)
     return (
         <div className="p-2 sm:p-4">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center">
-                    <button 
-                        onClick={goToMenu}
-                        className="p-2 mr-3 text-gray-600 hover:text-gray-800 rounded-full transition-colors"
-                        aria-label="Voltar para Menu"
-                    >
-                        <X size={24} />
-                    </button>
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-800">Faturas de Crédito</h1>
-                        <p className="text-gray-600">Gerencie suas faturas de cartão de crédito</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* Lista de Faturas */}
-            {faturas.length === 0 ? (
-                <div className="text-center py-8">
-                    <CreditCard size={48} className="mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-500 text-lg">Nenhuma fatura encontrada</p>
-                    <p className="text-gray-400">Suas faturas de crédito aparecerão aqui</p>
-                </div>
-            ) : (
-                <div className="space-y-4">
-                    {faturas.map((fatura, index) => (
-                        <div key={`${fatura.id_cartao}_${fatura.fatura_referencia}`} 
-                             className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-shadow">
-                            <div className="flex items-center justify-between">
-                                <div className="flex-1">
-                                    {/* Primeira linha: Vencimento com Status e Atrasada + Informação de Pagamento */}
-                                    <div className="flex items-center justify-between mb-2">
-                                        <div className="flex items-center">
-                                            <span className="text-sm text-gray-500 mr-2">Vencimento:</span>
-                                            <span className="font-medium text-gray-800">
-                                                {formatDate(fatura.parcelas[0]?.data_vencimento)}
-                                            </span>
-                                            
-                                            {/* Tag do Status */}
-                                            <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
-                                                getFaturaStatus(fatura) === 'Pago' 
-                                                    ? 'bg-green-100 text-green-800' 
-                                                    : 'bg-yellow-100 text-yellow-800'
-                                            }`}>
-                                                {getFaturaStatus(fatura)}
-                                            </span>
-                                            
-                                            {/* Tag de Atrasada */}
-                                            {isFaturaAtrasada(fatura) && (
-                                                <span className="ml-2 px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
-                                                    Atrasada
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Informação de Pagamento (se pago) - à direita */}
-                                        {getFaturaStatus(fatura) === 'Pago' && (() => {
-                                            const mesAnoFatura = fatura.fatura_referencia.replace('/', '-');
-                                            const chave = `${fatura.id_cartao}_${mesAnoFatura}`;
-                                            const pagamento = pagamentosInfo[chave];
-                                            
-                                            if (pagamento) {
-                                                const conta = contasInfo[pagamento.id_conta];
-                                                const nomeConta = conta ? conta.nome : `Conta ${pagamento.id_conta}`;
-                                                return (
-                                                    <span className="text-[10px] text-gray-500 text-right leading-tight">
-                                                        Pago em {formatDate(pagamento.data_transacao)} pela conta {nomeConta}
-                                                    </span>
-                                                );
-                                            }
-                                            return null;
-                                        })()}
-                                    </div>
-
-                                    {/* Valor Total (à esquerda) */}
-                                    <div className="flex items-center mb-2">
-                                        <span className="font-bold text-2xl text-gray-800">
-                                            {getCurrencySymbol(fatura.moeda)} {parseFloat(fatura.valor_total_fatura).toFixed(2)}
-                                        </span>
-                                    </div>
-
-                                    {/* Cartão de Crédito */}
-                                    <div className="flex items-center">
-                                        <span className="text-sm text-gray-500 mr-2">Cartão de Crédito:</span>
-                                        <span className="font-medium text-gray-800">{fatura.cartao}</span>
-                                    </div>
-
-                                </div>
-
-                                {/* Ações */}
-                                <div className="flex items-center space-x-2 ml-4">
-                                    {/* Botão Pagar (apenas se pendente) */}
-                                    {getFaturaStatus(fatura) === 'Pendente' && (
-                                        <div className="relative group">
-                                            <button
-                                                onClick={() => handlePayClick(fatura)}
-                                                className="p-2 text-green-600 hover:bg-green-100 rounded-full transition-colors"
-                                                aria-label="Pagar Fatura"
-                                            >
-                                                <DollarSign size={20} />
-                                            </button>
-                                            {/* Tooltip */}
-                                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                                                Pagar Fatura
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Botão Excluir (apenas se pago) */}
-                                    {getFaturaStatus(fatura) === 'Pago' && (
-                                        <div className="relative group">
-                                            <button
-                                                onClick={() => handleDeleteClick(fatura)}
-                                                className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
-                                                aria-label="Excluir Fatura"
-                                            >
-                                                <Trash2 size={20} />
-                                            </button>
-                                            {/* Tooltip */}
-                                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                                                Excluir Fatura
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
+            <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-green-500 overflow-hidden">
+                {/* Header */}
+                <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                            <button 
+                                onClick={goToMenu}
+                                className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+                                aria-label="Voltar"
+                            >
+                                <X size={20} className="sm:size-[24]" />
+                            </button>
+                            <div>
+                                <h2 className="text-base sm:text-xl font-bold text-gray-800">Faturas de Crédito</h2>
+                                <p className="text-gray-600 text-xs sm:text-sm">Gerencie suas faturas</p>
                             </div>
                         </div>
-                    ))}
+                    </div>
                 </div>
-            )}
+
+                {/* Content */}
+                <div className="p-3 sm:p-6">
+                    {error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-4" role="alert">
+                            {error}
+                        </div>
+                    )}
+
+                    {faturas.length === 0 ? (
+                        <div className="text-center py-12">
+                            <CreditCard className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Nenhuma fatura encontrada</h3>
+                            <p className="text-sm sm:text-base text-gray-500">Suas faturas de crédito aparecerão aqui</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            {faturas.map((fatura, index) => (
+                                <div key={`${fatura.id_cartao}_${fatura.fatura_referencia}`} 
+                                     className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex-1 min-w-0">
+                                            {/* Tags de Status */}
+                                            <div className="flex flex-wrap items-center gap-2 mb-2">
+                                                <span className="px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-green-100 text-green-600">
+                                                    {getFaturaStatus(fatura)}
+                                                </span>
+                                                {isFaturaAtrasada(fatura) && (
+                                                    <span className="px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-red-100 text-red-600">
+                                                        Atrasada
+                                                    </span>
+                                                )}
+                                                <span className="text-xs sm:text-sm text-gray-500">
+                                                    {formatDate(fatura.parcelas[0]?.data_vencimento)}
+                                                </span>
+                                            </div>
+                                            
+                                            {/* Valor Total */}
+                                            <p className="text-sm sm:text-base font-medium mb-2">
+                                                <span className="font-bold">{getCurrencySymbol(fatura.moeda)} {parseFloat(fatura.valor_total_fatura).toFixed(2)}</span>
+                                            </p>
+                                            
+                                            {/* Cartão e Informação de Pagamento */}
+                                            <div className="text-xs sm:text-sm text-gray-600 space-y-1">
+                                                <div className="flex items-center flex-wrap gap-x-2">
+                                                    <span className="font-medium">Cartão:</span>
+                                                    <span className="truncate">{fatura.cartao}</span>
+                                                </div>
+                                                {getFaturaStatus(fatura) === 'Pago' && (() => {
+                                                    const mesAnoFatura = fatura.fatura_referencia.replace('/', '-');
+                                                    const chave = `${fatura.id_cartao}_${mesAnoFatura}`;
+                                                    const pagamento = pagamentosInfo[chave];
+                                                    
+                                                    if (pagamento) {
+                                                        const conta = contasInfo[pagamento.id_conta];
+                                                        const nomeConta = conta ? conta.nome : `Conta ${pagamento.id_conta}`;
+                                                        return (
+                                                            <div className="text-[10px] sm:text-xs text-gray-500">
+                                                                Pago em {formatDate(pagamento.data_transacao)} pela conta {nomeConta}
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return null;
+                                                })()}
+                                            </div>
+                                        </div>
+
+                                        {/* Ações */}
+                                        <div className="flex items-center space-x-1 sm:space-x-2 ml-2 sm:ml-4 flex-shrink-0">
+                                            {/* Botão Pagar (apenas se pendente) */}
+                                            {getFaturaStatus(fatura) === 'Pendente' && (
+                                                <button
+                                                    onClick={() => handlePayClick(fatura)}
+                                                    className="p-1.5 sm:p-2 text-green-600 hover:bg-green-100 rounded-full transition-colors"
+                                                    aria-label="Pagar Fatura"
+                                                >
+                                                    <DollarSign size={16} className="sm:size-[18]" />
+                                                </button>
+                                            )}
+
+                                            {/* Botão Excluir (apenas se pago) */}
+                                            {getFaturaStatus(fatura) === 'Pago' && (
+                                                <button
+                                                    onClick={() => handleDeleteClick(fatura)}
+                                                    className="p-1.5 sm:p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
+                                                    aria-label="Excluir Fatura"
+                                                >
+                                                    <Trash2 size={16} className="sm:size-[18]" />
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
 
 
             {/* Modal de Confirmação de Exclusão */}
@@ -8705,7 +8729,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
         <div className="p-2 sm:p-4">
             <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-purple-500 overflow-hidden">
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-gray-200">
+                <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <button 
@@ -8713,7 +8737,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                                 className="mr-2 sm:mr-3 p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                                 aria-label="Voltar"
                             >
-                                <X size={24} />
+                                <X size={20} className="sm:size-[24]" />
                             </button>
                             <div>
                                 <h2 className="text-base sm:text-xl font-bold text-gray-800">Conversões</h2>
@@ -8722,10 +8746,10 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                         </div>
                         <button
                             onClick={() => setTransactionSubView('register_conversion')}
-                            className="p-3 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-colors shadow-lg"
+                            className="p-2 sm:p-3 bg-purple-500 text-white rounded-full hover:bg-purple-600 transition-colors shadow-lg"
                             aria-label="Adicionar nova conversão"
                         >
-                            <Plus size={24} />
+                            <Plus size={20} className="sm:size-[24]" />
                         </button>
                     </div>
                 </div>
@@ -8741,68 +8765,68 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                     {conversoes.length === 0 ? (
                         <div className="text-center py-12">
                             <Edit className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                            <h3 className="text-lg font-medium text-gray-900 mb-2">Nenhuma conversão encontrada</h3>
-                            <p className="text-gray-500">Você ainda não possui conversões registradas.</p>
+                            <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">Nenhuma conversão encontrada</h3>
+                            <p className="text-sm sm:text-base text-gray-500">Você ainda não possui conversões registradas.</p>
                         </div>
                     ) : (
                         <div className="space-y-3">
                             {conversoes.map((conversao) => (
                                 <div key={conversao.id_grupo_operacao} className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors">
                                     <div className="flex items-center justify-between">
-                                        <div className="flex-1">
-                                            <div className="flex items-center space-x-3 mb-2">
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex flex-wrap items-center gap-2 mb-2">
                                                 <span className="text-xs sm:text-sm text-gray-500">
                                                     {formatDate(conversao.data_transacao)}
                                                 </span>
-                                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-600">
+                                                <span className="px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-purple-100 text-purple-600">
                                                     {getCategoriaNome(conversao.id_categoria)}
                                                 </span>
-                                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                                <span className="px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-gray-100 text-gray-600 whitespace-nowrap">
                                                     Taxa: {getCurrencySymbol(conversao.moeda_origem)}{parseFloat(conversao.taxa_cambio).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                                 </span>
                                             </div>
                                             
-                                            <p className="text-gray-800 font-medium mb-2">
-                                                {truncateDescription(conversao.descricao)}
+                                            <p className="text-sm sm:text-base font-medium mb-2 truncate">
+                                                {conversao.descricao}
                                             </p>
                                             
-                                            <div className="text-sm text-gray-600 space-y-1">
-                                                <div className="flex items-center space-x-2">
-                                                    <span className="flex items-center">
+                                            <div className="text-xs sm:text-sm text-gray-600 space-y-1">
+                                                <div className="flex items-center flex-wrap gap-x-1 sm:gap-x-2">
+                                                    <span className="flex items-center whitespace-nowrap">
                                                         <span className="mr-1">{getCurrencySymbol(conversao.moeda_origem)}</span>
                                                         {parseFloat(conversao.valor_origem).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                                     </span>
-                                                    <ArrowRight className="h-3 w-3" />
-                                                    <span className="flex items-center">
+                                                    <ArrowRight className="h-3 w-3 flex-shrink-0" />
+                                                    <span className="flex items-center whitespace-nowrap">
                                                         <span className="mr-1">{getCurrencySymbol(conversao.moeda_destino)}</span>
                                                         {parseFloat(conversao.valor_destino).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                                     </span>
                                                 </div>
-                                                <div className="flex items-center space-x-2">
-                                                    <span>{getContaNome(conversao.conta_origem)}</span>
-                                                    <ArrowRight className="h-3 w-3" />
-                                                    <span>{getContaNome(conversao.conta_destino)}</span>
+                                                <div className="flex items-center flex-wrap gap-x-1 sm:gap-x-2">
+                                                    <span className="truncate">{getContaNome(conversao.conta_origem)}</span>
+                                                    <ArrowRight className="h-3 w-3 flex-shrink-0" />
+                                                    <span className="truncate">{getContaNome(conversao.conta_destino)}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-center space-x-2 ml-4">
+                                        <div className="flex items-center space-x-1 sm:space-x-2 ml-2 sm:ml-4 flex-shrink-0">
                                             <button
                                                 onClick={() => handleEditClick(conversao)}
-                                                className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
+                                                className="p-1.5 sm:p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
                                                 aria-label="Editar conversão"
                                             >
-                                                <Edit size={18} />
+                                                <Edit size={16} className="sm:size-[18]" />
                                             </button>
                                             <button
                                                 onClick={() => {
                                                     setConversionToDelete(conversao);
                                                     setShowDeleteModal(true);
                                                 }}
-                                                className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
+                                                className="p-1.5 sm:p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
                                                 aria-label="Excluir conversão"
                                             >
-                                                <Trash2 size={18} />
+                                                <Trash2 size={16} className="sm:size-[18]" />
                                             </button>
                                         </div>
                                     </div>
@@ -8815,22 +8839,45 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
             {/* Modal de Confirmação de Exclusão */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-                        <div className="flex items-center space-x-3 mb-4">
-                            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                                <Trash2 className="h-5 w-5 text-red-600" />
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-900">Excluir Conversão</h3>
-                                <p className="text-gray-600">Esta ação não pode ser desfeita.</p>
-                            </div>
+                <div 
+                    className="fixed inset-0 flex items-center justify-center z-50"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                >
+                    <div className="bg-white rounded-xl p-6 w-96 mx-4 shadow-2xl">
+                        <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+                            <Trash2 className="w-6 h-6 text-red-600" />
                         </div>
                         
-                        <p className="text-gray-700 mb-6">
-                            Tem certeza que deseja excluir esta conversão? 
-                            Esta ação irá reverter o saldo das contas envolvidas.
+                        <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+                            Excluir Conversão
+                        </h3>
+                        
+                        <p className="text-xs sm:text-base text-gray-600 text-center mb-6">
+                            Tem certeza que deseja excluir esta conversão? Esta ação não pode ser desfeita.
                         </p>
+                        
+                        {conversionToDelete && (
+                            <div className="bg-gray-50 rounded-lg p-3 mb-6">
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Descrição:</span> {conversionToDelete.descricao}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Valor Origem:</span> {getCurrencySymbol(conversionToDelete.moeda_origem)} {parseFloat(conversionToDelete.valor_origem).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Valor Destino:</span> {getCurrencySymbol(conversionToDelete.moeda_destino)} {parseFloat(conversionToDelete.valor_destino).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Conta Origem:</span> {getContaNome(conversionToDelete.conta_origem)}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Conta Destino:</span> {getContaNome(conversionToDelete.conta_destino)}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                    <span className="font-medium">Data:</span> {formatDate(conversionToDelete.data_transacao)}
+                                </p>
+                            </div>
+                        )}
                         
                         <div className="flex space-x-3">
                             <button
@@ -8838,17 +8885,24 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                                     setShowDeleteModal(false);
                                     setConversionToDelete(null);
                                 }}
-                                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                                 disabled={isDeleting}
+                                className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 disabled:opacity-50"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={handleDeleteConversion}
                                 disabled={isDeleting}
-                                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                                className="flex-1 px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200 disabled:opacity-50 flex items-center justify-center"
                             >
-                                {isDeleting ? 'Excluindo...' : 'Excluir'}
+                                {isDeleting ? (
+                                    <>
+                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                        Excluindo...
+                                    </>
+                                ) : (
+                                    'Excluir'
+                                )}
                             </button>
                         </div>
                     </div>
@@ -8857,8 +8911,8 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
             {/* Modal de Edição */}
             {showEditModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div className="fixed inset-0 flex items-start justify-center z-50 pt-8 sm:pt-12" style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}>
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[calc(100vh-2rem)] sm:max-h-[90vh] overflow-y-auto">
                         <div className="flex items-center space-x-3 mb-4">
                             <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
                                 <Edit className="h-5 w-5 text-purple-600" />
@@ -8995,7 +9049,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                             </div>
 
                             {/* Descrição */}
-                            <div className="mb-4 sm:mb-6">
+                            <div className="mb-3 sm:mb-4">
                                 <label htmlFor="edit_descricao" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">Descrição:</label>
                                 <textarea
                                     id="edit_descricao"
@@ -9003,30 +9057,33 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
                                     onChange={(e) => setEditFormData(prev => ({ ...prev, descricao: e.target.value }))}
                                     rows={3}
                                     className="w-full px-3 py-2 text-sm sm:text-base border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 shadow-sm"
-                                    placeholder="Descreva a conversão..."
+                                    placeholder="Ex: Conversão"
                                     disabled={isEditing}
                                     required
                                 />
                             </div>
 
                             {/* Botões */}
-                            <div className="flex space-x-3">
+                            <div className="flex space-x-2 sm:space-x-3">
                                 <button
                                     type="button"
                                     onClick={handleCloseEditModal}
-                                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                                     disabled={isEditing}
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                                     disabled={isEditing}
                                 >
                                     {isEditing ? (
-                                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Editando...</>
-                                    ) : 'Salvar Alterações'}
+                                        <span className="flex items-center justify-center">
+                                            <Loader2 className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" /> 
+                                            Editando...
+                                        </span>
+                                    ) : 'Salvar'}
                                 </button>
                             </div>
                         </form>
