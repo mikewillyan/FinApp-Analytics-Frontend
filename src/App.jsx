@@ -5903,21 +5903,24 @@ const FaturasListScreen = ({ goToMenu }) => {
         return (
             <div className="p-2 sm:p-4">
                 {/* Modal de Pagamento */}
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+                <div 
+                    className="fixed inset-0 flex items-center justify-center z-50"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                >
+                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-2 sm:mx-4 max-h-[90vh] overflow-y-auto">
                         {/* Header do Modal */}
-                        <div className="flex items-center justify-between p-6 border-b">
+                        <div className="flex items-center justify-between p-3 sm:p-6 border-b border-gray-200">
                             <div className="flex items-center">
                                 <button 
                                     onClick={handleBackToList}
-                                    className="p-2 mr-3 text-gray-600 hover:text-gray-800 rounded-full transition-colors"
+                                    className="p-1.5 sm:p-2 mr-2 sm:mr-3 text-gray-600 hover:text-gray-800 rounded-full transition-colors"
                                     aria-label="Fechar"
                                 >
-                                    <X size={24} />
+                                    <X size={18} className="sm:size-6" />
                                 </button>
                                 <div>
-                                    <h2 className="text-base sm:text-xl font-bold text-gray-900">Pagar Fatura</h2>
-                                    <p className="text-sm text-gray-600">Confirme os detalhes antes de pagar</p>
+                                    <h2 className="text-sm sm:text-base md:text-xl font-bold text-gray-900">Pagar Fatura</h2>
+                                    <p className="text-xs sm:text-sm text-gray-600">Confirme os detalhes antes de pagar</p>
                                 </div>
                             </div>
                         </div>
@@ -5930,90 +5933,93 @@ const FaturasListScreen = ({ goToMenu }) => {
                                 </div>
                             ) : faturaToPay ? (
                                 <>
-                                    {/* Informações da Fatura */}
-                                    <div className="mb-4 sm:mb-6">
-                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                            {faturaToPay.cartao} - {faturaToPay.fatura_referencia}
-                                        </h3>
+                    {/* Informações da Fatura */}
+                    <div className="mb-4 sm:mb-6">
+                        <h3 className="text-sm sm:text-lg font-semibold text-gray-900 mb-2">
+                            {faturaToPay.cartao} - {faturaToPay.fatura_referencia}
+                        </h3>
+                    </div>
+                    
+                    {/* Lista de parcelas */}
+                    <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
+                        <h4 className="text-xs sm:text-sm md:text-md font-medium text-gray-700">Parcelas a Pagar:</h4>
+                        {parcelas.map((parcela, index) => (
+                            <div key={index} className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4 border">
+                                <div className="flex items-center justify-between gap-2 sm:gap-4">
+                                    {/* Descrição */}
+                                    <div className="flex-1 min-w-0">
+                                        <div className="font-medium text-xs sm:text-sm text-gray-900 mb-1 truncate">
+                                            {parcela.descricao_compra}
+                                        </div>
+                                        {/* Mostrar informações apenas se não for juros */}
+                                        {parcela.descricao_compra !== 'Juros' && (
+                                            <div className="text-xs text-gray-600">
+                                                Parcela: {parcela.parcela_referencia}
+                                            </div>
+                                        )}
                                     </div>
                                     
-                                    {/* Lista de parcelas */}
-                                    <div className="space-y-3 mb-6">
-                                        <h4 className="text-md font-medium text-gray-700">Parcelas a Pagar:</h4>
-                                        {parcelas.map((parcela, index) => (
-                                            <div key={index} className="bg-gray-50 rounded-lg p-3 sm:p-4 border">
-                                                <div className="flex justify-between items-center">
-                                                    <div className="flex-1">
-                                                        <div className="font-medium text-gray-900 mb-1">
-                                                            {parcela.descricao_compra}
-                                                        </div>
-                                                        {/* Mostrar informações apenas se não for juros */}
-                                                        {parcela.descricao_compra !== 'Juros' && (
-                                                            <div className="text-sm text-gray-600">
-                                                                Parcela: {parcela.parcela_referencia}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex items-center justify-center space-x-4">
-                                                        <div className="text-center">
-                                                            <div className="font-bold text-lg text-gray-900">
-                                                                {getCurrencySymbol(faturaToPay.moeda)} {parseFloat(parcela.valor_parcela).toFixed(2)}
-                                                            </div>
-                                                        </div>
-                                                        {/* Botões de ação */}
-                                                        <div className="flex items-center space-x-2">
-                                                            {/* Botão Editar (apenas se não for juros) */}
-                                                            {parcela.descricao_compra !== 'Juros' && (
-                                                                <button
-                                                                    onClick={() => handleEditParcelaClick(parcela)}
-                                                                    className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
-                                                                    aria-label="Editar Parcela"
-                                                                >
-                                                                    <Edit size={18} />
-                                                                </button>
-                                                            )}
-                                                            {/* Botão Excluir (apenas se for juros) */}
-                                                            {parcela.descricao_compra === 'Juros' && (
-                                                                <button
-                                                                    onClick={() => handleDeleteJurosClick(parcela)}
-                                                                    className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
-                                                                    aria-label="Excluir Juros"
-                                                                >
-                                                                    <Trash2 size={18} />
-                                                                </button>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    {/* Valor e Botões - Centralizados verticalmente */}
+                                    <div className="flex items-center gap-2 sm:gap-3 sm:space-x-2 flex-shrink-0">
+                                        <div className="text-center">
+                                            <div className="font-bold text-sm sm:text-base md:text-lg text-gray-900 whitespace-nowrap">
+                                                {getCurrencySymbol(faturaToPay.moeda)} {parseFloat(parcela.valor_parcela).toFixed(2)}
                                             </div>
-                                        ))}
-                                    </div>
-
-                                    {/* Resumo total */}
-                                    <div className="bg-red-50 rounded-lg p-4 mb-6 border border-red-200">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-lg font-medium text-gray-700">Total a Pagar:</span>
-                                            <span className="text-2xl font-bold text-red-600">
-                                                {getCurrencySymbol(faturaToPay.moeda)} {parcelas.reduce((sum, p) => sum + parseFloat(p.valor_parcela), 0).toFixed(2)}
-                                            </span>
+                                        </div>
+                                        {/* Botões de ação */}
+                                        <div className="flex items-center space-x-1 sm:space-x-2">
+                                            {/* Botão Editar (apenas se não for juros) */}
+                                            {parcela.descricao_compra !== 'Juros' && (
+                                                <button
+                                                    onClick={() => handleEditParcelaClick(parcela)}
+                                                    className="p-1.5 sm:p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
+                                                    aria-label="Editar Parcela"
+                                                >
+                                                    <Edit size={16} className="sm:size-[18]" />
+                                                </button>
+                                            )}
+                                            {/* Botão Excluir (apenas se for juros) */}
+                                            {parcela.descricao_compra === 'Juros' && (
+                                                <button
+                                                    onClick={() => handleDeleteJurosClick(parcela)}
+                                                    className="p-1.5 sm:p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"
+                                                    aria-label="Excluir Juros"
+                                                >
+                                                    <Trash2 size={16} className="sm:size-[18]" />
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
-                                    {/* Botões de ação */}
-                                    <div className="flex flex-col space-y-3">
-                                        <button 
-                                            onClick={handleOpenJurosModal}
-                                            className="w-full px-4 py-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium"
-                                        >
-                                            Incluir Juros
-                                        </button>
-                                        <button 
-                                            className="w-full px-4 py-2.5 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium"
-                                            onClick={() => handleOpenPaymentModal(faturaToPay)}
-                                        >
-                                            Pagar Fatura
-                                        </button>
-                                    </div>
+                    {/* Resumo total */}
+                    <div className="bg-red-50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-red-200">
+                        <div className="flex justify-between items-center">
+                            <span className="text-sm sm:text-base md:text-lg font-medium text-gray-700">Total a Pagar:</span>
+                            <span className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">
+                                {getCurrencySymbol(faturaToPay.moeda)} {parcelas.reduce((sum, p) => sum + parseFloat(p.valor_parcela), 0).toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Botões de ação */}
+                    <div className="flex flex-col space-y-2 sm:space-y-3">
+                        <button 
+                            onClick={handleOpenJurosModal}
+                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-xs sm:text-sm font-medium"
+                        >
+                            Incluir Juros
+                        </button>
+                        <button 
+                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-xs sm:text-sm font-medium"
+                            onClick={() => handleOpenPaymentModal(faturaToPay)}
+                        >
+                            Pagar Fatura
+                        </button>
+                    </div>
                                 </>
                             ) : null}
                         </div>
@@ -6022,24 +6028,27 @@ const FaturasListScreen = ({ goToMenu }) => {
 
                 {/* Modal de Seleção de Conta para Pagamento */}
                 {showPaymentModal && faturaToPay && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[999]">
-                        <div className="bg-white rounded-xl p-6 w-96 mx-4 shadow-2xl">
-                            <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-green-100 rounded-full">
-                                <CreditCard className="w-6 h-6 text-green-600" />
+                    <div 
+                        className="fixed inset-0 flex items-center justify-center z-[999]"
+                        style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                    >
+                        <div className="bg-white rounded-xl p-3 sm:p-4 md:p-6 w-full sm:w-96 max-w-md mx-2 sm:mx-4 shadow-2xl">
+                            <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 bg-green-100 rounded-full">
+                                <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                             </div>
                             
-                            <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+                            <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 text-center mb-2">
                                 Pagar Fatura
                             </h3>
                             
-                            <p className="text-sm text-gray-600 text-center mb-6">
+                            <p className="text-xs sm:text-sm text-gray-600 text-center mb-4 sm:mb-6">
                                 Selecione a conta para realizar o pagamento da fatura.
                             </p>
 
                             {/* Detalhes da Fatura */}
                             {faturaToPay && (
-                                <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-6">
-                                    <div className="text-sm text-gray-600 space-y-1">
+                                <div className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4 mb-4 sm:mb-6">
+                                    <div className="text-xs sm:text-sm text-gray-600 space-y-1">
                                         <div className="font-medium text-gray-800 mb-2">Detalhes da Fatura:</div>
                                         <div>• Cartão: {faturaToPay.cartao}</div>
                                         <div>• Valor: {getCurrencySymbol(faturaToPay.moeda)} {parseFloat(faturaToPay.valor_total_fatura).toFixed(2)}</div>
@@ -6051,7 +6060,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                             {/* Dropdown de Contas */}
                             {faturaToPay && (
                                 <div className="mb-4 sm:mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                                         Conta de Pagamento ({faturaToPay.moeda}):
                                     </label>
                                     <select
@@ -6063,7 +6072,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                                                 setSelectedPaymentAccount(e.target.value);
                                             }
                                         }}
-                                        className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                        className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
                                         <option value="">Selecione uma conta</option>
                                         {Object.values(contasInfo)
@@ -6085,14 +6094,14 @@ const FaturasListScreen = ({ goToMenu }) => {
                                 <button
                                     onClick={handleCancelPayment}
                                     disabled={isProcessingPayment}
-                                    className="flex-1 px-3 py-2 text-xs font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+                                    className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     onClick={handleConfirmPayment}
                                     disabled={isProcessingPayment || !selectedPaymentAccount}
-                                    className="flex-1 px-3 py-2 text-xs font-medium text-white bg-green-600 border border-transparent rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                                    className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white bg-green-600 border border-transparent rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
                                 >
                                     {isProcessingPayment ? 'Processando...' : 'Confirmar'}
                                 </button>
@@ -6112,21 +6121,24 @@ const FaturasListScreen = ({ goToMenu }) => {
 
                 {/* Modal de Adicionar Juros - Agora no nível raiz */}
                 {showJurosModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
-                        <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+                    <div 
+                        className="fixed inset-0 flex items-center justify-center z-[60]"
+                        style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                    >
+                        <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-2 sm:mx-4">
                             {/* Header do Modal */}
-                            <div className="flex items-center justify-between p-6 border-b">
+                            <div className="flex items-center justify-between p-3 sm:p-6 border-b border-gray-200">
                                 <div className="flex items-center">
                                     <button 
                                         onClick={handleCloseJurosModal}
-                                        className="p-2 mr-3 text-gray-600 hover:text-gray-800 rounded-full transition-colors"
+                                        className="p-1.5 sm:p-2 mr-2 sm:mr-3 text-gray-600 hover:text-gray-800 rounded-full transition-colors"
                                         aria-label="Fechar"
                                     >
-                                        <X size={24} />
+                                        <X size={18} className="sm:size-6" />
                                     </button>
                                     <div>
-                                        <h2 className="text-base sm:text-xl font-bold text-gray-900">Adicionar Juros</h2>
-                                        <p className="text-sm text-gray-600">Informe o valor dos juros para esta fatura</p>
+                                        <h2 className="text-sm sm:text-base md:text-xl font-bold text-gray-900">Adicionar Juros</h2>
+                                        <p className="text-xs sm:text-sm text-gray-600">Informe o valor dos juros para esta fatura</p>
                                     </div>
                                 </div>
                             </div>
@@ -6135,25 +6147,25 @@ const FaturasListScreen = ({ goToMenu }) => {
                             <div className="p-3 sm:p-6">
                                 {/* Informações da Fatura */}
                                 <div className="mb-4 sm:mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-2">
                                         {faturaToPay?.cartao} - {faturaToPay?.fatura_referencia}
                                     </h3>
                                 </div>
                                 
                                 {/* Campo de Valor */}
                                 <div className="mb-4 sm:mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                                         Valor dos Juros
                                     </label>
                                     <div className="relative">
-                                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">
+                                        <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium text-sm sm:text-base">
                                             {faturaToPay ? getCurrencySymbol(faturaToPay.moeda) : 'R$'}
                                         </span>
                                         <input
                                             type="text"
                                             value={jurosValue}
                                             onChange={handleJurosValueChange}
-                                            className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm text-lg font-medium"
+                                            className="w-full pl-7 sm:pl-8 pr-3 sm:pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm text-sm sm:text-base lg:text-lg font-medium"
                                             placeholder="0,00"
                                             disabled={isAddingJuros}
                                         />
@@ -6161,18 +6173,18 @@ const FaturasListScreen = ({ goToMenu }) => {
                                 </div>
 
                                 {/* Botões de ação */}
-                                <div className="flex space-x-3">
+                                <div className="flex space-x-2 sm:space-x-3">
                                     <button
                                         onClick={handleCloseJurosModal}
                                         disabled={isAddingJuros}
-                                        className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+                                        className="flex-1 px-2 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
                                     >
                                         Cancelar
                                     </button>
                                     <button
                                         onClick={handleConfirmJuros}
                                         disabled={isAddingJuros}
-                                        className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-red-500 border border-transparent rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+                                        className="flex-1 px-2 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-white bg-red-500 border border-transparent rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
                                     >
                                         {isAddingJuros ? 'Adicionando...' : 'Confirmar Juros'}
                                     </button>
@@ -6184,25 +6196,28 @@ const FaturasListScreen = ({ goToMenu }) => {
 
                 {/* Modal de Confirmação de Exclusão de Juros */}
                 {showDeleteJurosModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70]">
-                        <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-                            <div className="flex items-center mb-4">
-                                <div className="flex-shrink-0 w-10 h-10 mx-auto bg-red-100 rounded-full flex items-center justify-center">
-                                    <Trash2 size={24} className="text-red-600" />
+                    <div 
+                        className="fixed inset-0 flex items-center justify-center z-[70]"
+                        style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                    >
+                        <div className="bg-white rounded-xl p-4 sm:p-6 max-w-md w-full mx-2 sm:mx-4 shadow-2xl">
+                            <div className="flex items-center mb-3 sm:mb-4">
+                                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 mx-auto bg-red-100 rounded-full flex items-center justify-center">
+                                    <Trash2 size={20} className="sm:size-6 text-red-600" />
                                 </div>
                             </div>
                             
                             <div className="text-center">
-                                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-2">
                                     Excluir Juros
                                 </h3>
-                                <p className="text-sm text-gray-500 mb-6">
+                                <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 px-2">
                                     Tem certeza que deseja excluir estes juros? Esta ação não pode ser desfeita.
                                 </p>
                                 
                                 {jurosToDelete && (
-                                    <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-6 text-left">
-                                        <div className="text-sm text-gray-600">
+                                    <div className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4 mb-4 sm:mb-6 text-left">
+                                        <div className="text-xs sm:text-sm text-gray-600">
                                             <div className="font-medium mb-2">Detalhes dos Juros:</div>
                                             <div>• Descrição: {jurosToDelete.descricao_compra}</div>
                                             <div>• Valor: {getCurrencySymbol(faturaToPay?.moeda)} {parseFloat(jurosToDelete.valor_parcela).toFixed(2)}</div>
@@ -6210,18 +6225,18 @@ const FaturasListScreen = ({ goToMenu }) => {
                                     </div>
                                 )}
                                 
-                                <div className="flex space-x-3">
+                                <div className="flex space-x-2 sm:space-x-3">
                                     <button
                                         onClick={handleCancelDeleteJuros}
                                         disabled={isDeletingJuros}
-                                        className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+                                        className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
                                     >
                                         Cancelar
                                     </button>
                                     <button
                                         onClick={handleConfirmDeleteJuros}
                                         disabled={isDeletingJuros}
-                                        className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+                                        className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
                                     >
                                         {isDeletingJuros ? 'Excluindo...' : 'Excluir'}
                                     </button>
@@ -6233,21 +6248,24 @@ const FaturasListScreen = ({ goToMenu }) => {
 
                 {/* Modal de Edição de Parcela */}
                 {showEditParcelaModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[80]">
-                        <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+                    <div 
+                        className="fixed inset-0 flex items-center justify-center z-[80]"
+                        style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                    >
+                        <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-2 sm:mx-4 max-h-[90vh] overflow-y-auto">
                             {/* Header do Modal */}
-                            <div className="flex items-center justify-between p-6 border-b">
+                            <div className="flex items-center justify-between p-3 sm:p-6 border-b border-gray-200">
                                 <div className="flex items-center">
                                     <button 
                                         onClick={handleCancelEditParcela}
-                                        className="p-2 mr-3 text-gray-600 hover:text-gray-800 rounded-full transition-colors"
+                                        className="p-1.5 sm:p-2 mr-2 sm:mr-3 text-gray-600 hover:text-gray-800 rounded-full transition-colors"
                                         aria-label="Fechar"
                                     >
-                                        <X size={24} />
+                                        <X size={18} className="sm:size-6" />
                                     </button>
                                     <div>
-                                        <h2 className="text-base sm:text-xl font-bold text-gray-900">Editar Parcela</h2>
-                                        <p className="text-sm text-gray-600">Altere o valor da parcela e visualize o impacto</p>
+                                        <h2 className="text-sm sm:text-base md:text-xl font-bold text-gray-900">Editar Parcela</h2>
+                                        <p className="text-xs sm:text-sm text-gray-600">Altere o valor da parcela e visualize o impacto</p>
                                     </div>
                                 </div>
                             </div>
@@ -6256,28 +6274,28 @@ const FaturasListScreen = ({ goToMenu }) => {
                             <div className="p-3 sm:p-6">
                                 {/* Informações da Parcela */}
                                 <div className="mb-4 sm:mb-6">
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 mb-2">
                                         {parcelaToEdit?.descricao_compra} - Parcela {parcelaToEdit?.parcela_referencia}
                                     </h3>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-xs sm:text-sm text-gray-600">
                                         Valor atual: {getCurrencySymbol(faturaToPay?.moeda)} {parseFloat(parcelaToEdit?.valor_parcela || 0).toFixed(2)}
                                     </p>
                                 </div>
                                 
                                 {/* Campo de Novo Valor */}
                                 <div className="mb-4 sm:mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                                         Novo Valor da Parcela
                                     </label>
                                     <div className="relative">
-                                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">
+                                        <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium text-sm sm:text-base">
                                             {faturaToPay ? getCurrencySymbol(faturaToPay.moeda) : 'R$'}
                                         </span>
                                         <input
                                             type="text"
                                             value={novoValorParcela}
                                             onChange={handleParcelaValueChange}
-                                            className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm text-lg font-medium"
+                                            className="w-full pl-7 sm:pl-8 pr-3 sm:pr-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm sm:text-base lg:text-lg font-medium"
                                             placeholder="0,00"
                                             disabled={isEditingParcela}
                                         />
@@ -6286,18 +6304,18 @@ const FaturasListScreen = ({ goToMenu }) => {
 
 
                                 {/* Botões de ação */}
-                                <div className="flex space-x-3">
+                                <div className="flex space-x-2 sm:space-x-3">
                                     <button
                                         onClick={handleCancelEditParcela}
                                         disabled={isEditingParcela}
-                                        className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+                                        className="flex-1 px-2 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
                                     >
                                         Cancelar
                                     </button>
                                     <button
                                         onClick={handleConfirmEditParcela}
                                         disabled={isEditingParcela || !novoValorParcela}
-                                        className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-yellow-500 border border-transparent rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                                        className="flex-1 px-2 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-white bg-yellow-500 border border-transparent rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
                                     >
                                         {isEditingParcela ? 'Salvando...' : 'Confirmar Alteração'}
                                     </button>
@@ -6355,9 +6373,16 @@ const FaturasListScreen = ({ goToMenu }) => {
                                      className="bg-gray-50 rounded-lg p-3 sm:p-4 hover:bg-gray-100 transition-colors">
                                     <div className="flex items-center justify-between">
                                         <div className="flex-1 min-w-0">
-                                            {/* Tags de Status */}
+                                            {/* Data de Vencimento e Tags */}
                                             <div className="flex flex-wrap items-center gap-2 mb-2">
-                                                <span className="px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-green-100 text-green-600">
+                                                <span className="text-xs sm:text-sm text-gray-500">
+                                                    {formatDate(fatura.parcelas[0]?.data_vencimento)}
+                                                </span>
+                                                <span className={`px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium ${
+                                                    getFaturaStatus(fatura) === 'Pago' 
+                                                        ? 'bg-green-100 text-green-600' 
+                                                        : 'bg-yellow-100 text-yellow-600'
+                                                }`}>
                                                     {getFaturaStatus(fatura)}
                                                 </span>
                                                 {isFaturaAtrasada(fatura) && (
@@ -6365,18 +6390,17 @@ const FaturasListScreen = ({ goToMenu }) => {
                                                         Atrasada
                                                     </span>
                                                 )}
-                                                <span className="text-xs sm:text-sm text-gray-500">
-                                                    {formatDate(fatura.parcelas[0]?.data_vencimento)}
-                                                </span>
                                             </div>
                                             
                                             {/* Valor Total */}
-                                            <p className="text-sm sm:text-base font-medium mb-2">
-                                                <span className="font-bold">{getCurrencySymbol(fatura.moeda)} {parseFloat(fatura.valor_total_fatura).toFixed(2)}</span>
-                                            </p>
+                                            <div className="mb-2">
+                                                <p className="text-base sm:text-xl font-bold text-gray-900">
+                                                    {getCurrencySymbol(fatura.moeda)} {parseFloat(fatura.valor_total_fatura).toFixed(2)}
+                                                </p>
+                                            </div>
                                             
                                             {/* Cartão e Informação de Pagamento */}
-                                            <div className="text-xs sm:text-sm text-gray-600 space-y-1">
+                                            <div className="text-xs sm:text-sm text-gray-600">
                                                 <div className="flex items-center flex-wrap gap-x-2">
                                                     <span className="font-medium">Cartão:</span>
                                                     <span className="truncate">{fatura.cartao}</span>
@@ -6400,7 +6424,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                                             </div>
                                         </div>
 
-                                        {/* Ações */}
+                                        {/* Ações - Centralizado verticalmente */}
                                         <div className="flex items-center space-x-1 sm:space-x-2 ml-2 sm:ml-4 flex-shrink-0">
                                             {/* Botão Pagar (apenas se pendente) */}
                                             {getFaturaStatus(fatura) === 'Pendente' && (
@@ -6435,7 +6459,10 @@ const FaturasListScreen = ({ goToMenu }) => {
 
             {/* Modal de Confirmação de Exclusão */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div 
+                    className="fixed inset-0 flex items-center justify-center z-50"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                >
                     <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
                         <div className="flex items-center mb-4">
                             <div className="flex-shrink-0 w-10 h-10 mx-auto bg-red-100 rounded-full flex items-center justify-center">
