@@ -6604,7 +6604,7 @@ const ManageTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
                             <SelectionCard
                                 title="Conversão"
                                 icon={Edit}
-                                color="#008f7a" // Roxo para Conversão
+                                color="#8b5cf6" // Roxo para Conversão
                                 description="Gerenciar conversões de moeda"
                                 action={() => setCurrentView('conversion_transactions_list')}
                             />
@@ -6612,7 +6612,7 @@ const ManageTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
                             <SelectionCard
                                 title="Gerenciar Faturas"
                                 icon={DollarSign}
-                                color="#8b5cf6" // Roxo para Faturas
+                                color="#55ad85" // Verde para Faturas
                                 description="Gerenciar faturas pendentes"
                                 action={() => setCurrentView('faturas_list')}
                             />
