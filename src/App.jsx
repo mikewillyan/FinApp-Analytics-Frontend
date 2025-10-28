@@ -650,8 +650,6 @@ const DashboardScreen = () => {
                 .sort((a, b) => b.valor - a.valor)
                 .slice(0, 9);
             
-            console.log('Dados do gráfico por categoria:', chartData); // Debug
-            
             setCategoryChartData(chartData);
         } catch (error) {
             console.error('Erro ao buscar dados do gráfico por categoria:', error);
@@ -1271,7 +1269,7 @@ const DashboardScreen = () => {
     return (
         <>
             {/* CSS para ocultar scrollbars */}
-            <style jsx>{`
+            <style>{`
                 .scrollbar-hide::-webkit-scrollbar {
                     display: none;
                 }
@@ -3464,9 +3462,6 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
           recorrencia: recorrenciaValue
         };
 
-        console.log('🔍 Dados sendo enviados:', transactionData);
-        console.log('🔍 Valor da recorrência:', formData.recorrencia);
-        console.log('🔍 Tipo da recorrência:', typeof formData.recorrencia);
 
         try {
           const response = await fetch(`${API_BASE_URL}/transacoes`, {
@@ -3947,9 +3942,6 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
           recorrencia: recorrenciaValue
         };
 
-        console.log('🔍 Dados sendo enviados:', transactionData);
-        console.log('🔍 Valor da recorrência:', formData.recorrencia);
-        console.log('🔍 Tipo da recorrência:', typeof formData.recorrencia);
 
         try {
           const response = await fetch(`${API_BASE_URL}/transacoes`, {
@@ -4385,7 +4377,6 @@ const TransferTransactionScreen = ({ goToMenu }) => {
           data_transacao: formData.data_transacao
         };
 
-        console.log('🔍 Dados sendo enviados:', transferData);
 
         try {
           const response = await fetch(`${API_BASE_URL}/transacoes/transferencia`, {
@@ -4835,7 +4826,6 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
           data_transacao: formData.data_transacao
         };
 
-        console.log('🔍 Dados sendo enviados:', conversionData);
 
         try {
           const response = await fetch(`${API_BASE_URL}/transacoes/conversao`, {
@@ -5287,6 +5277,9 @@ const FaturasListScreen = ({ goToMenu }) => {
             const mes = parseInt(faturaToPay.fatura_referencia.split('/')[1]); // Pega o mês
             const ano = parseInt(faturaToPay.fatura_referencia.split('/')[0]); // Pega o ano
             
+            // Calcular valor total incluindo juros (soma de todas as parcelas)
+            const valorTotalComJuros = parcelas.reduce((sum, p) => sum + parseFloat(p.valor_parcela), 0);
+            
             const response = await fetch(`${API_BASE_URL}/faturas/pagar`, {
                 method: 'POST',
                 headers: {
@@ -5298,7 +5291,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                     id_conta: selectedPaymentAccount,
                     mes: mes,
                     ano: ano,
-                    valor_pago: parseFloat(faturaToPay.valor_total_fatura)
+                    valor_pago: valorTotalComJuros
                 })
             });
 
@@ -5594,11 +5587,14 @@ const FaturasListScreen = ({ goToMenu }) => {
     };
 
     // Função para voltar à lista de faturas
-    const handleBackToList = () => {
+    const handleBackToList = async () => {
         setCurrentView('list');
         setFaturaToPay(null);
         setParcelas([]);
         setIsLoadingPayment(false);
+        
+        // Recarregar dados para refletir mudanças nos juros
+        await fetchData();
     };
 
     // Função para formatar valor de juros (similar aos outros formulários)
@@ -5632,6 +5628,14 @@ const FaturasListScreen = ({ goToMenu }) => {
 
     // Função para abrir modal de juros
     const handleOpenJurosModal = () => {
+        // Verificar se já existe juros na fatura
+        const jaExisteJuros = parcelas.some(p => p.descricao_compra === 'Juros');
+        
+        if (jaExisteJuros) {
+            alert('Esta fatura já possui juros cadastrados. Você pode excluir os juros existentes para adicionar novos.');
+            return;
+        }
+        
         setShowJurosModal(true);
         setJurosValue('0,00');
     };
@@ -5809,12 +5813,6 @@ const FaturasListScreen = ({ goToMenu }) => {
         const token = localStorage.getItem('authToken');
 
         try {
-            // Debug: verificar estrutura dos dados da parcela
-            console.log('Dados da parcela a ser editada:', parcelaToEdit);
-            console.log('ID da parcela:', parcelaToEdit.id_parcela);
-            console.log('Todos os campos da parcela:', Object.keys(parcelaToEdit));
-            console.log('Novo valor:', novoValorParcela);
-            
             const response = await fetch(`${API_BASE_URL}/parcelas/${parcelaToEdit.id_parcela}`, {
                 method: 'PUT',
                 headers: {
@@ -6046,16 +6044,21 @@ const FaturasListScreen = ({ goToMenu }) => {
                             </p>
 
                             {/* Detalhes da Fatura */}
-                            {faturaToPay && (
-                                <div className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4 mb-4 sm:mb-6">
-                                    <div className="text-xs sm:text-sm text-gray-600 space-y-1">
-                                        <div className="font-medium text-gray-800 mb-2">Detalhes da Fatura:</div>
-                                        <div>• Cartão: {faturaToPay.cartao}</div>
-                                        <div>• Valor: {getCurrencySymbol(faturaToPay.moeda)} {parseFloat(faturaToPay.valor_total_fatura).toFixed(2)}</div>
-                                        <div>• Vencimento: {formatDate(faturaToPay.parcelas[0]?.data_vencimento)}</div>
+                            {faturaToPay && (() => {
+                                // Calcular valor total incluindo juros
+                                const valorTotalComJuros = parcelas.reduce((sum, p) => sum + parseFloat(p.valor_parcela), 0);
+                                
+                                return (
+                                    <div className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4 mb-4 sm:mb-6">
+                                        <div className="text-xs sm:text-sm text-gray-600 space-y-1">
+                                            <div className="font-medium text-gray-800 mb-2">Detalhes da Fatura:</div>
+                                            <div>• Cartão: {faturaToPay.cartao}</div>
+                                            <div>• Valor: {getCurrencySymbol(faturaToPay.moeda)} {valorTotalComJuros.toFixed(2)}</div>
+                                            <div>• Vencimento: {formatDate(faturaToPay.parcelas[0]?.data_vencimento)}</div>
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                );
+                            })()}
 
                             {/* Dropdown de Contas */}
                             {faturaToPay && (
