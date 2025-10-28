@@ -2,6 +2,8 @@ import Logo from "./assets/Logo.png";
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { LogOut, Home, CreditCard, Layers, DollarSign, Loader2, X, Check, Menu, Edit, Edit3, Trash2, Plus, Search, Minus, ArrowRight, ArrowLeft } from 'lucide-react';
 import { API_BASE_URL, API_URL } from './config/api';
+import TermosDeServico from './components/TermosDeServico';
+import PoliticaDePrivacidade from './components/PoliticaDePrivacidade';
 
 const primaryGreen = '#55ad85'; // Cor principal do tema
 const darkGreen = '#4a9572';
@@ -9666,7 +9668,7 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
 // --------------------------------------------------------------------------------
 // Componente de Autenticação (Mantido o estilo Mobile-friendly)
 // --------------------------------------------------------------------------------
-const AuthScreen = ({ onAuthSuccess }) => {
+const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
     const [isLogin, setIsLogin] = useState(true);
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
@@ -9848,6 +9850,36 @@ const AuthScreen = ({ onAuthSuccess }) => {
                         {isLogin ? 'Crie sua conta' : 'Fazer Login'}
                     </button>
                 </p>
+
+                {/* Links para Termos de Serviço e Política de Privacidade */}
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                    <p className="text-center text-xs text-gray-500 mb-3">
+                        Ao continuar, você concorda com nossos
+                    </p>
+                    <div className="flex justify-center space-x-4 text-xs">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setCurrentPage('termos');
+                                window.history.pushState({}, '', '/termos-de-servico');
+                            }}
+                            className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                        >
+                            Termos de Serviço
+                        </button>
+                        <span className="text-gray-400">•</span>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setCurrentPage('privacidade');
+                                window.history.pushState({}, '', '/politica-de-privacidade');
+                            }}
+                            className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                        >
+                            Política de Privacidade
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -9963,6 +9995,12 @@ const DashboardLayout = ({ onLogout }) => {
 // --------------------------------------------------------------------------------
 export default function App() {
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken')); 
+    const [currentPage, setCurrentPage] = useState(() => {
+        const path = window.location.pathname;
+        if (path === '/termos-de-servico') return 'termos';
+        if (path === '/politica-de-privacidade') return 'privacidade';
+        return 'main';
+    });
 
     const handleAuthSuccess = useCallback((token) => {
         setAuthToken(token);
@@ -9972,11 +10010,49 @@ export default function App() {
         localStorage.removeItem('authToken');
         setAuthToken(null);
     }, []);
+
+    const handleBackToMain = useCallback(() => {
+        setCurrentPage('main');
+        window.history.pushState({}, '', '/');
+    }, []);
+
+    // Atualizar a URL quando a página muda
+    useEffect(() => {
+        const path = window.location.pathname;
+        if (path === '/termos-de-servico') {
+            setCurrentPage('termos');
+        } else if (path === '/politica-de-privacidade') {
+            setCurrentPage('privacidade');
+        } else {
+            setCurrentPage('main');
+        }
+    }, []);
+
+    // Listener para mudanças na URL
+    useEffect(() => {
+        const handlePopState = () => {
+            const path = window.location.pathname;
+            if (path === '/termos-de-servico') {
+                setCurrentPage('termos');
+            } else if (path === '/politica-de-privacidade') {
+                setCurrentPage('privacidade');
+            } else {
+                setCurrentPage('main');
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, []);
     
     return (
         <div className="w-full min-h-screen">
-            {!authToken ? (
-                <AuthScreen onAuthSuccess={handleAuthSuccess} />
+            {currentPage === 'termos' ? (
+                <TermosDeServico onBack={handleBackToMain} />
+            ) : currentPage === 'privacidade' ? (
+                <PoliticaDePrivacidade onBack={handleBackToMain} />
+            ) : !authToken ? (
+                <AuthScreen onAuthSuccess={handleAuthSuccess} currentPage={currentPage} setCurrentPage={setCurrentPage} />
             ) : (
                 <DashboardLayout onLogout={handleLogout} />
             )}
