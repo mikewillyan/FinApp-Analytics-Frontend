@@ -1,9 +1,11 @@
 import Logo from "./assets/Logo.png";
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { LogOut, Home, CreditCard, Layers, DollarSign, Loader2, X, Check, Menu, Edit, Edit3, Trash2, Plus, Search, Minus, ArrowRight, ArrowLeft } from 'lucide-react';
+import { LogOut, Home, CreditCard, Layers, DollarSign, Loader2, X, Check, Menu, Edit, Edit3, Trash2, Plus, Search, Minus, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { API_BASE_URL, API_URL } from './config/api';
 import TermosDeServico from './components/TermosDeServico';
 import PoliticaDePrivacidade from './components/PoliticaDePrivacidade';
+import { setAccessToken, clearAccessToken, getAccessToken } from './config/auth';
+import { apiFetch } from './config/http';
 
 const primaryGreen = '#55ad85'; // Cor principal do tema
 const darkGreen = '#4a9572';
@@ -60,7 +62,7 @@ const checkAndCreatePredefinedCategories = async () => {
         return;
     }
 
-    const token = localStorage.getItem('authToken');
+    const token = getAccessToken();
     if (!token) {
         console.warn('⚠️ Token de autenticação não encontrado');
         return;
@@ -74,7 +76,7 @@ const checkAndCreatePredefinedCategories = async () => {
         console.log('📋 Categorias pré-definidas a verificar:', PREDEFINED_CATEGORIES.map(c => `${c.nome} (${c.tipo})`));
         
         // Buscar categorias existentes do usuário
-        const response = await fetch(`${API_BASE_URL}/categorias`, {
+        const response = await apiFetch(`/categorias`, {
             headers: { 'Authorization': `Bearer ${token}` },
         });
 
@@ -119,7 +121,7 @@ const checkAndCreatePredefinedCategories = async () => {
             try {
                 console.log(`🔄 Tentando criar categoria: "${category.nome}" (${category.tipo})`);
                 
-                const createResponse = await fetch(`${API_BASE_URL}/categorias`, {
+                const createResponse = await apiFetch(`/categorias`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -347,7 +349,6 @@ const mockDashboardData = {
         { id: 3, descricao: 'Compras', valor: -150.80, tipo: 'Despesa', data: '2025-10-18', categoria: 'Alimentação' },
     ],
 };
-
 const DashboardScreen = () => {
     const [selectedCurrency, setSelectedCurrency] = useState(() => {
         // Recuperar a moeda salva no localStorage, ou usar BRL como padrão
@@ -397,8 +398,8 @@ const DashboardScreen = () => {
         setBalanceError(null);
         
         try {
-            const token = localStorage.getItem('authToken');
-            const response = await fetch(`${API_BASE_URL}/saldo/total/${currency.toLowerCase()}`, {
+            const token = getAccessToken();
+            const response = await apiFetch(`${API_BASE_URL}/saldo/total/${currency.toLowerCase()}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -424,13 +425,13 @@ const DashboardScreen = () => {
         setMonthlyError(null);
         
         try {
-            const token = localStorage.getItem('authToken');
+            const token = getAccessToken();
             const currentDate = new Date();
             const currentYear = currentDate.getFullYear();
             const currentMonth = currentDate.getMonth() + 1; // getMonth() retorna 0-11, então +1
             
             // Buscar dados financeiros do mês atual
-            const response = await fetch(`${API_BASE_URL}/financeiro/mensal/${currency.toLowerCase()}/${currentYear}/${currentMonth}`, {
+            const response = await apiFetch(`${API_BASE_URL}/financeiro/mensal/${currency.toLowerCase()}/${currentYear}/${currentMonth}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -457,7 +458,7 @@ const DashboardScreen = () => {
         setCategoryChartError(null);
         
         try {
-            const token = localStorage.getItem('authToken');
+            const token = getAccessToken();
             const currentYear = new Date().getFullYear();
             let chartData = [];
             
@@ -667,7 +668,7 @@ const DashboardScreen = () => {
         setRecurrenceChartError(null);
         
         try {
-            const token = localStorage.getItem('authToken');
+            const token = getAccessToken();
             const currentYear = new Date().getFullYear();
             let url = '';
             
@@ -949,15 +950,14 @@ const DashboardScreen = () => {
             setIsLoadingRecurrenceChart(false);
         }
     }, []);
-
     // Função para buscar próximas faturas
     const fetchUpcomingInvoices = useCallback(async () => {
         setIsLoadingUpcomingInvoices(true);
         setUpcomingInvoicesError(null);
         
         try {
-            const token = localStorage.getItem('authToken');
-            const response = await fetch(`${API_BASE_URL}/faturas/credito`, {
+            const token = getAccessToken();
+            const response = await apiFetch(`${API_BASE_URL}/faturas/credito`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
@@ -1004,14 +1004,13 @@ const DashboardScreen = () => {
             setIsLoadingUpcomingInvoices(false);
         }
     }, []);
-
     // Função para buscar dados do gráfico por período
     const fetchChartData = useCallback(async (currency, type, period, specificPeriod = null) => {
         setIsLoadingChart(true);
         setChartError(null);
         
         try {
-            const token = localStorage.getItem('authToken');
+            const token = getAccessToken();
             const currentYear = new Date().getFullYear();
             let chartData = [];
             
@@ -1267,7 +1266,6 @@ const DashboardScreen = () => {
         fetchRecurrenceChartData(selectedCurrency, recurrenceChartType, recurrenceChartPeriod, recurrenceChartSpecificPeriod);
         fetchUpcomingInvoices();
     }, [selectedCurrency, chartType, chartPeriod, selectedYear, categoryChartType, categoryChartPeriod, categoryChartSpecificPeriod, recurrenceChartType, recurrenceChartPeriod, recurrenceChartSpecificPeriod, fetchTotalBalance, fetchMonthlyData, fetchChartData, fetchCategoryChartData, fetchRecurrenceChartData, fetchUpcomingInvoices]);
-    
     return (
         <>
             {/* CSS para ocultar scrollbars */}
@@ -1705,7 +1703,6 @@ const DashboardScreen = () => {
                     )}
                 </div>
             </div>
-
             {/* Terceiro gráfico - Análise por Recorrência (Gráfico de Rosca) */}
             <div className="bg-white rounded-xl shadow-lg p-3 sm:p-4">
                 <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 mb-4">
@@ -1883,7 +1880,6 @@ const DashboardScreen = () => {
         </>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente Principal: CreditCardsScreen (ATUALIZADO com CRUD)
 // --------------------------------------------------------------------------------
@@ -1902,7 +1898,7 @@ const CreditCardsScreen = () => {
 
   // Endpoint: app.get('/cartoes', ...)
   const fetchCartoes = useCallback(async () => {
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
       if (!token) {
           setError('Usuário não autenticado.');
           setIsLoading(false);
@@ -1951,7 +1947,7 @@ const CreditCardsScreen = () => {
   const createNewCard = async (cardData) => {
       setIsSavingNew(true);
       setError(null);
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
 
       try {
           const url = `${API_BASE_URL}/cartoes`;
@@ -1988,7 +1984,7 @@ const CreditCardsScreen = () => {
   const updateCard = async (id, updatedData) => {
       setIsSavingEdit(true); 
       setError(null);
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
 
       try {
           const url = `${API_BASE_URL}/cartoes/${id}`;
@@ -2026,7 +2022,7 @@ const CreditCardsScreen = () => {
       if (!cardToDelete) return;
       setIsDeleting(true);
       setError(null);
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
 
       try {
           const url = `${API_BASE_URL}/cartoes/${cardToDelete.id}`;
@@ -2395,8 +2391,6 @@ const AddCategoryModal = ({ onSave, onCancel, isSaving }) => {
         </div>
     );
 };
-
-
 // --------------------------------------------------------------------------------
 // Componente Modal de Adicionar Nova Conta
 // --------------------------------------------------------------------------------
@@ -2584,7 +2578,7 @@ const AccountsScreen = () => {
 
   const fetchContas = useCallback(async () => {
       // ... (código de fetchContas permanece o mesmo)
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
       if (!token) {
           setError('Usuário não autenticado. Redirecionando para login...');
           setIsLoading(false);
@@ -2595,7 +2589,7 @@ const AccountsScreen = () => {
       setError(null);
       
       try {
-          const response = await fetch(`${API_BASE_URL}/contas`, {
+          const response = await apiFetch(`${API_BASE_URL}/contas`, {
               method: 'GET',
               headers: {
                   'Content-Type': 'application/json',
@@ -2630,12 +2624,11 @@ const AccountsScreen = () => {
   const createNewAccount = async (accountData) => {
       setIsSavingNew(true);
       setError(null);
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
 
       try {
           const url = `${API_URL}/contas`;
-          
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -2673,7 +2666,7 @@ const AccountsScreen = () => {
   const updateAccountName = async (id, novoNome) => {
       setIsSavingEdit(true); 
       setError(null);
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
 
       try {
           const url = `${API_BASE_URL}/contas/${id}`;
@@ -2717,7 +2710,7 @@ const AccountsScreen = () => {
       if (!accountToDelete) return;
       setIsDeleting(true);
       setError(null);
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
 
       try {
           const url = `${API_BASE_URL}/contas/${accountToDelete.id}`;
@@ -2913,7 +2906,6 @@ const CardItem = ({ card, onEdit, onDelete }) => {
       </div>
   );
 };
-
 // --------------------------------------------------------------------------------
 // Modal de Adição de Cartão de Crédito (POST /cartoes)
 // --------------------------------------------------------------------------------
@@ -3087,7 +3079,6 @@ const [nome_cartao, setNomeCartao] = useState('');
       </div>
   );
 };
-
 // --------------------------------------------------------------------------------
 // Modal de Edição de Cartão de Crédito (PUT /cartoes/:id) - ATUALIZADO
 // --------------------------------------------------------------------------------
@@ -3245,10 +3236,6 @@ const EditCardModal = ({ card, onSave, onCancel, isSaving }) => {
       </div>
   );
 };
-
-
-
-
 // --------------------------------------------------------------------------------
 // Componente: ExpenseTransactionScreen (NOVO)
 // Formulário para registrar despesas usando contas bancárias
@@ -3278,7 +3265,7 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
 
     // Função para buscar contas e categorias
     const fetchData = useCallback(async () => {
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
       if (!token) return;
 
       setIsLoading(true);
@@ -3287,10 +3274,10 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
 
       try {
         const [contasRes, categoriasRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/contas`, {
+          apiFetch(`${API_BASE_URL}/contas`, {
             headers: { 'Authorization': `Bearer ${token}` },
           }),
-          fetch(`${API_BASE_URL}/categorias`, {
+          apiFetch(`${API_BASE_URL}/categorias`, {
             headers: { 'Authorization': `Bearer ${token}` },
           }),
         ]);
@@ -3335,9 +3322,9 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
     // Função para salvar nova categoria
     const saveNewCategory = async (categoryData) => {
         setIsSavingCategory(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
     try {
-      const response = await fetch(`${API_BASE_URL}/categorias`, {
+      const response = await apiFetch(`${API_BASE_URL}/categorias`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -3391,9 +3378,9 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
     // Função para salvar nova conta
     const saveNewAccount = async (accountData) => {
         setIsSavingAccount(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         try {
-            const response = await fetch(`${API_BASE_URL}/contas`, {
+            const response = await apiFetch(`${API_BASE_URL}/contas`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3466,7 +3453,7 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
 
 
         try {
-          const response = await fetch(`${API_BASE_URL}/transacoes`, {
+          const response = await apiFetch(`/transacoes`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -3741,7 +3728,6 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
       </div>
   );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: IncomeTransactionScreen (NOVO)
 // Formulário para registrar receitas usando contas bancárias
@@ -3770,7 +3756,7 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
 
     // Função para buscar contas e categorias (apenas categorias do tipo "receita")
     const fetchData = useCallback(async () => {
-    const token = localStorage.getItem('authToken');
+    const token = getAccessToken();
       if (!token) return;
 
       setIsLoading(true);
@@ -3779,10 +3765,10 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
 
       try {
         const [contasRes, categoriasRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/contas`, {
+          apiFetch(`${API_BASE_URL}/contas`, {
             headers: { 'Authorization': `Bearer ${token}` },
           }),
-          fetch(`${API_BASE_URL}/categorias`, {
+          apiFetch(`${API_BASE_URL}/categorias`, {
             headers: { 'Authorization': `Bearer ${token}` },
           }),
         ]);
@@ -4190,7 +4176,6 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
       </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: TransferTransactionScreen (NOVO)
 // Formulário para registrar transferências entre contas
@@ -4215,7 +4200,7 @@ const TransferTransactionScreen = ({ goToMenu }) => {
 
     // Função para buscar contas
     const fetchData = useCallback(async () => {
-    const token = localStorage.getItem('authToken');
+    const token = getAccessToken();
       if (!token) return;
 
       setIsLoading(true);
@@ -4223,7 +4208,7 @@ const TransferTransactionScreen = ({ goToMenu }) => {
       setShowSuccessModal(false);
 
       try {
-        const contasRes = await fetch(`${API_BASE_URL}/contas`, {
+        const contasRes = await apiFetch(`/contas`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
 
@@ -4301,7 +4286,7 @@ const TransferTransactionScreen = ({ goToMenu }) => {
     // Função para salvar nova conta
     const saveNewAccount = async (accountData) => {
         setIsSavingAccount(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         try {
             const response = await fetch(`${API_BASE_URL}/contas`, {
                 method: 'POST',
@@ -4369,7 +4354,7 @@ const TransferTransactionScreen = ({ goToMenu }) => {
         setIsSubmitting(true);
         setError(null);
 
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         
         const transferData = {
           id_conta_origem: parseInt(formData.id_conta_origem),
@@ -4611,7 +4596,6 @@ const TransferTransactionScreen = ({ goToMenu }) => {
       </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: ConversionTransactionScreen (NOVO)
 // Formulário para registrar conversões entre moedas
@@ -4648,7 +4632,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
 
     // Função para buscar contas
     const fetchData = useCallback(async () => {
-    const token = localStorage.getItem('authToken');
+    const token = getAccessToken();
       if (!token) return;
 
       setIsLoading(true);
@@ -4656,7 +4640,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
       setShowSuccessModal(false);
 
       try {
-        const contasRes = await fetch(`${API_BASE_URL}/contas`, {
+        const contasRes = await apiFetch(`/contas`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
 
@@ -4732,7 +4716,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
     // Função para salvar nova conta
     const saveNewAccount = async (accountData) => {
         setIsSavingAccount(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         try {
             const response = await fetch(`${API_BASE_URL}/contas`, {
                 method: 'POST',
@@ -4816,7 +4800,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
         setIsSubmitting(true);
         setError(null);
 
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         
         const conversionData = {
           id_conta_origem: parseInt(formData.id_conta_origem),
@@ -5101,7 +5085,6 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
       </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: FaturasListScreen (NOVO)
 // Tela para listar faturas de crédito do usuário
@@ -5144,7 +5127,7 @@ const FaturasListScreen = ({ goToMenu }) => {
 
     // Função para buscar faturas e informações de pagamento
     const fetchData = useCallback(async () => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsLoading(true);
@@ -5370,7 +5353,7 @@ const FaturasListScreen = ({ goToMenu }) => {
         if (!faturaToDelete) return;
 
         setIsDeleting(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
 
         try {
             // Debug: verificar dados da fatura
@@ -5479,7 +5462,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                 console.log('Tentando buscar transação 165 diretamente...');
                 
                 // Verificar se a transação 165 existe e é de pagamento de fatura
-                const transacaoResponse = await fetch(`${API_BASE_URL}/transacoes/165`, {
+                const transacaoResponse = await apiFetch(`${API_BASE_URL}/transacoes/165`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 });
 
@@ -5562,7 +5545,7 @@ const FaturasListScreen = ({ goToMenu }) => {
 
     // Função para buscar parcelas da fatura
     const fetchParcelas = async (fatura) => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         try {
@@ -5654,7 +5637,7 @@ const FaturasListScreen = ({ goToMenu }) => {
         if (!faturaToPay) return;
 
         setIsAddingJuros(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
 
         try {
             // Converter valor de formato brasileiro para americano
@@ -5714,7 +5697,6 @@ const FaturasListScreen = ({ goToMenu }) => {
         setJurosToDelete(null);
         setIsDeletingJuros(false);
     };
-
     // Função para confirmar exclusão de juros
     const handleConfirmDeleteJuros = async () => {
         if (!jurosToDelete) return;
@@ -5897,7 +5879,6 @@ const FaturasListScreen = ({ goToMenu }) => {
             </div>
         );
     }
-
     // Renderizar modal de pagamento
     if (currentView === 'payment') {
         return (
@@ -6332,8 +6313,6 @@ const FaturasListScreen = ({ goToMenu }) => {
             </div>
         );
     }
-
-
     // Renderizar lista de faturas (view padrão)
     return (
         <div className="p-2 sm:p-4">
@@ -6685,7 +6664,6 @@ const ManageTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
         </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: DebitTransactionsListScreen (NOVO)
 // Tela para listar transações de débito do usuário
@@ -6768,7 +6746,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         const token = localStorage.getItem('authToken');
         
         try {
-            const response = await fetch(`${API_BASE_URL}/transacoes/${transactionToEdit.id}`, {
+            const response = await apiFetch(`/transacoes/${transactionToEdit.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -6803,7 +6781,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         const token = localStorage.getItem('authToken');
         
         try {
-            const response = await fetch(`${API_BASE_URL}/transacoes/${transactionToDelete.id}`, {
+            const response = await apiFetch(`/transacoes/${transactionToDelete.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -7286,7 +7264,6 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
                     </div>
                 </div>
             )}
-
             {/* Modal de Confirmação de Exclusão */}
             {showDeleteModal && (
                 <div 
@@ -7394,7 +7371,6 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: CreditTransactionsListScreen (NOVO)
 // Tela para listar transações de crédito do usuário
@@ -7714,7 +7690,6 @@ const CreditTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: TransferTransactionsListScreen
 // Tela para listar transferências do usuário
@@ -8051,7 +8026,6 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
             </div>
         );
     }
-
     return (
         <div className="p-2 sm:p-4">
             <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-yellow-500 overflow-hidden">
@@ -8372,7 +8346,6 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
         </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: ConversionTransactionsListScreen
 // Tela para listar conversões do usuário
@@ -8756,7 +8729,6 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
             </div>
         );
     }
-
     return (
         <div className="p-2 sm:p-4">
             <div className="bg-white rounded-xl shadow-xl border-t-4 border-t-purple-500 overflow-hidden">
@@ -9134,7 +9106,6 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
         </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente: QuickTransactionTypeSelectionScreen (NOVO)
 // Tela de seleção rápida para adicionar transações (despesa/receita)
@@ -9188,7 +9159,6 @@ const QuickTransactionTypeSelectionScreen = ({ goToMenu, setTransactionSubView }
       </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente de Formulário para Nova Transação de Crédito (Corrigido)
 // --------------------------------------------------------------------------------
@@ -9233,7 +9203,7 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
   
     // --- Fetch de cartões e categorias ---
     const fetchData = useCallback(async () => {
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
       if (!token) return;
   
       setIsLoading(true);
@@ -9286,7 +9256,7 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
     // Função para salvar a nova categoria
     const saveNewCategory = async (categoryData) => {
         setIsSavingCategory(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         try {
             const response = await fetch(`${API_BASE_URL}/categorias`, {
                 method: 'POST',
@@ -9352,7 +9322,7 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
     // --- Criação de novo cartão via modal ---
     const handleCardSave = async (cardData) => {
       setIsCardSubmitting(true);
-      const token = localStorage.getItem('authToken');
+      const token = getAccessToken();
       setError(null);
   
       try {
@@ -9400,7 +9370,7 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
           id_categoria: parseInt(formData.id_categoria),
         };
       
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         try {
           const response = await fetch(`${API_BASE_URL}/transacoes/credito`, {
             method: 'POST',
@@ -9664,7 +9634,6 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
       </div>
     );
   };
-
 // --------------------------------------------------------------------------------
 // Componente de Autenticação (Mantido o estilo Mobile-friendly)
 // --------------------------------------------------------------------------------
@@ -9673,14 +9642,17 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
     useEffect(() => { setError(''); }, [isLogin]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setSuccess('');
         setIsLoading(true);
 
         const endpoint = isLogin ? '/usuario/login' : '/usuario/registrar';
@@ -9707,16 +9679,30 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
             }
 
             if (!response.ok) {
-                const errorMessage = data.erro || data.mensagem || `Erro de ${isLogin ? 'Login' : 'Registro'} desconhecido.`;
+                // Mostrar mensagens detalhadas de validação do backend, quando existirem
+                if (Array.isArray(data?.detalhes) && data.detalhes.length > 0) {
+                    const msgs = data.detalhes
+                        .map((d) => d?.msg || d?.message || d?.param || 'Campo inválido')
+                        .filter(Boolean)
+                        .join('\n');
+                    throw new Error(msgs);
+                }
+                const errorMessage = data?.erro || data?.mensagem || `Erro de ${isLogin ? 'Login' : 'Registro'} desconhecido.`;
                 throw new Error(errorMessage);
             }
 
+            if (isLogin) {
             const token = data.token; 
             if (token) {
-                localStorage.setItem('authToken', token);
                 onAuthSuccess(token);
             } else {
-                setError('Resposta da API incompleta: Token de autenticação não recebido.');
+                    setError('Resposta da API incompleta: Token de autenticação não recebido.');
+                }
+            } else {
+                // Registro bem-sucedido: mostrar confirmação e redirecionar para login
+                setSuccess('✅ Conta criada com sucesso! Faça login para continuar.');
+                setIsLogin(true);
+                setSenha('');
             }
 
         } catch (err) {
@@ -9731,6 +9717,7 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
             } else if (err.message.includes('500')) {
                 setError('❌ Erro interno do servidor. Verifique os logs do backend local.');
             } else {
+                // Mensagem do backend (validação de nome/senha/email, etc.)
                 setError('❌ ' + err.message);
             }
         } finally {
@@ -9757,6 +9744,11 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
                 {error && (
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4 text-sm font-medium" role="alert">
                         {error}
+                    </div>
+                )}
+                {success && (
+                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4 text-sm font-medium" role="status">
+                        {success}
                     </div>
                 )}
 
@@ -9789,15 +9781,25 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
                     </div>
                     <div className="mb-2">
                         <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="senha">Senha</label>
-                        <input
-                            id="senha"
-                            type="password"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150"
-                            placeholder="••••••••"
-                            required
-                        />
+                        <div className="relative">
+                            <input
+                                id="senha"
+                                type={showPassword ? 'text' : 'password'}
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                                className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150"
+                                placeholder="••••••••"
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((v) => !v)}
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
                     </div>
 
                     {isLogin && (
@@ -9884,7 +9886,6 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
         </div>
     );
 };
-
 // --------------------------------------------------------------------------------
 // Componente de Layout/Dashboard (Mobile First)
 // --------------------------------------------------------------------------------
@@ -9994,7 +9995,7 @@ const DashboardLayout = ({ onLogout }) => {
 // Componente Principal da Aplicação
 // --------------------------------------------------------------------------------
 export default function App() {
-    const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken')); 
+    const [authToken, setAuthToken] = useState(null); 
     const [currentPage, setCurrentPage] = useState(() => {
         const path = window.location.pathname;
         if (path === '/termos-de-servico') return 'termos';
@@ -10003,11 +10004,12 @@ export default function App() {
     });
 
     const handleAuthSuccess = useCallback((token) => {
+        setAccessToken(token);
         setAuthToken(token);
     }, []);
 
     const handleLogout = useCallback(() => {
-        localStorage.removeItem('authToken');
+        clearAccessToken();
         setAuthToken(null);
     }, []);
 
@@ -10015,6 +10017,28 @@ export default function App() {
         setCurrentPage('main');
         window.history.pushState({}, '', '/');
     }, []);
+
+    // Silent refresh: tenta renovar o access token via cookie httpOnly de refresh
+    useEffect(() => {
+        let cancelled = false;
+        async function trySilentRefresh() {
+            if (authToken) return; // já autenticado
+            try {
+                const resp = await fetch(`${API_URL}/usuario/refresh`, {
+                    method: 'POST',
+                    credentials: 'include',
+                });
+                if (!resp.ok) return;
+                const data = await resp.json().catch(() => ({}));
+                if (data && data.accessToken && !cancelled) {
+                    setAccessToken(data.accessToken);
+                    setAuthToken(data.accessToken);
+                }
+            } catch (_) {}
+        }
+        trySilentRefresh();
+        return () => { cancelled = true; };
+    }, [authToken]);
 
     // Atualizar a URL quando a página muda
     useEffect(() => {
@@ -10059,4 +10083,3 @@ export default function App() {
         </div>
     );
 }
-
