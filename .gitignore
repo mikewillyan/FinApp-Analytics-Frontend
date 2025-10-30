@@ -65,4 +65,14 @@ build/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db
+Thumbs.dbnode_modules/
+.env
+*.env
+*.log
+dist/
+build/
+CONFIGURACAO-NOVO-PC.md
+SOLUCAO-NODEJS-PATH.md
+adicionar-nodejs-ao-path.ps1
+configurar-ambiente.ps1
+
