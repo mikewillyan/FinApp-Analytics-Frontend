@@ -6694,20 +6694,58 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
     });
 
     // Função para abrir modal de edição
-    const handleEditClick = (transacao) => {
+    const handleEditClick = async (transacao) => {
         setTransactionToEdit(transacao);
-        setEditFormData({
-            data_transacao: transacao.data_transacao ? transacao.data_transacao.substring(0, 10) : '',
-            tipo: transacao.tipo,
-            id_categoria: transacao.id_categoria,
-            id_conta: transacao.id_conta,
-            valor: transacao.valor.toString(),
-            descricao: transacao.descricao,
-            moeda: transacao.moeda,
-            recorrencia: transacao.recorrencia
-        });
-        
         setShowEditModal(true);
+        
+        const token = getAccessToken();
+        if (!token) return;
+
+        try {
+            // Buscar dados completos da transação incluindo id_conta e id_categoria
+            const response = await apiFetch(`/transacoes/${transacao.id}`, {
+                headers: { 'Authorization': `Bearer ${token}` },
+            });
+
+            if (response.ok) {
+                const transacaoCompleta = await response.json();
+                setEditFormData({
+                    data_transacao: transacaoCompleta.data_transacao ? transacaoCompleta.data_transacao.substring(0, 10) : '',
+                    tipo: transacaoCompleta.tipo,
+                    id_categoria: transacaoCompleta.id_categoria || '',
+                    id_conta: transacaoCompleta.id_conta || '',
+                    valor: transacaoCompleta.valor ? transacaoCompleta.valor.toString() : '',
+                    descricao: transacaoCompleta.descricao || '',
+                    moeda: transacaoCompleta.moeda || '',
+                    recorrencia: transacaoCompleta.recorrencia || ''
+                });
+            } else {
+                // Fallback: usar dados da lista se a busca falhar
+                setEditFormData({
+                    data_transacao: transacao.data_transacao ? transacao.data_transacao.substring(0, 10) : '',
+                    tipo: transacao.tipo,
+                    id_categoria: transacao.id_categoria || '',
+                    id_conta: transacao.id_conta || '',
+                    valor: transacao.valor ? transacao.valor.toString() : '',
+                    descricao: transacao.descricao || '',
+                    moeda: transacao.moeda || '',
+                    recorrencia: transacao.recorrencia || ''
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao buscar dados completos da transação:', error);
+            // Fallback: usar dados da lista em caso de erro
+            setEditFormData({
+                data_transacao: transacao.data_transacao ? transacao.data_transacao.substring(0, 10) : '',
+                tipo: transacao.tipo,
+                id_categoria: transacao.id_categoria || '',
+                id_conta: transacao.id_conta || '',
+                valor: transacao.valor ? transacao.valor.toString() : '',
+                descricao: transacao.descricao || '',
+                moeda: transacao.moeda || '',
+                recorrencia: transacao.recorrencia || ''
+            });
+        }
     };
 
     // Função para abrir modal de exclusão
@@ -6746,13 +6784,19 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         const token = getAccessToken();
         
         try {
+            // Normalizar valor: substituir vírgula por ponto (formato brasileiro/português)
+            const formDataToSend = { ...editFormData };
+            if (formDataToSend.valor) {
+                formDataToSend.valor = String(formDataToSend.valor).replace(',', '.');
+            }
+            
             const response = await apiFetch(`/transacoes/${transactionToEdit.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(editFormData),
+                body: JSON.stringify(formDataToSend),
             });
 
             if (response.ok) {
