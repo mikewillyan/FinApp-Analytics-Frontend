@@ -9693,6 +9693,76 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
 
     useEffect(() => { setError(''); }, [isLogin]);
 
+    // Handler para login com Google
+    const handleGoogleLogin = () => {
+        // Redirecionar para a rota de autenticação Google no backend
+        window.location.href = `${API_URL}/auth/google`;
+    };
+
+    // Processar callback do Google (após retorno do OAuth)
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+
+        if (error) {
+            setError(`Erro ao autenticar com Google: ${error}`);
+            // Limpar URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            return;
+        }
+
+        if (code) {
+            handleGoogleCallback(code);
+        }
+    }, []);
+
+    const handleGoogleCallback = async (code) => {
+        setError('');
+        setSuccess('');
+        setIsLoading(true);
+
+        try {
+            const response = await apiFetch(`${API_URL}/auth/google/callback`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code }),
+            });
+
+            const responseText = await response.text();
+            let data;
+            
+            try {
+                data = responseText ? JSON.parse(responseText) : {};
+            } catch (parseError) {
+                throw new Error('Resposta inválida do servidor.');
+            }
+
+            if (!response.ok) {
+                const errorMessage = data?.erro || 'Erro ao processar autenticação Google';
+                throw new Error(errorMessage);
+            }
+
+            // Limpar URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            // Processar tokens
+            if (data.accessToken) {
+                setAccessToken(data.accessToken);
+                onAuthSuccess(data.accessToken);
+            } else {
+                throw new Error('Token de autenticação não recebido.');
+            }
+        } catch (err) {
+            console.error('Erro ao processar callback do Google:', err);
+            setError(`❌ ${err.message || 'Erro ao autenticar com Google'}`);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -9896,7 +9966,9 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
                 <div className="space-y-3">
                     <button
                         type="button"
-                        className="w-full border border-gray-300 bg-white text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:bg-gray-50 transition duration-200 shadow-sm flex items-center justify-center cursor-pointer"
+                        onClick={handleGoogleLogin}
+                        disabled={isLoading}
+                        className="w-full border border-gray-300 bg-white text-gray-700 font-semibold py-2.5 px-4 rounded-lg hover:bg-gray-50 transition duration-200 shadow-sm flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <img 
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" 
