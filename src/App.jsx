@@ -9826,10 +9826,11 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
             }
 
             if (isLogin) {
-            const token = data.token; 
-            if (token) {
-                onAuthSuccess(token);
-            } else {
+                const token = data.accessToken || data.token; 
+                if (token) {
+                    setAccessToken(token);
+                    onAuthSuccess(token);
+                } else {
                     setError('Resposta da API incompleta: Token de autenticação não recebido.');
                 }
             } else {
