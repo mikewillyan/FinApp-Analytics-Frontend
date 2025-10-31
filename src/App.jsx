@@ -466,7 +466,7 @@ const DashboardScreen = () => {
                 const url = type === 'despesas' 
                     ? `${API_BASE_URL}/gastos/categoria/geral/${currency.toLowerCase()}`
                     : `${API_BASE_URL}/receitas/categoria/geral/${currency.toLowerCase()}`;
-                const response = await fetch(url, {
+                const response = await apiFetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -482,7 +482,7 @@ const DashboardScreen = () => {
                 const url = type === 'despesas' 
                     ? `${API_BASE_URL}/gastos/categoria/anual/${currency.toLowerCase()}/${year}`
                     : `${API_BASE_URL}/receitas/categoria/anual/${currency.toLowerCase()}/${year}`;
-                const response = await fetch(url, {
+                const response = await apiFetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -499,7 +499,7 @@ const DashboardScreen = () => {
                     const url = type === 'despesas' 
                         ? `${API_BASE_URL}/gastos/categoria/semestral/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`
                         : `${API_BASE_URL}/receitas/categoria/semestral/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -515,7 +515,7 @@ const DashboardScreen = () => {
                         const url = type === 'despesas' 
                             ? `${API_BASE_URL}/gastos/categoria/semestral/${currency.toLowerCase()}/${currentYear}/${semestre}`
                             : `${API_BASE_URL}/receitas/categoria/semestral/${currency.toLowerCase()}/${currentYear}/${semestre}`;
-                        promises.push(fetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                 
                 const responses = await Promise.all(promises);
@@ -548,7 +548,7 @@ const DashboardScreen = () => {
                     const url = type === 'despesas' 
                         ? `${API_BASE_URL}/gastos/categoria/trimestral/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`
                         : `${API_BASE_URL}/receitas/categoria/trimestral/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -564,7 +564,7 @@ const DashboardScreen = () => {
                         const url = type === 'despesas' 
                             ? `${API_BASE_URL}/gastos/categoria/trimestral/${currency.toLowerCase()}/${currentYear}/${trimestre}`
                             : `${API_BASE_URL}/receitas/categoria/trimestral/${currency.toLowerCase()}/${currentYear}/${trimestre}`;
-                        promises.push(fetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                 
                 const responses = await Promise.all(promises);
@@ -597,7 +597,7 @@ const DashboardScreen = () => {
                     const url = type === 'despesas' 
                         ? `${API_BASE_URL}/gastos/categoria/mensal/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`
                         : `${API_BASE_URL}/receitas/categoria/mensal/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -613,7 +613,7 @@ const DashboardScreen = () => {
                         const url = type === 'despesas' 
                             ? `${API_BASE_URL}/gastos/categoria/mensal/${currency.toLowerCase()}/${currentYear}/${mes}`
                             : `${API_BASE_URL}/receitas/categoria/mensal/${currency.toLowerCase()}/${currentYear}/${mes}`;
-                        promises.push(fetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                 
                 const responses = await Promise.all(promises);
@@ -681,7 +681,7 @@ const DashboardScreen = () => {
                 if (specificPeriod) {
                     // Buscar apenas o semestre específico
                     const url = `${API_BASE_URL}/recorrencia/semestral/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -707,7 +707,7 @@ const DashboardScreen = () => {
                     const promises = [];
                     for (let semestre = 1; semestre <= 2; semestre++) {
                         const semUrl = `${API_BASE_URL}/recorrencia/semestral/${currency.toLowerCase()}/${currentYear}/${semestre}`;
-                        promises.push(fetch(semUrl, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(semUrl, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                     
                     const responses = await Promise.all(promises);
@@ -761,7 +761,7 @@ const DashboardScreen = () => {
                 if (specificPeriod) {
                     // Buscar apenas o trimestre específico
                     const url = `${API_BASE_URL}/recorrencia/trimestral/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -787,7 +787,7 @@ const DashboardScreen = () => {
                     const promises = [];
                     for (let trimestre = 1; trimestre <= 4; trimestre++) {
                         const trimUrl = `${API_BASE_URL}/recorrencia/trimestral/${currency.toLowerCase()}/${currentYear}/${trimestre}`;
-                        promises.push(fetch(trimUrl, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(trimUrl, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                     
                     const responses = await Promise.all(promises);
@@ -841,7 +841,7 @@ const DashboardScreen = () => {
                 if (specificPeriod) {
                     // Buscar apenas o mês específico
                     const url = `${API_BASE_URL}/recorrencia/mensal/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -867,7 +867,7 @@ const DashboardScreen = () => {
                     const promises = [];
                     for (let mes = 1; mes <= 12; mes++) {
                         const mesUrl = `${API_BASE_URL}/recorrencia/mensal/${currency.toLowerCase()}/${currentYear}/${mes}`;
-                        promises.push(fetch(mesUrl, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(mesUrl, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                     
                     const responses = await Promise.all(promises);
@@ -919,7 +919,7 @@ const DashboardScreen = () => {
                 }
             }
             
-            const response = await fetch(url, {
+            const response = await apiFetch(url, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
@@ -1017,7 +1017,7 @@ const DashboardScreen = () => {
             if (period === 'geral') {
                 // Para geral, mostrar apenas uma barra
                 const url = `${API_BASE_URL}/financeiro/geral/${currency.toLowerCase()}`;
-                const response = await fetch(url, {
+                const response = await apiFetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -1034,7 +1034,7 @@ const DashboardScreen = () => {
                 // Para anual, mostrar apenas uma barra
                 const year = specificPeriod || currentYear;
                 const url = `${API_BASE_URL}/financeiro/anual/${currency.toLowerCase()}/${year}`;
-                const response = await fetch(url, {
+                const response = await apiFetch(url, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -1051,7 +1051,7 @@ const DashboardScreen = () => {
                 if (specificPeriod) {
                     // Buscar apenas o semestre específico
                     const url = `${API_BASE_URL}/financeiro/semestral/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -1067,7 +1067,7 @@ const DashboardScreen = () => {
                     const promises = [];
                     for (let semestre = 1; semestre <= 2; semestre++) {
                         const url = `${API_BASE_URL}/financeiro/semestral/${currency.toLowerCase()}/${currentYear}/${semestre}`;
-                        promises.push(fetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                     
                     const responses = await Promise.all(promises);
@@ -1083,7 +1083,7 @@ const DashboardScreen = () => {
                 if (specificPeriod) {
                     // Buscar apenas o trimestre específico
                     const url = `${API_BASE_URL}/financeiro/trimestral/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -1099,7 +1099,7 @@ const DashboardScreen = () => {
                     const promises = [];
                     for (let trimestre = 1; trimestre <= 4; trimestre++) {
                         const url = `${API_BASE_URL}/financeiro/trimestral/${currency.toLowerCase()}/${currentYear}/${trimestre}`;
-                        promises.push(fetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                     
                     const responses = await Promise.all(promises);
@@ -1115,7 +1115,7 @@ const DashboardScreen = () => {
                 if (specificPeriod) {
                     // Buscar apenas o mês específico
                     const url = `${API_BASE_URL}/financeiro/mensal/${currency.toLowerCase()}/${currentYear}/${specificPeriod}`;
-                    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                    const response = await apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
                     
                     if (response.ok) {
                         const data = await response.json();
@@ -1133,7 +1133,7 @@ const DashboardScreen = () => {
                     const promises = [];
                     for (let mes = 1; mes <= 12; mes++) {
                         const url = `${API_BASE_URL}/financeiro/mensal/${currency.toLowerCase()}/${currentYear}/${mes}`;
-                        promises.push(fetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
+                        promises.push(apiFetch(url, { headers: { 'Authorization': `Bearer ${token}` } }));
                     }
                     
                     const responses = await Promise.all(promises);
@@ -1910,7 +1910,7 @@ const CreditCardsScreen = () => {
       
       try {
           const url = `${API_BASE_URL}/cartoes`; 
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
               method: 'GET',
               headers: {
                   'Content-Type': 'application/json',
@@ -1952,7 +1952,7 @@ const CreditCardsScreen = () => {
       try {
           const url = `${API_BASE_URL}/cartoes`;
           
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -1989,7 +1989,7 @@ const CreditCardsScreen = () => {
       try {
           const url = `${API_BASE_URL}/cartoes/${id}`;
           
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
               method: 'PUT',
               headers: {
                   'Content-Type': 'application/json',
@@ -2026,7 +2026,7 @@ const CreditCardsScreen = () => {
 
       try {
           const url = `${API_BASE_URL}/cartoes/${cardToDelete.id}`;
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
               method: 'DELETE',
               headers: {
                   'Content-Type': 'application/json',
@@ -2607,7 +2607,7 @@ const AccountsScreen = () => {
       } catch (err) {
           console.error('Erro ao buscar contas:', err);
           const errorMessage = err.message.includes('Failed to fetch') 
-              ? 'Não foi possível conectar ao backend. Verifique se o servidor (https://finapp-backend-production-b3e5.up.railway.app) está em execução.' 
+              ? 'Não foi possível conectar ao backend. Verifique se o servidor está em execução.' 
               : err.message;
           setError(errorMessage);
       } finally {
@@ -2671,7 +2671,7 @@ const AccountsScreen = () => {
       try {
           const url = `${API_BASE_URL}/contas/${id}`;
           
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
               method: 'PUT',
               headers: {
                   'Content-Type': 'application/json',
@@ -2714,7 +2714,7 @@ const AccountsScreen = () => {
 
       try {
           const url = `${API_BASE_URL}/contas/${accountToDelete.id}`;
-          const response = await fetch(url, {
+          const response = await apiFetch(url, {
               method: 'DELETE',
               headers: {
                   'Content-Type': 'application/json',
@@ -3437,7 +3437,7 @@ const ExpenseTransactionScreen = ({ goToMenu, setTransactionSubView }) => {
         setIsSubmitting(true);
         setError(null);
 
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         // Garante que a recorrência está no formato correto
         const recorrenciaValue = formData.recorrencia === 'Fixo' ? 'Fixo' : 'Esporadico';
         
@@ -3801,9 +3801,9 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
     // Função para salvar nova categoria
     const saveNewCategory = async (categoryData) => {
         setIsSavingCategory(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
     try {
-      const response = await fetch(`${API_BASE_URL}/categorias`, {
+      const response = await apiFetch(`/categorias`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -3857,9 +3857,9 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
     // Função para salvar nova conta
     const saveNewAccount = async (accountData) => {
         setIsSavingAccount(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         try {
-            const response = await fetch(`${API_BASE_URL}/contas`, {
+            const response = await apiFetch(`/contas`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3916,7 +3916,7 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
         setIsSubmitting(true);
         setError(null);
 
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         // Garante que a recorrência está no formato correto
         const recorrenciaValue = formData.recorrencia === 'Fixo' ? 'Fixo' : 'Esporadico';
         
@@ -3932,7 +3932,7 @@ const IncomeTransactionScreen = ({ goToMenu }) => {
 
 
         try {
-          const response = await fetch(`${API_BASE_URL}/transacoes`, {
+          const response = await apiFetch(`/transacoes`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -4288,7 +4288,7 @@ const TransferTransactionScreen = ({ goToMenu }) => {
         setIsSavingAccount(true);
         const token = getAccessToken();
         try {
-            const response = await fetch(`${API_BASE_URL}/contas`, {
+            const response = await apiFetch(`/contas`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4366,7 +4366,7 @@ const TransferTransactionScreen = ({ goToMenu }) => {
 
 
         try {
-          const response = await fetch(`${API_BASE_URL}/transacoes/transferencia`, {
+          const response = await apiFetch(`/transacoes/transferencia`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -4718,7 +4718,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
         setIsSavingAccount(true);
         const token = getAccessToken();
         try {
-            const response = await fetch(`${API_BASE_URL}/contas`, {
+            const response = await apiFetch(`/contas`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -4814,7 +4814,7 @@ const ConversionTransactionScreen = ({ goToMenu }) => {
 
 
         try {
-          const response = await fetch(`${API_BASE_URL}/transacoes/conversao`, {
+          const response = await apiFetch(`/transacoes/conversao`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -5135,7 +5135,7 @@ const FaturasListScreen = ({ goToMenu }) => {
 
         try {
             // Buscar faturas
-            const faturasResponse = await fetch(`${API_BASE_URL}/faturas/credito`, {
+            const faturasResponse = await apiFetch(`/faturas/credito`, {
                 headers: { 'Authorization': `Bearer ${token}` },
             });
 
@@ -5145,13 +5145,13 @@ const FaturasListScreen = ({ goToMenu }) => {
 
                 // Buscar informações de pagamento, contas e categorias
                 const [pagamentosResponse, contasResponse, categoriasResponse] = await Promise.all([
-                    fetch(`${API_BASE_URL}/transacoes/pagamentos-fatura`, {
+                    apiFetch(`/transacoes/pagamentos-fatura`, {
                         headers: { 'Authorization': `Bearer ${token}` },
                     }),
-                    fetch(`${API_BASE_URL}/contas`, {
+                    apiFetch(`/contas`, {
                         headers: { 'Authorization': `Bearer ${token}` },
                     }),
-                    fetch(`${API_BASE_URL}/categorias`, {
+                    apiFetch(`/categorias`, {
                         headers: { 'Authorization': `Bearer ${token}` },
                     })
                 ]);
@@ -5256,7 +5256,7 @@ const FaturasListScreen = ({ goToMenu }) => {
         setIsProcessingPayment(true);
         
         try {
-            const token = localStorage.getItem('authToken');
+            const token = getAccessToken();
             
             // Extrair mês e ano da fatura
             const mes = parseInt(faturaToPay.fatura_referencia.split('/')[1]); // Pega o mês
@@ -5265,7 +5265,7 @@ const FaturasListScreen = ({ goToMenu }) => {
             // Calcular valor total incluindo juros (soma de todas as parcelas)
             const valorTotalComJuros = parcelas.reduce((sum, p) => sum + parseFloat(p.valor_parcela), 0);
             
-            const response = await fetch(`${API_BASE_URL}/faturas/pagar`, {
+            const response = await apiFetch(`/faturas/pagar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -5313,9 +5313,9 @@ const FaturasListScreen = ({ goToMenu }) => {
         setIsAddingAccount(true);
         
         try {
-            const token = localStorage.getItem('authToken');
+            const token = getAccessToken();
             
-            const response = await fetch(`${API_BASE_URL}/contas`, {
+            const response = await apiFetch(`/contas`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -5369,7 +5369,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                 // Se não tem, buscar na rota de faturas pagas
                 console.log('Buscando ID da transação na rota /faturas/pagas...');
                 
-                const faturasPagasResponse = await fetch(`${API_BASE_URL}/faturas/pagas`, {
+                const faturasPagasResponse = await apiFetch(`/faturas/pagas`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 });
 
@@ -5419,7 +5419,7 @@ const FaturasListScreen = ({ goToMenu }) => {
                     console.log('Buscando id_pagamento através do id_compra:', primeiraParcela.id_compra);
                     
                     // Buscar o id_pagamento das parcelas que têm este id_compra
-                    const parcelasResponse = await fetch(`${API_BASE_URL}/compras/${primeiraParcela.id_compra}`, {
+                    const parcelasResponse = await apiFetch(`/compras/${primeiraParcela.id_compra}`, {
                         headers: { 'Authorization': `Bearer ${token}` },
                     });
 
@@ -5497,7 +5497,7 @@ const FaturasListScreen = ({ goToMenu }) => {
             }
 
             // Fazer a exclusão usando o ID encontrado
-            const deleteResponse = await fetch(`${API_BASE_URL}/faturas/pagar`, {
+            const deleteResponse = await apiFetch(`/faturas/pagar`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -5554,7 +5554,7 @@ const FaturasListScreen = ({ goToMenu }) => {
             const mes = dataVencimento.getMonth() + 1; // getMonth() retorna 0-11
             const ano = dataVencimento.getFullYear();
 
-            const response = await fetch(`${API_BASE_URL}/faturas/credito/${fatura.id_cartao}/${mes}/${ano}`, {
+            const response = await apiFetch(`/faturas/credito/${fatura.id_cartao}/${mes}/${ano}`, {
                 headers: { 'Authorization': `Bearer ${token}` },
             });
 
@@ -5653,7 +5653,7 @@ const FaturasListScreen = ({ goToMenu }) => {
             const mes = dataVencimento.getMonth() + 1;
             const ano = dataVencimento.getFullYear();
 
-            const response = await fetch(`${API_BASE_URL}/faturas/ajustar`, {
+            const response = await apiFetch(`/faturas/ajustar`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -5702,7 +5702,7 @@ const FaturasListScreen = ({ goToMenu }) => {
         if (!jurosToDelete) return;
 
         setIsDeletingJuros(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
 
         try {
             // Debug: verificar estrutura dos dados
@@ -5718,7 +5718,7 @@ const FaturasListScreen = ({ goToMenu }) => {
             };
             console.log('JSON a ser enviado:', requestBody);
             
-            const response = await fetch(`${API_BASE_URL}/faturas/ajustar`, {
+            const response = await apiFetch(`/faturas/ajustar`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -5794,10 +5794,10 @@ const FaturasListScreen = ({ goToMenu }) => {
         if (!parcelaToEdit || !novoValorParcela) return;
 
         setIsEditingParcela(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
 
         try {
-            const response = await fetch(`${API_BASE_URL}/parcelas/${parcelaToEdit.id_parcela}`, {
+            const response = await apiFetch(`/parcelas/${parcelaToEdit.id_parcela}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -6743,7 +6743,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         if (!transactionToEdit) return;
 
         setIsEditing(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         
         try {
             const response = await apiFetch(`/transacoes/${transactionToEdit.id}`, {
@@ -6778,7 +6778,7 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         if (!transactionToDelete) return;
 
         setIsDeleting(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         
         try {
             const response = await apiFetch(`/transacoes/${transactionToDelete.id}`, {
@@ -6809,15 +6809,15 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
     // Função para buscar contas e categorias
     const fetchData = useCallback(async () => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         try {
             const [contasResponse, categoriasResponse] = await Promise.all([
-                fetch(`${API_BASE_URL}/contas`, {
+                apiFetch(`/contas`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 }),
-                fetch(`${API_BASE_URL}/categorias`, {
+                apiFetch(`/categorias`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 })
             ]);
@@ -6884,14 +6884,14 @@ const DebitTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
     // Função para buscar transações de débito
     const fetchTransacoes = useCallback(async () => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsLoading(true);
         setError(null);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/transacoes`, {
+            const response = await apiFetch(`/transacoes`, {
                 headers: { 'Authorization': `Bearer ${token}` },
             });
 
@@ -7387,7 +7387,7 @@ const CreditTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
     // Função para buscar transações de crédito e cartões
     const fetchData = useCallback(async () => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsLoading(true);
@@ -7395,13 +7395,13 @@ const CreditTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
 
         try {
             const [transacoesRes, cartoesRes, categoriasRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/transacoes/credito`, {
+                apiFetch(`/transacoes/credito`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 }),
-                fetch(`${API_BASE_URL}/cartoes`, {
+                apiFetch(`/cartoes`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 }),
-                fetch(`${API_BASE_URL}/categorias`, {
+                apiFetch(`/categorias`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 })
             ]);
@@ -7447,10 +7447,10 @@ const CreditTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => {
         if (!transactionToDelete) return;
 
         setIsDeleting(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
 
         try {
-            const response = await fetch(`${API_BASE_URL}/transacoes/credito/${transactionToDelete.id}`, {
+            const response = await apiFetch(`/transacoes/credito/${transactionToDelete.id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` },
             });
@@ -7718,7 +7718,7 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
 
     // Função para buscar transferências e contas
     const fetchData = useCallback(async () => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsLoading(true);
@@ -7726,10 +7726,10 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
 
         try {
             const [transferenciasRes, contasRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/transacoes/transferencias`, {
+                apiFetch(`/transacoes/transferencias`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 }),
-                fetch(`${API_BASE_URL}/contas`, {
+                apiFetch(`/contas`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 })
             ]);
@@ -7896,10 +7896,10 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
         if (!transferToEdit) return;
 
         setIsEditing(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         
         try {
-            const response = await fetch(`${API_BASE_URL}/transacoes/transferencia/${transferToEdit.id_grupo_operacao}`, {
+            const response = await apiFetch(`/transacoes/transferencia/${transferToEdit.id_grupo_operacao}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -7934,12 +7934,12 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
 
     // Função para salvar nova conta
     const saveNewAccount = async (accountData) => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsSavingAccount(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/contas`, {
+            const response = await apiFetch(`/contas`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -7970,13 +7970,13 @@ const TransferTransactionsListScreen = ({ goToMenu, setTransactionSubView }) => 
     const handleDeleteTransfer = async () => {
         if (!transferToDelete) return;
 
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/transacoes/transferencia/${transferToDelete.id_grupo_operacao}`, {
+            const response = await apiFetch(`/transacoes/transferencia/${transferToDelete.id_grupo_operacao}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -8377,7 +8377,7 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
     // Função para buscar conversões, contas e categorias
     const fetchData = useCallback(async () => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsLoading(true);
@@ -8385,13 +8385,13 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
         try {
             const [conversoesRes, contasRes, categoriasRes] = await Promise.all([
-                fetch(`${API_BASE_URL}/transacoes/conversoes`, {
+                apiFetch(`/transacoes/conversoes`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 }),
-                fetch(`${API_BASE_URL}/contas`, {
+                apiFetch(`/contas`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 }),
-                fetch(`${API_BASE_URL}/categorias`, {
+                apiFetch(`/categorias`, {
                     headers: { 'Authorization': `Bearer ${token}` },
                 })
             ]);
@@ -8458,13 +8458,13 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
     const handleDeleteConversion = async () => {
         if (!conversionToDelete) return;
 
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsDeleting(true);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/transacoes/conversao/${conversionToDelete.id_grupo_operacao}`, {
+            const response = await apiFetch(`/transacoes/conversao/${conversionToDelete.id_grupo_operacao}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -8632,10 +8632,10 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
         if (!conversionToEdit) return;
 
         setIsEditing(true);
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         
         try {
-            const response = await fetch(`${API_BASE_URL}/transacoes/conversao/${conversionToEdit.id_grupo_operacao}`, {
+            const response = await apiFetch(`/transacoes/conversao/${conversionToEdit.id_grupo_operacao}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -8672,12 +8672,12 @@ const ConversionTransactionsListScreen = ({ goToMenu, setTransactionSubView }) =
 
     // Função para salvar nova conta
     const saveNewAccount = async (accountData) => {
-        const token = localStorage.getItem('authToken');
+        const token = getAccessToken();
         if (!token) return;
 
         setIsSavingAccount(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/contas`, {
+            const response = await apiFetch(`/contas`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -9212,10 +9212,10 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
   
       try {
         const [cartoesRes, categoriasRes] = await Promise.all([
-          fetch(`${API_BASE_URL}/cartoes`, {
+          apiFetch(`/cartoes`, {
             headers: { 'Authorization': `Bearer ${token}` },
           }),
-          fetch(`${API_BASE_URL}/categorias`, {
+          apiFetch(`/categorias`, {
             headers: { 'Authorization': `Bearer ${token}` },
           }),
         ]);
@@ -9258,7 +9258,7 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
         setIsSavingCategory(true);
         const token = getAccessToken();
         try {
-            const response = await fetch(`${API_BASE_URL}/categorias`, {
+            const response = await apiFetch(`/categorias`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -9326,7 +9326,7 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
       setError(null);
   
       try {
-        const response = await fetch(`${API_BASE_URL}/cartoes`, {
+        const response = await apiFetch(`/cartoes`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -9372,7 +9372,7 @@ const NewCreditTransactionSetupScreen = ({ goToMenu, setTransactionSubView }) =>
       
         const token = getAccessToken();
         try {
-          const response = await fetch(`${API_BASE_URL}/transacoes/credito`, {
+          const response = await apiFetch(`/transacoes/credito`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -9661,7 +9661,7 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
         const apiUrl = `${API_URL}${endpoint}`; 
 
         try {
-            const response = await fetch(apiUrl, {
+            const response = await apiFetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -9682,9 +9682,29 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
                 // Mostrar mensagens detalhadas de validação do backend, quando existirem
                 if (Array.isArray(data?.detalhes) && data.detalhes.length > 0) {
                     const msgs = data.detalhes
-                        .map((d) => d?.msg || d?.message || d?.param || 'Campo inválido')
+                        .map((d) => {
+                            const param = d?.param || '';
+                            const msg = d?.msg || d?.message || 'Campo inválido';
+                            // Melhorar mensagens de senha
+                            if (param.includes('senha') && msg.includes('maiúscula')) {
+                                return 'A senha deve conter pelo menos uma letra maiúscula.';
+                            }
+                            if (param.includes('senha') && msg.includes('minúscula')) {
+                                return 'A senha deve conter pelo menos uma letra minúscula.';
+                            }
+                            if (param.includes('senha') && msg.includes('número')) {
+                                return 'A senha deve conter pelo menos um número.';
+                            }
+                            if (param.includes('senha') && msg.includes('símbolo')) {
+                                return 'A senha deve conter pelo menos um símbolo (@$!%*?&).';
+                            }
+                            if (param.includes('senha') && msg.includes('8 caracteres')) {
+                                return 'A senha deve ter pelo menos 8 caracteres.';
+                            }
+                            return msg;
+                        })
                         .filter(Boolean)
-                        .join('\n');
+                        .join(' ');
                     throw new Error(msgs);
                 }
                 const errorMessage = data?.erro || data?.mensagem || `Erro de ${isLogin ? 'Login' : 'Registro'} desconhecido.`;
@@ -9794,10 +9814,11 @@ const AuthScreen = ({ onAuthSuccess, currentPage, setCurrentPage }) => {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((v) => !v)}
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
                                 aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                                tabIndex={-1}
                             >
-                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                {showPassword ? <EyeOff size={18} className="transition-opacity duration-200" /> : <Eye size={18} className="transition-opacity duration-200" />}
                             </button>
                         </div>
                     </div>
@@ -10024,7 +10045,7 @@ export default function App() {
         async function trySilentRefresh() {
             if (authToken) return; // já autenticado
             try {
-                const resp = await fetch(`${API_URL}/usuario/refresh`, {
+                const resp = await apiFetch(`/usuario/refresh`, {
                     method: 'POST',
                     credentials: 'include',
                 });
